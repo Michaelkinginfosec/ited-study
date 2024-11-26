@@ -18,20 +18,23 @@ class TopicsAdapter extends TypeAdapter<Topics> {
     };
     return Topics(
       id: fields[0] as String,
-      courseId: fields[1] as String,
-      topic: fields[2] as String,
+      course: fields[1] as String,
+      courseId: fields[2] as String,
+      topic: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Topics obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.courseId)
+      ..write(obj.course)
       ..writeByte(2)
+      ..write(obj.courseId)
+      ..writeByte(3)
       ..write(obj.topic);
   }
 

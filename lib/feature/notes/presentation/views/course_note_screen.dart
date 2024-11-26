@@ -10,10 +10,14 @@ import 'package:ited_study/feature/notes/domain/model/topics.dart';
 import '../../../../core/route/route.dart';
 
 class CourseNoteScreen extends StatefulWidget {
-  final String course;
+  final String courseTitle;
+  final String courseCode;
+  final String courseId;
   const CourseNoteScreen({
     super.key,
-    required this.course,
+    required this.courseTitle,
+    required this.courseCode,
+    required this.courseId,
   });
 
   @override
@@ -34,39 +38,38 @@ class _CourseNoteScreenState extends State<CourseNoteScreen> {
 
   void loadStoredTopics() async {
     // Open the Hive box
-    final box = await Hive.openBox<Topics>('topics');
+    final box = Hive.box<Topics>('topic');
+    final allTopics = box.values.toList();
 
-    print("Fetching topics from Hive, box length: ${box.length}");
+    setState(
+      () {
+        topics = allTopics
+            .where((topic) => topic.courseId == widget.courseId)
+            .toList();
+      },
+    );
 
     // Retrieve all stored values as a List
-    setState(() {
-      topics = box.values.toList(); // Fetch all stored topics
-      print("Fetched topics length: ${topics.length}");
 
-      // Debug: Print each topic's courseId and topic
-      for (var topic in topics) {
-        print("Fetched topic: ${topic.courseId} -> ${topic.topic}");
-      }
-    });
+    // setState(() {
+    //   topics = allTopics
+    //       .where(
+    //         (topic) =>
+    //             topic.courseId == widget.courseCode &&
+    //             topic.courseId == widget.courseCode,
+    //       )
+    //       .toList();
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    print(topics.length);
-    // print(topics.length);
-    // print(topics[0].topic);
-    // print(topics[1].topic);
-    // print(topics[2].topic);
-    // print(topics[3].topic);
-    // print(topics[4].topic);
-    // print(topics[5].topic);
-    // print(topics[6].topic);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          widget.course,
+          widget.courseTitle,
           style: CustomTextStyles.mediumSubtitleText,
         ),
         centerTitle: false,
@@ -129,7 +132,10 @@ class _CourseNoteScreenState extends State<CourseNoteScreen> {
                       const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                   child: InkWell(
                     onTap: () {
-                      context.push(AppRoutes.note);
+                      context.push(
+                        AppRoutes.note,
+                        extra: widget.courseId,
+                      );
                     },
                     child: Ink(
                       height: 50,

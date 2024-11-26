@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -109,12 +109,18 @@ class _CourseScreenState extends ConsumerState<CourseScreen> {
                     ),
                     child: GestureDetector(
                       onTap: () {
-                        final course = courses[index].courseTitle;
-                        context.push(AppRoutes.coursenote, extra: course);
+                        final courseTile = courses[index].courseTitle;
+                        final courseCode = courses[index].courseCode;
+                        final courseId = courses[index].id;
+                        context.push(AppRoutes.coursenote, extra: {
+                          "courseTitle": courseTile,
+                          "courseCode": courseCode,
+                          "courseId": courseId
+                        });
                       },
                       child: CustomListTile(
-                        leading: Image.network(
-                          courses[index].courseImage,
+                        leading: CachedNetworkImage(
+                          imageUrl: courses[index].courseImage,
                           height: 100,
                           width: 120,
                           fit: BoxFit.fill,

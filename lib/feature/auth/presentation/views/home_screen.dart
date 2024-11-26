@@ -185,19 +185,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               const SizedBox(
                                 height: 5,
                               ),
-                              Text(
-                                'Get full access to all you course outline and well explained topics',
-                                style: TextStyle(
-                                  fontSize: 8,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color.fromRGBO(255, 255, 255, 1),
+                              Expanded(
+                                child: Text(
+                                  'Get full access to all you course outline and well explained topics',
+                                  style: TextStyle(
+                                    fontSize: 8,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                          Image.asset(
-                            "assets/images/notepad.png",
-                            height: 75,
+                          Expanded(
+                            child: Image.asset(
+                              "assets/images/notepad.png",
+                              height: 75,
+                            ),
                           ),
                         ],
                       ),

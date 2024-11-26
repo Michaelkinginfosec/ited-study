@@ -352,9 +352,12 @@ final router = GoRouter(
       name: '/note',
       path: AppRoutes.note,
       pageBuilder: (context, state) {
+        final topicId = state.extra as String? ?? '';
         return CustomTransitionPage(
           key: state.pageKey,
-          child: NotesScreen(),
+          child: NotesScreen(
+            topicId: topicId,
+          ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
@@ -376,12 +379,16 @@ final router = GoRouter(
       name: '/coursenote',
       path: AppRoutes.coursenote,
       pageBuilder: (context, state) {
-        final course = state.extra as String? ?? '';
+        final courseData = state.extra as Map<String, dynamic>? ?? {};
+        final courseTitle = courseData['courseTitle'] as String? ?? '';
+        final courseCode = courseData['courseCode'] as String? ?? '';
+        final courseId = courseData['courseId'] as String? ?? '';
         return CustomTransitionPage(
           key: state.pageKey,
           child: CourseNoteScreen(
-            course: course,
-          ),
+              courseTitle: courseTitle,
+              courseCode: courseCode,
+              courseId: courseId),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;

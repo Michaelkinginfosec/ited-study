@@ -13,14 +13,14 @@ void main() async {
   Hive.registerAdapter(CoursesAdapter());
   Hive.registerAdapter(UsersAdapter());
   Hive.registerAdapter(TopicsAdapter());
-  var topics = await Hive.openBox<Topics>('topics');
+  var topics = await Hive.openBox<Topics>('topic');
   var courses = await Hive.openBox<Courses>('courses');
   var session = await Hive.openBox("sessionBox");
   var school = await Hive.openBox('school');
   var user = await Hive.openBox("usersBox");
   var gp = await Hive.openBox('gp');
   courses.get('courses');
-  topics.get('topics');
+  topics.get('topic');
   await gp.get('gp');
   await session.get('sessionBox');
   await user.get('usersBox');
