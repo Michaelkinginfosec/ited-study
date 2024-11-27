@@ -1,8 +1,10 @@
-import 'package:hive/hive.dart';
+import 'dart:convert';
+
+import 'package:hive_flutter/hive_flutter.dart';
 
 part 'notes.g.dart';
 
-@HiveType(typeId: 9)
+@HiveType(typeId: 35)
 class Note {
   @HiveField(0)
   final String id;
@@ -36,7 +38,7 @@ class Note {
   }
 }
 
-@HiveType(typeId: 10)
+@HiveType(typeId: 36)
 class NoteContent {
   @HiveField(0)
   final String insert;
@@ -51,8 +53,18 @@ class NoteContent {
 
   // Factory method for deserializing from JSON
   factory NoteContent.fromJson(Map<String, dynamic> json) {
+    var insertData = json['insert'];
+
+    // Check if insert is a String (text) or an Object (like an image)
+    String insertText = '';
+    if (insertData is String) {
+      insertText = insertData; // Normal text
+    } else if (insertData is Map<String, dynamic>) {
+      insertText = jsonEncode(insertData); // Handle object (image) as a string
+    }
+
     return NoteContent(
-      insert: json['insert'] as String,
+      insert: insertText,
       attributes: json['attributes'] as Map<String, dynamic>?,
     );
   }

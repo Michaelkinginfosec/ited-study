@@ -134,7 +134,7 @@ class _CourseNoteScreenState extends State<CourseNoteScreen> {
                     onTap: () {
                       context.push(
                         AppRoutes.note,
-                        extra: widget.courseId,
+                        extra: topics[index].id,
                       );
                     },
                     child: Ink(

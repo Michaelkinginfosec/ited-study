@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -93,6 +92,13 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          'Settings',
+          style: CustomTextStyles.normalTextSetting2,
+        ),
+      ),
       body: logOutState.status == LogoutStatus.loading
           ? Center(
               child: CircularProgressIndicator.adaptive(),
@@ -100,18 +106,6 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
           : SingleChildScrollView(
               child: Column(
                 children: [
-                  CustomSizeBox.extralBig,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Settings',
-                        style: CustomTextStyles.normalTextSetting2,
-                      ),
-                    ),
-                  ),
-                  CustomSizeBox.mediumBox,
                   Column(
                     children: [
                       Stack(

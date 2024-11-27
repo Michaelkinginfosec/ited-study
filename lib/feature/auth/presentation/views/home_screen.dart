@@ -89,18 +89,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 Row(
                   children: [
-                    Container(
-                      width: 30,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
-                          image: image != 'assets/images/avatar.jpg'
-                              ? NetworkImage(image)
-                              : AssetImage('assets/images/avatar.jpg')
-                                  as ImageProvider,
+                    GestureDetector(
+                      onTap: () {
+                        context.push(AppRoutes.settings);
+                      },
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            alignment: Alignment.center,
+                            image: image != 'assets/images/avatar.jpg'
+                                ? NetworkImage(image)
+                                : AssetImage('assets/images/avatar.jpg')
+                                    as ImageProvider,
+                          ),
                         ),
                       ),
                     ),
@@ -212,7 +217,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   height: 20,
                 ),
                 InkWell(
-                  onTap: showBottomSheet,
+                  onTap: () {
+                    context.push(
+                      AppRoutes.general,
+                    );
+                  },
                   child: Container(
                     width: double.infinity,
                     height: 80,
@@ -335,61 +344,61 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: double.infinity,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 3,
-                        blurRadius: 3,
-                        offset: Offset(0.1, 0.1),
-                      ),
-                    ],
-                    color: Color.fromRGBO(134, 150, 11, 1),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              'Special Courses',
-                              style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(255, 255, 255, 1),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              'Get your course from your favourite lecturers',
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(255, 255, 255, 1),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Image.asset(
-                          "assets/images/elearning.png",
-                          height: 75,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                // Container(
+                //   width: double.infinity,
+                //   height: 80,
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(25),
+                //     boxShadow: [
+                //       BoxShadow(
+                //         color: Colors.black.withOpacity(0.2),
+                //         spreadRadius: 3,
+                //         blurRadius: 3,
+                //         offset: Offset(0.1, 0.1),
+                //       ),
+                //     ],
+                //     color: Color.fromRGBO(134, 150, 11, 1),
+                //   ),
+                //   child: Padding(
+                //     padding: const EdgeInsets.only(left: 15, right: 8),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //       children: [
+                //         Column(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: [
+                //             const SizedBox(
+                //               height: 8,
+                //             ),
+                //             Text(
+                //               'Special Courses',
+                //               style: TextStyle(
+                //                 fontSize: 25,
+                //                 fontWeight: FontWeight.bold,
+                //                 color: Color.fromRGBO(255, 255, 255, 1),
+                //               ),
+                //             ),
+                //             const SizedBox(
+                //               height: 5,
+                //             ),
+                //             Text(
+                //               'Get your course from your favourite lecturers',
+                //               style: TextStyle(
+                //                 fontSize: 10,
+                //                 fontWeight: FontWeight.bold,
+                //                 color: Color.fromRGBO(255, 255, 255, 1),
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //         Image.asset(
+                //           "assets/images/elearning.png",
+                //           height: 75,
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 SizedBox(
                   height: 20,
                 ),

@@ -24,49 +24,71 @@ class NavScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: screens[currentIndex],
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 30,
-          left: 40,
-          right: 40,
-        ),
-        child: Container(
-          width: double.infinity,
-          height: 50,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Color.fromRGBO(217, 217, 217, 1),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CustomNavigationItem(
-                  index: 0,
-                  currentIndex: currentIndex,
-                  icon: "assets/images/home.png",
+      bottomNavigationBar: currentIndex == 0
+          ? Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 60),
+              child: Container(
+                width: double.infinity,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(139, 168, 170, 142),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                CustomNavigationItem(
-                  index: 1,
-                  currentIndex: currentIndex,
-                  icon: "assets/images/b_ooks.png",
+                child: Center(
+                  child: Text(
+                    "Activate App",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-                CustomNavigationItem(
-                  index: 2,
-                  currentIndex: currentIndex,
-                  icon: "assets/images/dyna.png",
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.only(
+                bottom: 30,
+                left: 40,
+                right: 40,
+              ),
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color.fromRGBO(217, 217, 217, 1),
                 ),
-                CustomNavigationItem(
-                  index: 3,
-                  currentIndex: currentIndex,
-                  icon: "assets/images/setting.png",
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      CustomNavigationItem(
+                        index: 0,
+                        currentIndex: currentIndex,
+                        icon: "assets/images/home.png",
+                      ),
+                      CustomNavigationItem(
+                        index: 1,
+                        currentIndex: currentIndex,
+                        icon: "assets/images/b_ooks.png",
+                      ),
+                      CustomNavigationItem(
+                        index: 2,
+                        currentIndex: currentIndex,
+                        icon: "assets/images/dyna.png",
+                      ),
+                      CustomNavigationItem(
+                        index: 3,
+                        currentIndex: currentIndex,
+                        icon: "assets/images/setting.png",
+                      ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

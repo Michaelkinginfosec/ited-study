@@ -18,6 +18,7 @@ class CourseDatasourceImp implements CourseDatasource {
 
   @override
   Future<String> getCourses() async {
+    await note();
     try {
       final response = await dio.get(
         '/notes',
@@ -104,16 +105,23 @@ class CourseDatasourceImp implements CourseDatasource {
   @override
   Future<void> note() async {
     try {
-      final response = await dio.get("notes/notes");
+      final response = await dio.get("/notes/notes");
       if (response.statusCode == 200) {
-        final responseData = (response.data as List)
-            .map((json) => Note.fromJson(json as Map<String, dynamic>))
-            .toList();
+        if (response.data != null && response.data is List) {
+          final List<Note> notes = (response.data as List<dynamic>)
+              .map((json) => Note.fromJson(json as Map<String, dynamic>))
+              .toList();
 
-        List<Note> notes = responseData;
+          // Save to Hive
+          var box = Hive.box<Note>('notesBox');
+          await box.clear(); // Clear previous data
 
-        await Hive.box<Note>('note').clear();
-        await Hive.box<Note>('note').addAll(notes);
+          for (var note in notes) {
+            await box.add(note); // Add each note to Hive
+          }
+        } else {
+          throw Exception('Response data is not a list or is empty');
+        }
       } else {
         throw Exception('Failed with status code: ${response.statusCode}');
       }

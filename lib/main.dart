@@ -4,8 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ited_study/feature/auth/data/models/users.dart';
 import 'package:ited_study/feature/notes/domain/model/courses.dart';
-import 'package:ited_study/feature/notes/domain/model/topics.dart';
 import 'core/route/route_config.dart';
+import 'feature/notes/domain/model/notes.dart';
+import 'feature/notes/domain/model/topics.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +14,10 @@ void main() async {
   Hive.registerAdapter(CoursesAdapter());
   Hive.registerAdapter(UsersAdapter());
   Hive.registerAdapter(TopicsAdapter());
+  Hive.registerAdapter(NoteAdapter());
+  Hive.registerAdapter(NoteContentAdapter());
   var topics = await Hive.openBox<Topics>('topic');
+  var notes = await Hive.openBox<Note>('notesBox');
   var courses = await Hive.openBox<Courses>('courses');
   var session = await Hive.openBox("sessionBox");
   var school = await Hive.openBox('school');
@@ -25,6 +29,7 @@ void main() async {
   await session.get('sessionBox');
   await user.get('usersBox');
   await school.get('school');
+  notes.get('notes');
 
   await dotenv.load();
   runApp(
