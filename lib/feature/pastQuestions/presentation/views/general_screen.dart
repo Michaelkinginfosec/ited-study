@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ited_study/core/constants/boxsize.dart';
+import 'package:ited_study/core/route/route.dart';
+import 'package:ited_study/feature/pastQuestions/presentation/widgets/past_question_container.dart';
 
 import '../../../../core/constants/text_style.dart.dart';
 
@@ -26,43 +29,23 @@ class GeneralScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: double.infinity,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(0, 5, 45, 1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  "Test Past Questions",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+            GestureDetector(
+              onTap: () {
+                context.push(AppRoutes.testquestion);
+              },
+              child: PastQuestionContainer(
+                title: "Test Past Questions",
               ),
             ),
             CustomSizeBox.mediumBox,
-            Container(
-              width: double.infinity,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(0, 5, 45, 1),
-                borderRadius: BorderRadius.circular(10),
+            GestureDetector(
+              onTap: () {
+                context.push(AppRoutes.examquestion);
+              },
+              child: PastQuestionContainer(
+                title: "Exam Past Questions",
               ),
-              child: Center(
-                child: Text(
-                  "Exam Past Questions",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            )
+            ),
           ],
         ),
       ),

@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import '../../../../core/errors/errors.dart';
 import '../../domain/model/courses.dart';
 import '../../domain/model/notes.dart';
@@ -18,6 +17,7 @@ class CourseDatasourceImp implements CourseDatasource {
 
   @override
   Future<String> getCourses() async {
+    await test();
     await note();
     try {
       final response = await dio.get(
@@ -121,6 +121,33 @@ class CourseDatasourceImp implements CourseDatasource {
           }
         } else {
           throw Exception('Response data is not a list or is empty');
+        }
+      } else {
+        throw Exception('Failed with status code: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        if (e.response!.statusCode == 404 || e.response!.statusCode == 400) {
+          throw Exception('No topics available');
+        } else {
+          throw Exception('Failed with status code: ${e.response!.statusCode}');
+        }
+      } else {
+        throw Exception('Network or server error: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Unexpected error occurred: ${e.toString()}');
+    }
+  }
+
+  Future<void> test() async {
+    try {
+      final response = await dio.get("/questions/test-questions");
+      if (response.statusCode == 200) {
+        if (response.data != null && response.data is List) {
+          List responseData = response.data as List;
+          var box = Hive.box('question');
+          await box.addAll(responseData);
         }
       } else {
         throw Exception('Failed with status code: ${response.statusCode}');

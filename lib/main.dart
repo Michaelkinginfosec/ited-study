@@ -23,13 +23,15 @@ void main() async {
   var school = await Hive.openBox('school');
   var user = await Hive.openBox("usersBox");
   var gp = await Hive.openBox('gp');
+  var question = await Hive.openBox('question');
   courses.get('courses');
   topics.get('topic');
-  await gp.get('gp');
-  await session.get('sessionBox');
-  await user.get('usersBox');
-  await school.get('school');
+  gp.get('gp');
+  session.get('sessionBox');
+  user.get('usersBox');
+  school.get('school');
   notes.get('notes');
+  question.get('question');
 
   await dotenv.load();
   runApp(

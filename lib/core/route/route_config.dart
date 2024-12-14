@@ -16,12 +16,16 @@ import 'package:ited_study/feature/auth/presentation/views/about_us.dart';
 import 'package:ited_study/feature/auth/presentation/views/nav_screen.dart';
 import 'package:ited_study/feature/notes/presentation/views/course_note_screen.dart';
 import 'package:ited_study/feature/notes/presentation/views/notes_screen.dart';
+import 'package:ited_study/feature/pastQuestions/presentation/views/exam.dart';
+import 'package:ited_study/feature/pastQuestions/presentation/views/test.dart';
 import 'package:ited_study/onboarding_screen/onboarding_screen.dart';
 import 'package:ited_study/feature/auth/presentation/views/settings_screen.dart';
 import '../../feature/auth/presentation/views/activate_app_screen.dart';
 import '../../feature/auth/presentation/views/scholarship_screen.dart';
 import '../../feature/notes/presentation/views/course_screen.dart';
+import '../../feature/pastQuestions/presentation/views/examquestion.dart';
 import '../../feature/pastQuestions/presentation/views/general_screen.dart';
+import '../../feature/pastQuestions/presentation/views/testquestion.dart';
 import 'route.dart';
 
 final box = Hive.box('sessionBox');
@@ -497,6 +501,102 @@ final router = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: GeneralScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeIn;
+
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      name: '/testquestion',
+      path: AppRoutes.testquestion,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: TestQuestion(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeIn;
+
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      name: '/testquestionscreen',
+      path: AppRoutes.testquestionscreen,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: PastTestQuestionScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeIn;
+
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      name: '/examquestion',
+      path: AppRoutes.examquestion,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: ExamQuestion(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeIn;
+
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      name: '/examquestionscreen',
+      path: AppRoutes.examquestionscreen,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: PastExamQuestionScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;

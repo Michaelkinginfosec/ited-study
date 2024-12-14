@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ited_study/core/route/route.dart';
 import 'package:ited_study/feature/notes/presentation/providers/topic_provider.dart';
-
 import '../../../notes/presentation/providers/course_provider.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
