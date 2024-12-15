@@ -46,6 +46,15 @@ class GeneralScreen extends StatelessWidget {
                 title: "Exam Past Questions",
               ),
             ),
+            CustomSizeBox.mediumBox,
+            GestureDetector(
+              onTap: () {
+                context.push(AppRoutes.cbt);
+              },
+              child: PastQuestionContainer(
+                title: "CBT Mode",
+              ),
+            ),
           ],
         ),
       ),

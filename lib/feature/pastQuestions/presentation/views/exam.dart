@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ited_study/core/constants/boxsize.dart';
 import 'package:ited_study/core/route/route.dart';
-import 'package:ited_study/feature/pastQuestions/presentation/widgets/dropdownformfield.dart';
+import '../../../notes/domain/model/courses.dart';
+import '../../../notes/domain/model/topics.dart';
+import '../widgets/dropdownformfield.dart';
 
 class ExamQuestion extends StatefulWidget {
   const ExamQuestion({super.key});
@@ -12,15 +15,54 @@ class ExamQuestion extends StatefulWidget {
 }
 
 class _ExamQuestionState extends State<ExamQuestion> {
-  List<String> years = ["2015", "2016", "2018", "2019", "2020", "2021", "2022"];
-  List<String> courses = ["CSC202", "CYB202", "CYB201", "CSC201", "CIT202"];
-  List<String> topics = ["boolean Algebrae", "vector space", "linear equation"];
-  List<String> time = ["10 min", "20 min", "30 min", "40 min", "50 min"];
+  List<String> years = [
+    "All",
+    "2015",
+    "2016",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023"
+  ];
+  List<String> courses = [];
+  List<String> topics = [];
   String? selectedYear;
   String? selectedCourse;
   String? selectedTopic;
-  String? selectedTime;
+  String? courseId;
+  String? topicId;
+
   final _formKey = GlobalKey<FormState>();
+
+  void fetchCourses() {
+    var box = Hive.box('textCourse');
+    courses = box.values.toList().cast<String>();
+  }
+
+  void fetchTopics() {
+    if (selectedCourse != null) {
+      var box = Hive.box<Courses>('courses');
+      courseId = box.values
+          .firstWhere((element) => element.courseCode == selectedCourse)
+          .id;
+      if (courseId != null) {
+        var box = Hive.box<Topics>("topic");
+        topics = box.values
+            .where((element) => element.courseId == courseId)
+            .map((e) => e.topic)
+            .toList();
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    fetchCourses();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +88,7 @@ class _ExamQuestionState extends State<ExamQuestion> {
                 onChanged: (String? newValue) {
                   setState(() {
                     selectedCourse = newValue;
+                    fetchTopics();
                   });
                 },
                 value: selectedCourse,
@@ -103,36 +146,25 @@ class _ExamQuestionState extends State<ExamQuestion> {
                   return null;
                 },
               ),
-              CustomSizeBox.mediumBox,
-              CustomDropDownFormField(
-                label: "Time",
-                items: time.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem(
-                    value: value,
-                    child: Text(
-                      value,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedTime = newValue;
-                  });
-                },
-                value: selectedTopic,
-                validator: (String? value) {
-                  if (value == null) {
-                    return 'Please select an option';
-                  }
-                  return null;
-                },
-              ),
               CustomSizeBox.extralBig,
               GestureDetector(
                 onTap: () {
+                  if (!_formKey.currentState!.validate()) {
+                    return;
+                  }
+                  var boxTopic = Hive.box<Topics>("topic");
+
+                  topicId = boxTopic.values
+                      .firstWhere((element) => element.topic == selectedTopic)
+                      .id;
+
                   context.push(
-                    AppRoutes.examquestionscreen,
+                    AppRoutes.testquestionscreen,
+                    extra: {
+                      'year': selectedYear,
+                      'topic': topicId,
+                      'course': courseId
+                    },
                   );
                 },
                 child: Container(
@@ -144,7 +176,7 @@ class _ExamQuestionState extends State<ExamQuestion> {
                   ),
                   child: const Center(
                     child: Text(
-                      "Start",
+                      "Questions",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,

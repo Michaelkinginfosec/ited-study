@@ -1,11 +1,17 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ited_study/core/constants/boxsize.dart';
 import 'package:ited_study/core/constants/text_style.dart.dart';
 
 class PastTestQuestionScreen extends StatefulWidget {
-  const PastTestQuestionScreen({super.key});
+  final String selectedYear;
+  final String topicId;
+  final String courseId;
+  const PastTestQuestionScreen(
+      {super.key,
+      required this.selectedYear,
+      required this.topicId,
+      required this.courseId});
 
   @override
   State<PastTestQuestionScreen> createState() => _PastTestQuestionScreenState();
@@ -13,6 +19,7 @@ class PastTestQuestionScreen extends StatefulWidget {
 
 class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
   List testQuestion = [];
+
   @override
   void initState() {
     fetchQuestion();
@@ -20,7 +27,30 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
   }
 
   void fetchQuestion() {
-    // var box = Hive.box('question');
+    if (widget.selectedYear == "All") {
+      var box = Hive.box('question');
+      testQuestion = box.values
+          .where((element) => element['topicId'] == widget.topicId)
+          .toList();
+      testQuestion = testQuestion.isEmpty
+          ? [
+              {'message': 'No questions found'}
+            ]
+          : testQuestion;
+    } else {
+      var box = Hive.box('question');
+      testQuestion = box.values
+          .where((element) =>
+              element['topicId'] == widget.topicId &&
+              element['year'] == widget.selectedYear)
+          .toList();
+
+      testQuestion = testQuestion.isEmpty
+          ? [
+              {'message': 'No questions found'}
+            ]
+          : testQuestion;
+    }
   }
 
   @override
@@ -29,7 +59,7 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           "Past Questions",
           style: CustomTextStyles.normalTextSetting2,
         ),
@@ -37,7 +67,7 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: ListView.builder(
-          itemCount: 10,
+          itemCount: testQuestion.length,
           itemBuilder: (context, index) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +76,7 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
                   children: [
                     Text(
                       "${index + 1}.",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Color.fromRGBO(0, 5, 45, 1),
@@ -56,8 +86,8 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Text(
-                          "What is UI/UX Design? and How does it apply to technology",
-                          style: TextStyle(
+                          testQuestion[index]['question'],
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Color.fromRGBO(0, 5, 45, 1),
@@ -76,14 +106,14 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
                           Container(
                             width: 30,
                             height: 30,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Color.fromRGBO(0, 5, 45, 1),
                             ),
                             child: Center(
                               child: Text(
-                                "A",
-                                style: TextStyle(
+                                testQuestion[index]['options'][0]['label'],
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -91,10 +121,10 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
-                          Text("User Interface"),
+                          Text(testQuestion[index]['options'][0]['text']),
                         ],
                       ),
                       CustomSizeBox.smallBox,
@@ -103,14 +133,14 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
                           Container(
                             width: 30,
                             height: 30,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Color.fromRGBO(0, 5, 45, 1),
                             ),
                             child: Center(
                               child: Text(
-                                "B",
-                                style: TextStyle(
+                                testQuestion[index]['options'][1]['label'],
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -118,10 +148,10 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
-                          Text("User Interface"),
+                          Text(testQuestion[index]['options'][1]['text']),
                         ],
                       ),
                       CustomSizeBox.smallBox,
@@ -130,14 +160,14 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
                           Container(
                             width: 30,
                             height: 30,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Color.fromRGBO(0, 5, 45, 1),
                             ),
                             child: Center(
                               child: Text(
-                                "C",
-                                style: TextStyle(
+                                testQuestion[index]['options'][2]['label'],
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -145,10 +175,10 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
-                          Text("User Interface"),
+                          Text(testQuestion[index]['options'][2]['text']),
                         ],
                       ),
                       CustomSizeBox.smallBox,
@@ -159,14 +189,14 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
                             Container(
                               width: 30,
                               height: 30,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Color.fromRGBO(0, 5, 45, 1),
                               ),
                               child: Center(
                                 child: Text(
-                                  "D",
-                                  style: TextStyle(
+                                  testQuestion[index]['options'][3]['label'],
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
@@ -174,10 +204,10 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 20,
                             ),
-                            Text("User Interface"),
+                            Text(testQuestion[index]['options'][3]['text']),
                           ],
                         ),
                       ),
@@ -193,10 +223,10 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
                         width: MediaQuery.of(context).size.width * 0.4,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(0, 5, 45, 1),
+                          color: const Color.fromRGBO(0, 5, 45, 1),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             "Check Answer",
                             style: TextStyle(
@@ -211,10 +241,10 @@ class _PastTestQuestionScreenState extends State<PastTestQuestionScreen> {
                         width: MediaQuery.of(context).size.width * 0.4,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(0, 5, 45, 1),
+                          color: const Color.fromRGBO(0, 5, 45, 1),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             "Look up",
                             style: TextStyle(

@@ -7,30 +7,21 @@ import '../../../notes/domain/model/courses.dart';
 import '../../../notes/domain/model/topics.dart';
 import '../widgets/dropdownformfield.dart';
 
-class TestQuestion extends StatefulWidget {
-  const TestQuestion({super.key});
+class ExamCbtMode extends StatefulWidget {
+  const ExamCbtMode({super.key});
 
   @override
-  State<TestQuestion> createState() => _TestQuestionState();
+  State<ExamCbtMode> createState() => _ExamCbtModeState();
 }
 
-class _TestQuestionState extends State<TestQuestion> {
-  List<String> years = [
-    "All",
-    "2015",
-    "2016",
-    "2018",
-    "2019",
-    "2020",
-    "2021",
-    "2022",
-    "2023"
-  ];
+class _ExamCbtModeState extends State<ExamCbtMode> {
+  List<String> questionLenght = ["25", "30", "45", "60"];
+  List<String> time = ["10m", "20m", "30m", "1hr"];
   List<String> courses = [];
   List<String> topics = [];
-  String? selectedYear;
+  String? selectedLenght;
   String? selectedCourse;
-  String? selectedTopic;
+  String? selectedTime;
   String? courseId;
   String? topicId;
 
@@ -59,7 +50,6 @@ class _TestQuestionState extends State<TestQuestion> {
 
   @override
   void initState() {
-    // fetchTopics();
     fetchCourses();
     super.initState();
   }
@@ -102,8 +92,9 @@ class _TestQuestionState extends State<TestQuestion> {
               ),
               CustomSizeBox.mediumBox,
               CustomDropDownFormField(
-                label: "Year",
-                items: years.map<DropdownMenuItem<String>>((String value) {
+                label: "Question ",
+                items: questionLenght
+                    .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem(
                     value: value,
                     child: Text(value),
@@ -111,10 +102,10 @@ class _TestQuestionState extends State<TestQuestion> {
                 }).toList(),
                 onChanged: (String? newValue) {
                   setState(() {
-                    selectedYear = newValue;
+                    selectedLenght = newValue;
                   });
                 },
-                value: selectedYear,
+                value: selectedLenght,
                 validator: (String? value) {
                   if (value == null) {
                     return 'Please select an option';
@@ -124,8 +115,8 @@ class _TestQuestionState extends State<TestQuestion> {
               ),
               CustomSizeBox.mediumBox,
               CustomDropDownFormField(
-                label: "Topics",
-                items: topics.map<DropdownMenuItem<String>>((String value) {
+                label: "Time",
+                items: time.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem(
                     value: value,
                     child: Text(
@@ -136,10 +127,10 @@ class _TestQuestionState extends State<TestQuestion> {
                 }).toList(),
                 onChanged: (String? newValue) {
                   setState(() {
-                    selectedTopic = newValue;
+                    selectedTime = newValue;
                   });
                 },
-                value: selectedTopic,
+                value: selectedTime,
                 validator: (String? value) {
                   if (value == null) {
                     return 'Please select an option';
@@ -153,17 +144,12 @@ class _TestQuestionState extends State<TestQuestion> {
                   if (!_formKey.currentState!.validate()) {
                     return;
                   }
-                  var boxTopic = Hive.box<Topics>("topic");
-
-                  topicId = boxTopic.values
-                      .firstWhere((element) => element.topic == selectedTopic)
-                      .id;
 
                   context.push(
-                    AppRoutes.testquestionscreen,
+                    AppRoutes.cbtpractice,
                     extra: {
-                      'year': selectedYear,
-                      'topic': topicId,
+                      'lenght': selectedLenght,
+                      'time': selectedTime,
                       'course': courseId
                     },
                   );
@@ -177,7 +163,7 @@ class _TestQuestionState extends State<TestQuestion> {
                   ),
                   child: const Center(
                     child: Text(
-                      "Questions",
+                      "Practice",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,

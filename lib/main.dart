@@ -17,6 +17,8 @@ void main() async {
   Hive.registerAdapter(NoteAdapter());
   Hive.registerAdapter(NoteContentAdapter());
   var topics = await Hive.openBox<Topics>('topic');
+  var textTopics = await Hive.openBox('textTopic');
+  var textCourses = await Hive.openBox('textCourse');
   var notes = await Hive.openBox<Note>('notesBox');
   var courses = await Hive.openBox<Courses>('courses');
   var session = await Hive.openBox("sessionBox");
@@ -24,6 +26,9 @@ void main() async {
   var user = await Hive.openBox("usersBox");
   var gp = await Hive.openBox('gp');
   var question = await Hive.openBox('question');
+  var examQuestion = await Hive.openBox('examQuestion');
+  textTopics.get('textTopic');
+  textCourses.get('textCourse');
   courses.get('courses');
   topics.get('topic');
   gp.get('gp');
@@ -32,6 +37,7 @@ void main() async {
   school.get('school');
   notes.get('notes');
   question.get('question');
+  examQuestion.get('examQuestion');
 
   await dotenv.load();
   runApp(

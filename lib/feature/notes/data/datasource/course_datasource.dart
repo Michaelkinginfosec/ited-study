@@ -19,6 +19,9 @@ class CourseDatasourceImp implements CourseDatasource {
   Future<String> getCourses() async {
     await test();
     await note();
+    await getTopicsOnly();
+    await getCourseOnly();
+    await exam();
     try {
       final response = await dio.get(
         '/notes',
@@ -55,10 +58,8 @@ class CourseDatasourceImp implements CourseDatasource {
 
   Future<void> storeCourses(List<Courses> courses) async {
     final box = await Hive.openBox<Courses>('courses');
-    box.clear();
-    for (var course in courses) {
-      await box.put(course.id, course);
-    }
+    await box.clear();
+    box.addAll(courses);
   }
 
   @override
@@ -99,6 +100,67 @@ class CourseDatasourceImp implements CourseDatasource {
 
     for (var topic in topics) {
       await box.add(topic);
+    }
+  }
+
+  Future<void> getTopicsOnly() async {
+    try {
+      final response = await dio.get('/notes/topics');
+      if (response.statusCode == 200) {
+        if (response.data is List) {
+          List topics = response.data as List;
+
+          var box = Hive.box('textTopic');
+          await box.clear();
+          await box.addAll(topics);
+        } else {
+          throw Exception('Unexpected data format');
+        }
+      } else {
+        throw Exception('Failed with status code: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        if (e.response!.statusCode == 404 || e.response!.statusCode == 400) {
+          throw Exception('No topics available');
+        } else {
+          throw Exception('Failed with status code: ${e.response!.statusCode}');
+        }
+      } else {
+        throw Exception('Network or server error: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Unexpected error occurred: ${e.toString()}');
+    }
+  }
+
+  Future<void> getCourseOnly() async {
+    try {
+      final response = await dio.get('/notes/course-only');
+      if (response.statusCode == 200) {
+        if (response.data is List) {
+          List courses = response.data as List;
+          var box = Hive.box('textCourse');
+          await box.clear();
+          await box.addAll(courses);
+        } else {
+          throw Exception('Unexpected data format');
+        }
+      } else {
+        throw Exception('Failed with status code: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        if (e.response!.statusCode == 404 || e.response!.statusCode == 400) {
+          throw Exception('No Courses available');
+        } else {
+          throw Exception('Failed with status code: ${e.response!.statusCode}');
+        }
+      } else {
+        throw Exception('Network or server error: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Unexpected error occurred: ${e.toString()}');
     }
   }
 
@@ -147,6 +209,35 @@ class CourseDatasourceImp implements CourseDatasource {
         if (response.data != null && response.data is List) {
           List responseData = response.data as List;
           var box = Hive.box('question');
+          await box.clear();
+          await box.addAll(responseData);
+        }
+      } else {
+        throw Exception('Failed with status code: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        if (e.response!.statusCode == 404 || e.response!.statusCode == 400) {
+          throw Exception('No topics available');
+        } else {
+          throw Exception('Failed with status code: ${e.response!.statusCode}');
+        }
+      } else {
+        throw Exception('Network or server error: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Unexpected error occurred: ${e.toString()}');
+    }
+  }
+
+  Future<void> exam() async {
+    try {
+      final response = await dio.get("/questions/exam-questions");
+      if (response.statusCode == 200) {
+        if (response.data != null && response.data is List) {
+          List responseData = response.data as List;
+          var box = Hive.box('examQuestion');
+          await box.clear();
           await box.addAll(responseData);
         }
       } else {

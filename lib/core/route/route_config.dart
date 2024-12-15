@@ -16,7 +16,9 @@ import 'package:ited_study/feature/auth/presentation/views/about_us.dart';
 import 'package:ited_study/feature/auth/presentation/views/nav_screen.dart';
 import 'package:ited_study/feature/notes/presentation/views/course_note_screen.dart';
 import 'package:ited_study/feature/notes/presentation/views/notes_screen.dart';
+import 'package:ited_study/feature/pastQuestions/presentation/views/cbt_practice.dart';
 import 'package:ited_study/feature/pastQuestions/presentation/views/exam.dart';
+import 'package:ited_study/feature/pastQuestions/presentation/views/exam_cbt_mode.dart';
 import 'package:ited_study/feature/pastQuestions/presentation/views/test.dart';
 import 'package:ited_study/onboarding_screen/onboarding_screen.dart';
 import 'package:ited_study/feature/auth/presentation/views/settings_screen.dart';
@@ -390,9 +392,10 @@ final router = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: CourseNoteScreen(
-              courseTitle: courseTitle,
-              courseCode: courseCode,
-              courseId: courseId),
+            courseTitle: courseTitle,
+            courseCode: courseCode,
+            courseId: courseId,
+          ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
@@ -546,9 +549,17 @@ final router = GoRouter(
       name: '/testquestionscreen',
       path: AppRoutes.testquestionscreen,
       pageBuilder: (context, state) {
+        final testData = state.extra as Map<String, dynamic>? ?? {};
+        final topicId = testData['topic'] as String? ?? "";
+        final selectedYear = testData['year'] as String? ?? "";
+        final courseId = testData['course'] as String? ?? "";
         return CustomTransitionPage(
           key: state.pageKey,
-          child: PastTestQuestionScreen(),
+          child: PastTestQuestionScreen(
+            topicId: topicId,
+            selectedYear: selectedYear,
+            courseId: courseId,
+          ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
@@ -594,9 +605,73 @@ final router = GoRouter(
       name: '/examquestionscreen',
       path: AppRoutes.examquestionscreen,
       pageBuilder: (context, state) {
+        final testData = state.extra as Map<String, dynamic>? ?? {};
+        final topicId = testData['topic'] as String? ?? "";
+        final selectedYear = testData['year'] as String? ?? "";
+        final courseId = testData['course'] as String? ?? "";
         return CustomTransitionPage(
           key: state.pageKey,
-          child: PastExamQuestionScreen(),
+          child: PastExamQuestionScreen(
+            topicId: topicId,
+            selectedYear: selectedYear,
+            courseId: courseId,
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeIn;
+
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      name: '/cbtpractice',
+      path: AppRoutes.cbtpractice,
+      pageBuilder: (context, state) {
+        final testData = state.extra as Map<String, dynamic>? ?? {};
+        final time = testData['time'] as String? ?? "";
+        final lenght = testData['lenght'] as String? ?? "";
+        final courseId = testData['course'] as String? ?? "";
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: CbtPractice(
+            lenght: lenght,
+            time: time,
+            course: courseId,
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeIn;
+
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      name: '/cbt',
+      path: AppRoutes.cbt,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: ExamCbtMode(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;
