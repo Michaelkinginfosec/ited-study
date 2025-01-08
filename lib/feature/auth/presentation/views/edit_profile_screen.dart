@@ -7,6 +7,7 @@ import '../../../../core/constants/boxsize.dart';
 import '../../../../core/constants/text_style.dart.dart';
 
 import '../../../../core/widgets/custom_app_bar.dart';
+import '../../data/models/update_data.dart';
 import '../widgets/text_field.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
@@ -33,6 +34,7 @@ class EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               content: Text('Update user success'),
             ),
           );
+          setState(() {});
         } else if (next.status == UpdateuserStatus.error) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(next.error ?? 'Update user failed')),
@@ -130,13 +132,22 @@ class EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                                 ),
                               ),
                               onPressed: () {
+                                UpdateUserData updateData = UpdateUserData(
+                                  fullName: _fullNameController.text.isNotEmpty
+                                      ? _fullNameController.text
+                                      : null,
+                                  department:
+                                      _departmentController.text.isNotEmpty
+                                          ? _departmentController.text
+                                          : null,
+                                  level: _levelController.text.isNotEmpty
+                                      ? _levelController.text.trim()
+                                      : null,
+                                );
+
                                 ref
                                     .read(updateUserNotifierProvider.notifier)
-                                    .updateUser(
-                                      _fullNameController.text,
-                                      _departmentController.text,
-                                      _levelController.text.trim(),
-                                    );
+                                    .updateUser(updateData);
                                 _departmentController.clear();
                                 _levelController.clear();
                                 _fullNameController.clear();

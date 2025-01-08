@@ -32,10 +32,10 @@ class TopicNotifier extends StateNotifier<TopicState> {
   final TopicUsecase topicUsecase;
   TopicNotifier(this.topicUsecase) : super(TopicState());
 
-  Future<void> getTopics() async {
+  Future<void> getTopics(String schoolId, String level) async {
     state = state.copyWith(status: TopicStatus.loading);
     try {
-      await topicUsecase.getTopics();
+      await topicUsecase.getTopics(schoolId, level);
       state = state.copyWith(status: TopicStatus.success);
     } catch (e) {
       state = state.copyWith(

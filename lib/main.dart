@@ -38,7 +38,6 @@ void main() async {
   notes.get('notes');
   question.get('question');
   examQuestion.get('examQuestion');
-
   await dotenv.load();
   runApp(
     const ProviderScope(

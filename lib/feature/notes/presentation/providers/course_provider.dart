@@ -31,10 +31,10 @@ class CourseNotifier extends StateNotifier<CourseState> {
   final CourseUsecase courseUsecase;
   CourseNotifier(this.courseUsecase) : super(CourseState());
 
-  Future<void> getCourses() async {
+  Future<void> getCourses(String schoolId, String level) async {
     state = state.copyWith(status: CourseStatus.loading);
     try {
-      await courseUsecase.getCourses();
+      await courseUsecase.getCourses(schoolId, level);
       state = state.copyWith(status: CourseStatus.success);
     } catch (e) {
       state = state.copyWith(

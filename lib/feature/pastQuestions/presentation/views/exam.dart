@@ -159,7 +159,7 @@ class _ExamQuestionState extends State<ExamQuestion> {
                       .id;
 
                   context.push(
-                    AppRoutes.testquestionscreen,
+                    AppRoutes.examquestionscreen,
                     extra: {
                       'year': selectedYear,
                       'topic': topicId,

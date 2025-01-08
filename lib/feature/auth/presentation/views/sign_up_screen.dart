@@ -211,6 +211,7 @@ class SignUpScreenState extends ConsumerState<SignUpScreen> {
                                     password: _passwordController.text,
                                     schoolId: schoolId,
                                     imageUrl: '',
+                                    activated: false,
                                   );
                                   ref
                                       .read(signUpNotifierProvider.notifier)

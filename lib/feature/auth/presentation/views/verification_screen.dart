@@ -1,5 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,6 +46,8 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
             snackBarController =
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
+        await Future.delayed(const Duration(seconds: 2));
+
         await snackBarController.closed;
         context.pushReplacement(AppRoutes.login);
       } else if (next.status == VerifyOTPStatus.failure) {
@@ -76,26 +77,26 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
           padding: const EdgeInsets.symmetric(vertical: 50),
           child: Column(
             children: [
-              CustomAppBar(),
+              const CustomAppBar(),
 
               Column(
                 children: [
-                  Text(
+                  const Text(
                     "Verification",
                     style: CustomTextStyles.largeBoldTitle,
                   ),
                   CustomSizeBox.extralBig,
                   Image.asset("assets/images/onetimepassword.png"),
                   CustomSizeBox.mediumBox,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       textAlign: TextAlign.center,
                       "We have sent the verification code to your email address",
                       style: CustomTextStyles.mediumSubtitle,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   Row(
@@ -126,7 +127,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
                 children: [
                   CustomSizeBox.mediumBox,
                   resendOTPCodeState.status == ResendOTPStatus.loading
-                      ? Center(
+                      ? const Center(
                           child: CircularProgressIndicator.adaptive(),
                         )
                       : InkWell(
@@ -145,7 +146,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
                                 width: 1,
                               ),
                             ),
-                            child: Center(
+                            child: const Center(
                               child: Text(
                                 "Resend",
                                 style: CustomTextStyles.smallBody,
@@ -155,7 +156,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
                         ),
                   CustomSizeBox.extral,
                   verifyOTPState.status == VerifyOTPStatus.loading
-                      ? Center(
+                      ? const Center(
                           child: CircularProgressIndicator.adaptive(),
                         )
                       : InkWell(
@@ -180,7 +181,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
                                 width: 1,
                               ),
                             ),
-                            child: Center(
+                            child: const Center(
                               child: Text(
                                 "Submit",
                                 style: CustomTextStyles.smallBody,

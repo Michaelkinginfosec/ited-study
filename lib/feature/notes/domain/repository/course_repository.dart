@@ -1,4 +1,4 @@
 abstract class CourseRepository {
-  Future<void> getTopics();
-  Future<String> getCourses();
+  Future<void> getTopics(String schoolId, String level);
+  Future<String> getCourses(String schoolId, String level);
 }

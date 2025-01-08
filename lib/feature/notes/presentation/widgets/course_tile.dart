@@ -23,9 +23,9 @@ class CustomListTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey,
             spreadRadius: 5,
             blurRadius: 7,
             offset: Offset(0, 3),

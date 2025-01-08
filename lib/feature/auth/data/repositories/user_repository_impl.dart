@@ -1,9 +1,12 @@
 // lib/feature/auth/data/repositories/auth_repository_impl.dart
 
+import 'dart:typed_data';
+
 import 'package:ited_study/feature/auth/data/models/users.dart';
 import 'package:ited_study/feature/auth/domain/repositories/user_repository.dart';
 
 import '../datasources/remoteDataSource/user_remote_datasource.dart';
+import '../models/update_data.dart';
 
 class UserRepositoryImpl implements UsersRepository {
   final UsersRemoteDataSource remoteDataSource;
@@ -51,9 +54,8 @@ class UserRepositoryImpl implements UsersRepository {
   }
 
   @override
-  Future<void> updateUser(
-      String fullName, String department, String level) async {
-    return await remoteDataSource.updateUser(fullName, department, level);
+  Future<void> updateUser(UpdateUserData updateData) async {
+    return await remoteDataSource.updateUser(updateData);
   }
 
   @override
@@ -64,5 +66,17 @@ class UserRepositoryImpl implements UsersRepository {
   @override
   Future<void> createSchool(String schoolName, String country) {
     return remoteDataSource.createSchool(schoolName, country);
+  }
+
+  @override
+  Future<String> uploadImage(Uint8List? image) {
+    return remoteDataSource.uploadImage(image);
+  }
+
+  @override
+  Future<String> activateApp(String code, String device, String model,
+      String osVersion, String uniqueId) {
+    return remoteDataSource.activateApp(
+        code, device, model, osVersion, uniqueId);
   }
 }

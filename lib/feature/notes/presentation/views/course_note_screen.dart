@@ -48,18 +48,6 @@ class _CourseNoteScreenState extends State<CourseNoteScreen> {
             .toList();
       },
     );
-
-    // Retrieve all stored values as a List
-
-    // setState(() {
-    //   topics = allTopics
-    //       .where(
-    //         (topic) =>
-    //             topic.courseId == widget.courseCode &&
-    //             topic.courseId == widget.courseCode,
-    //       )
-    //       .toList();
-    // });
   }
 
   @override
@@ -97,24 +85,29 @@ class _CourseNoteScreenState extends State<CourseNoteScreen> {
                   ),
                 ),
               ),
-              Container(
-                height: 40,
-                width: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  border: Border.all(
-                    width: 1,
-                    color: Color.fromRGBO(0, 5, 45, 1),
-                  ),
-                  color: Colors.white,
-                ),
-                child: Center(
-                  child: Text(
-                    "Past Questions",
-                    style: TextStyle(
+              GestureDetector(
+                onTap: () {
+                  context.push(AppRoutes.general);
+                },
+                child: Container(
+                  height: 40,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40),
+                    border: Border.all(
+                      width: 1,
                       color: Color.fromRGBO(0, 5, 45, 1),
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
+                    ),
+                    color: Colors.white,
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Past Questions",
+                      style: TextStyle(
+                        color: Color.fromRGBO(0, 5, 45, 1),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15,
+                      ),
                     ),
                   ),
                 ),
@@ -143,9 +136,9 @@ class _CourseNoteScreenState extends State<CourseNoteScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
+                            color: Colors.grey,
                             spreadRadius: 5,
                             blurRadius: 7,
                             offset: Offset(0, 3),

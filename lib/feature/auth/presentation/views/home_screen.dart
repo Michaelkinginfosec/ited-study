@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -17,49 +17,26 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   String userName = 'John Doe';
   String image = 'assets/images/avatar.jpg';
-
-  void showBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return AnimatedContainer(
-          duration: Duration(milliseconds: 1000),
-          curve: Curves.easeInToLinear,
-          height: 200,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Color.fromRGBO(0, 5, 45, 1),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-          ),
-          child: Column(
-            children: <Widget>[
-              Text("Hello"),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  bool? isActivated;
+  String? schoolId;
+  String? level;
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () {
-        ref.read(courseNotifierProvider.notifier).getCourses();
-        ref.read(topicNotifierProvider.notifier).getTopics();
-      },
-    );
-
-    getUser();
+    Future.microtask(() async {
+      await getUser();
+      if (schoolId != null && level != null) {
+        ref.read(courseNotifierProvider.notifier).getCourses(schoolId!, level!);
+        ref.read(topicNotifierProvider.notifier).getTopics(schoolId!, level!);
+      }
+    });
   }
 
-  void getUser() async {
+  Future<void> getUser() async {
     final box = await Hive.openBox('usersBox');
     final user = box.get('users');
+
     if (user != null) {
       String imageUrl = user.imageUrl;
       String name = user.fullName;
@@ -67,11 +44,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       setState(() {
         image = imageUrl.isNotEmpty ? imageUrl : 'assets/images/avatar.jpg';
         userName = name;
+        isActivated = user.activated ?? false;
+        schoolId = user.schoolId;
+        level = user.level;
       });
     } else {
       setState(() {
         image = 'assets/images/avatar.jpg';
         userName = 'Jone Doe';
+        isActivated = false;
       });
     }
   }
@@ -88,64 +69,67 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               children: [
                 Row(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        context.push(AppRoutes.settings);
-                      },
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            alignment: Alignment.center,
-                            image: image != 'assets/images/avatar.jpg'
-                                ? NetworkImage(image)
-                                : AssetImage('assets/images/avatar.jpg')
-                                    as ImageProvider,
-                          ),
+                    Container(
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                          image: image == "" ||
+                                  image.isEmpty ||
+                                  image == 'assets/images/avatar.jpg'
+                              ? const AssetImage(
+                                  'assets/images/avatar.jpg',
+                                )
+                              : CachedNetworkImageProvider(image),
                         ),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Welcome",
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Color.fromRGBO(0, 0, 0, 1),
+                      child: GestureDetector(
+                        onTap: () {
+                          context.push(AppRoutes.settings);
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Welcome",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Color.fromRGBO(0, 0, 0, 1),
+                              ),
                             ),
-                          ),
-                          Text(
-                            userName,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromRGBO(0, 0, 0, 1),
+                            Text(
+                              userName,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromRGBO(0, 0, 0, 1),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Container(
                   width: double.infinity,
                   height: 182,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("assets/images/learn.png"),
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 InkWell(
@@ -162,20 +146,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           color: Colors.black.withOpacity(0.2),
                           spreadRadius: 3,
                           blurRadius: 3,
-                          offset: Offset(0.1, 0.1),
+                          offset: const Offset(0.1, 0.1),
                         ),
                       ],
-                      color: Color.fromRGBO(22, 5, 209, 1),
+                      color: const Color.fromRGBO(22, 5, 209, 1),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
+                          const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(
+                              SizedBox(
                                 height: 8,
                               ),
                               Text(
@@ -186,7 +170,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   color: Color.fromRGBO(255, 255, 255, 1),
                                 ),
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 height: 5,
                               ),
                               Expanded(
@@ -212,7 +196,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 InkWell(
@@ -231,20 +215,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           color: Colors.black.withOpacity(0.2),
                           spreadRadius: 3,
                           blurRadius: 3,
-                          offset: Offset(0.1, 0.1),
+                          offset: const Offset(0.1, 0.1),
                         ),
                       ],
-                      color: Color.fromRGBO(247, 0, 0, 1),
+                      color: const Color.fromRGBO(247, 0, 0, 1),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
+                          const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(
+                              SizedBox(
                                 height: 8,
                               ),
                               Text(
@@ -255,7 +239,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   color: Color.fromRGBO(255, 255, 255, 1),
                                 ),
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 height: 5,
                               ),
                               Text(
@@ -277,7 +261,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 InkWell(
@@ -294,20 +278,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           color: Colors.black.withOpacity(0.2),
                           spreadRadius: 3,
                           blurRadius: 3,
-                          offset: Offset(0.1, 0.1),
+                          offset: const Offset(0.1, 0.1),
                         ),
                       ],
-                      color: Color.fromRGBO(9, 108, 19, 1),
+                      color: const Color.fromRGBO(9, 108, 19, 1),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
+                          const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(
+                              SizedBox(
                                 height: 8,
                               ),
                               Text(
@@ -318,7 +302,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   color: Color.fromRGBO(255, 255, 255, 1),
                                 ),
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 height: 5,
                               ),
                               Text(
@@ -340,7 +324,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 // Container(
@@ -398,70 +382,73 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 //     ),
                 //   ),
                 // ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                InkWell(
-                  onTap: () {
-                    context.push(AppRoutes.scholarship);
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          spreadRadius: 3,
-                          blurRadius: 3,
-                          offset: Offset(0.1, 0.1),
+                ...[
+                  if (isActivated == true)
+                    InkWell(
+                      onTap: () {
+                        context.push(AppRoutes.scholarship);
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              spreadRadius: 3,
+                              blurRadius: 3,
+                              offset: const Offset(0.1, 0.1),
+                            ),
+                          ],
+                          color: const Color.fromRGBO(0, 0, 0, 1),
                         ),
-                      ],
-                      color: Color.fromRGBO(0, 0, 0, 1),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const SizedBox(
-                                height: 8,
+                              const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text(
+                                    'Scholarship',
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromRGBO(255, 255, 255, 1),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    'Stand a chance to become one of our scholarship beneficials',
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color.fromRGBO(255, 255, 255, 1),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                'Scholarship',
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(255, 255, 255, 1),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                'Stand a chance to become one of our scholarship beneficials',
-                                style: TextStyle(
-                                  fontSize: 8,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color.fromRGBO(255, 255, 255, 1),
-                                ),
+                              Image.asset(
+                                "assets/images/scholarship.png",
+                                height: 75,
                               ),
                             ],
                           ),
-                          Image.asset(
-                            "assets/images/scholarship.png",
-                            height: 75,
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(
+                ],
+                const SizedBox(
                   height: 20,
                 ),
               ],

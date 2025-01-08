@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/core/providers/providers.dart';
 import 'package:ited_study/feature/auth/domain/usecases/update_user_usecase.dart';
 
+import '../../data/models/update_data.dart';
+
 enum UpdateuserStatus { initial, success, error, loading }
 
 class UpdateUserState {
@@ -30,11 +32,10 @@ class UpdateUserNotifier extends StateNotifier<UpdateUserState> {
   final UpdateUserUsecase updateUserUsecase;
   UpdateUserNotifier(this.updateUserUsecase) : super(UpdateUserState());
 
-  Future<void> updateUser(
-      String fullName, String department, String level) async {
+  Future<void> updateUser(UpdateUserData updateData) async {
     state = state.copyWith(status: UpdateuserStatus.loading);
     try {
-      await updateUserUsecase.updateUser(fullName, department, level);
+      await updateUserUsecase.updateUser(updateData);
 
       state = state.copyWith(
         status: UpdateuserStatus.success,

@@ -1,13 +1,13 @@
+import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-import 'package:hive/hive.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import '../../domain/model/notes.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ited_study/feature/notes/domain/model/notes.dart';
 
 class NotesScreen extends StatefulWidget {
   final String topicId;
-
   const NotesScreen({required this.topicId, super.key});
 
   @override
@@ -27,39 +27,39 @@ class _NotesScreenState extends State<NotesScreen> {
     final box = Hive.box<Note>('notesBox');
     final notes = box.values.toList();
 
-    final note = notes.firstWhere(
-      (note) => note.topicId == widget.topicId,
-    );
+    try {
+      final note = notes.firstWhere(
+        (note) => note.topicId == widget.topicId,
+      );
 
-    final document = Document.fromJson(
-      note.notes.map((content) {
+      final List<dynamic> deltaJson = note.notes.map((content) {
+        dynamic insertValue;
+        try {
+          insertValue = jsonDecode(content.insert);
+        } catch (e) {
+          insertValue = content.insert;
+        }
+
         return {
-          'insert': content.insert,
+          'insert': insertValue,
           if (content.attributes != null) 'attributes': content.attributes,
         };
-      }).toList(),
-    );
+      }).toList();
 
-    setState(() {
-      _controller = QuillController(
-        document: document,
-        selection: const TextSelection.collapsed(offset: 0),
-      );
-    });
-  }
+      final document = Document.fromJson(deltaJson);
 
-  /// Custom embed builder for handling 'image' embed types.
-  Widget customEmbedBuilder(BuildContext context, Embed node, bool readOnly) {
-    if (node.value.type == 'image') {
-      final imageUrl = node.value.data;
-      return CachedNetworkImage(
-        imageUrl: imageUrl,
-        placeholder: (context, url) =>
-            const Center(child: CircularProgressIndicator()),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
-      );
+      setState(() {
+        _controller = QuillController(
+          document: document,
+          selection: const TextSelection.collapsed(offset: 0),
+        );
+      });
+    } catch (e) {
+      debugPrint('Error loading note: $e');
+      setState(() {
+        _controller = QuillController.basic();
+      });
     }
-    return const SizedBox.shrink(); // Fallback for unsupported embed types
   }
 
   @override
@@ -70,36 +70,78 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
       body: _controller == null
           ? const Center(
-              child: Text("No notes available"),
+              child: CircularProgressIndicator(),
             )
           : Padding(
               padding: const EdgeInsets.all(8.0),
-              child: QuillEditor(
-                controller: _controller!,
-                scrollController: ScrollController(),
-                focusNode: FocusNode(),
-                configurations: QuillEditorConfigurations(
-                  scrollable: true,
-                  autoFocus: false,
-                  padding: EdgeInsets.zero,
-                  expands: false,
-                  embedBuilders: FlutterQuillEmbeds.editorBuilders(
-                    imageEmbedConfigurations:
-                        QuillEditorImageEmbedConfigurations(
-                      imageProviderBuilder: (context, imageUrl) {
-                        if (imageUrl.startsWith('https://')) {
-                          return NetworkImage(
-                            imageUrl,
-                          );
-                        }
-                        return NetworkImage(imageUrl);
-                      },
+              child: Column(
+                children: [
+                  Expanded(
+                    child: QuillEditor(
+                      controller: _controller!,
+                      scrollController: ScrollController(),
+                      focusNode: FocusNode(),
+                      config: QuillEditorConfig(
+                        scrollable: true,
+                        autoFocus: false,
+                        padding: const EdgeInsets.all(8),
+                        embedBuilders: [
+                          ...FlutterQuillEmbeds.editorBuilders(),
+                          QuillCustomEmbedBuilder(
+                            builder: (context, node, isReadOnly) {
+                              final imageUrl = node.value.data as String;
+                              if (imageUrl
+                                  .startsWith('https://res.cloudinary.com')) {
+                                return SizedBox(
+                                  height: 200,
+                                  width: double.infinity,
+                                  child: ClipRRect(
+                                    child: CachedNetworkImage(
+                                      imageUrl: imageUrl,
+                                      fit: BoxFit.contain,
+                                      placeholder: (context, url) =>
+                                          const Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(Icons.error),
+                                          Text('Error loading image: $error'),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                        ],
+                        customStyles: const DefaultStyles(),
+                      ),
                     ),
                   ),
-                  customStyles: const DefaultStyles(),
-                ),
+                ],
               ),
             ),
     );
+  }
+}
+
+class QuillCustomEmbedBuilder extends EmbedBuilder {
+  QuillCustomEmbedBuilder({required this.builder});
+
+  final Widget Function(BuildContext context, Embed node, bool readOnly)
+      builder;
+
+  @override
+  String get key => 'image';
+
+  @override
+  Widget build(BuildContext context, EmbedContext embedContext) {
+    var node = embedContext.node;
+    return builder(context, node, embedContext.readOnly);
   }
 }

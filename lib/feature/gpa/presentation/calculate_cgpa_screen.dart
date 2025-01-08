@@ -30,7 +30,7 @@ class _CalculateCGPAScreenState extends State<CalculateCGPAScreen> {
   double secondSemesterGP = 0.00;
   double currentGP = 0.00;
   int totalUnit = 21;
-  String semester = 'first'; // Define the semester variable outside of onTap
+  String semester = 'first';
   Color color = const Color.fromRGBO(181, 178, 178, 1);
 
   void calculateCGPA(String staticGrade, List<String> nonStaticGrades) async {

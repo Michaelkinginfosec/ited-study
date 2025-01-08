@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ited_study/core/route/route.dart';
-import 'package:ited_study/onboarding_screen/first_screen.dart';
-import 'package:ited_study/onboarding_screen/second_screen.dart';
-import 'package:ited_study/onboarding_screen/third_screen.dart';
+import 'package:ited_study/feature/onboarding_screen/first_screen.dart';
+import 'package:ited_study/feature/onboarding_screen/second_screen.dart';
+import 'package:ited_study/feature/onboarding_screen/third_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override

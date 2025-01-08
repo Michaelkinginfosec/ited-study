@@ -17,6 +17,8 @@ import '../../feature/auth/domain/usecases/change_password_usecase.dart';
 import '../../feature/auth/domain/usecases/create_school_usecase.dart';
 import '../../feature/auth/domain/usecases/sign_up_usecase.dart';
 import '../../feature/auth/domain/usecases/update_user_usecase.dart';
+import '../../feature/auth/domain/usecases/activate_app_usecase.dart';
+import '../../feature/auth/domain/usecases/upload_image_usecase.dart';
 
 final navigationIndexProvider = StateProvider<int>((ref) => 0);
 
@@ -131,6 +133,12 @@ final courseUsecaseProvider = Provider<CourseUsecase>(
     );
   },
 );
+final uploadImageUsecaseProvider = Provider<UploadImageUsecase>((ref) {
+  return UploadImageUsecase(ref.read(usersRepositoryProvider));
+});
+final activateAppUsecaseProvider = Provider<ActivateApp>((ref) {
+  return ActivateApp(ref.read(usersRepositoryProvider));
+});
 
 final topicUsecaseProvider = Provider<TopicUsecase>(
   (ref) {

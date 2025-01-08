@@ -20,7 +20,7 @@ import 'package:ited_study/feature/pastQuestions/presentation/views/cbt_practice
 import 'package:ited_study/feature/pastQuestions/presentation/views/exam.dart';
 import 'package:ited_study/feature/pastQuestions/presentation/views/exam_cbt_mode.dart';
 import 'package:ited_study/feature/pastQuestions/presentation/views/test.dart';
-import 'package:ited_study/onboarding_screen/onboarding_screen.dart';
+import 'package:ited_study/feature/onboarding_screen/onboarding_screen.dart';
 import 'package:ited_study/feature/auth/presentation/views/settings_screen.dart';
 import '../../feature/auth/presentation/views/activate_app_screen.dart';
 import '../../feature/auth/presentation/views/scholarship_screen.dart';
@@ -35,6 +35,7 @@ var loggedInUser = box.get('token');
 bool loggedIn = loggedInUser != null ? true : false;
 final router = GoRouter(
   initialLocation: loggedIn ? AppRoutes.navscreen : AppRoutes.onboarding,
+  // initialLocation: AppRoutes.cbt,
   routes: [
     GoRoute(
       name: "/onboarding",

@@ -1,6 +1,5 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
-
-import 'dart:io';
+import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +9,8 @@ import 'package:ited_study/core/constants/boxsize.dart';
 import 'package:ited_study/core/constants/text_style.dart.dart';
 import 'package:ited_study/core/route/route.dart';
 import 'package:ited_study/feature/auth/presentation/providers/logout_provide.dart';
+import 'package:ited_study/feature/auth/presentation/providers/upload_image_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SetttingsScreen extends ConsumerStatefulWidget {
   const SetttingsScreen({super.key});
@@ -23,7 +24,8 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
   String image = 'assets/images/avatar.jpg';
   String level = '';
   double cgpa = 0.00;
-  File? imageFile;
+  Uint8List? imageFile;
+  String? imageUrl;
   @override
   void initState() {
     super.initState();
@@ -32,16 +34,15 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
   }
 
   void getUser() async {
-    final box = await Hive.openBox('usersBox');
+    final box = Hive.box('usersBox');
     final user = box.get('users');
 
     if (user != null) {
       final name = user.fullName;
-      final imageUrl = user.imageUrl ?? 'assets/images/avatar.jpg';
       final userLevel = user.level;
+      image = user.imageUrl ?? 'assets/images/avatar.jpg';
       setState(() {
         userName = name;
-        image = imageUrl.isNotEmpty ? imageUrl : 'assets/images/avatar.jpg';
         level = userLevel;
       });
     } else {
@@ -63,27 +64,96 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
   }
 
   void pickImage() async {
-    final imagePicker = ImagePicker();
-    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        imageFile = File(pickedFile.path);
-      });
+    var status = await Permission.photos.request();
+
+    if (status.isGranted) {
+      try {
+        var box = Hive.box('sessionBox');
+        var userId = box.get('userId');
+        var token = box.get('token');
+
+        if (userId == null) {
+          throw Exception('User not found');
+        }
+        if (token == null) {
+          throw Exception('Unauthorized');
+        }
+
+        final imagePicker = ImagePicker();
+        final pickedFile =
+            await imagePicker.pickImage(source: ImageSource.gallery);
+
+        if (pickedFile != null) {
+          final imageBytes = await pickedFile.readAsBytes();
+          setState(() {
+            imageFile = imageBytes;
+          });
+
+          final url = await ref
+              .read(uploadImageNotifierProvider.notifier)
+              .uploadImage(imageBytes);
+
+          setState(() {
+            imageUrl = url;
+            image = imageUrl!;
+          });
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error picking image: $e")),
+        );
+      }
+    } else if (status.isPermanentlyDenied) {
+      // If permission is permanently denied, prompt to open app settings
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Permission denied. Please enable it from settings."),
+          action: SnackBarAction(
+            label: "Settings",
+            onPressed: () {
+              openAppSettings();
+            },
+          ),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Permission denied")),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final logOutState = ref.watch(logoutNotifierProvider);
+    final uploadImageState = ref.watch(uploadImageNotifierProvider);
     ref.listen<LogoutState>(
       logoutNotifierProvider,
       (previous, next) {
         if (next.status == LogoutStatus.success) {
-          context.pushReplacement(AppRoutes.login);
+          context.pushReplacement(AppRoutes.onboarding);
         } else if (next.status == LogoutStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(next.error ?? 'Logout failed'),
+            ),
+          );
+        }
+      },
+    );
+    ref.listen<UploadImageState>(
+      uploadImageNotifierProvider,
+      (previous, next) {
+        if (next.status == UploadImageStatus.success) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(next.message ?? "Image upload success"),
+            ),
+          );
+        } else if (next.status == UploadImageStatus.error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(next.error ?? "Image Uploaod failed"),
             ),
           );
         }
@@ -94,13 +164,14 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           'Settings',
           style: CustomTextStyles.normalTextSetting2,
         ),
       ),
-      body: logOutState.status == LogoutStatus.loading
-          ? Center(
+      body: logOutState.status == LogoutStatus.loading ||
+              uploadImageState.status == UploadImageStatus.loading
+          ? const Center(
               child: CircularProgressIndicator.adaptive(),
             )
           : SingleChildScrollView(
@@ -113,52 +184,53 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                           Container(
                             width: double.infinity,
                             height: 100,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Color.fromRGBO(0, 5, 45, 1),
                             ),
                           ),
                           Center(
-                            child: InkWell(
-                              onTap: pickImage,
-                              child: Container(
-                                width: 130,
-                                height: 150,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    width: 2,
-                                    color: Colors.black,
-                                  ),
+                            child: Container(
+                              width: 130,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  width: 2,
+                                  color: Colors.black,
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.transparent,
-                                    backgroundImage:
-                                        image != 'assets/images/avatar.jpg'
-                                            ? NetworkImage(image)
-                                            : AssetImage(
-                                                'assets/images/avatar.jpg',
-                                              ),
-                                  ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage: image == "" ||
+                                          image.isEmpty ||
+                                          image == 'assets/images/avatar.jpg'
+                                      ? const AssetImage(
+                                          'assets/images/avatar.jpg',
+                                        )
+                                      : CachedNetworkImageProvider(image),
                                 ),
                               ),
                             ),
                           ),
                           Positioned(
-                            bottom: 0,
-                            right: 0,
+                            bottom: 10,
+                            right: -70,
                             left: 10,
-                            child: Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.black,
-                              ),
-                              child: Icon(
-                                Icons.add,
-                                color: Colors.white,
+                            child: GestureDetector(
+                              onTap: pickImage,
+                              child: Container(
+                                width: 30,
+                                height: 30,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.black,
+                                ),
+                                child: const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
@@ -178,7 +250,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                       width: double.infinity,
                       height: 50,
                       decoration: BoxDecoration(
-                        color: Color.fromRGBO(217, 217, 217, 1),
+                        color: const Color.fromRGBO(217, 217, 217, 1),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(
@@ -195,11 +267,11 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                   level,
                                   style: CustomTextStyles.mediumSubtitleText,
                                 ),
-                                Text("LEVEL",
+                                const Text("LEVEL",
                                     style: CustomTextStyles.levelTitle),
                               ],
                             ),
-                            Column(
+                            const Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
@@ -217,7 +289,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                   cgpa.toStringAsFixed(2),
                                   style: CustomTextStyles.mediumSubtitleText,
                                 ),
-                                Text("C.G.P.A",
+                                const Text("C.G.P.A",
                                     style: CustomTextStyles.levelTitle),
                               ],
                             ),
@@ -226,7 +298,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Padding(
@@ -247,18 +319,20 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                   height: 20,
                                   width: 20,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 15,
                                 ),
-                                Column(
+                                const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       "Edit Profile",
                                       style: CustomTextStyles.normalTextSetting,
                                     ),
-                                    Text("Update you personal profile",
-                                        style: CustomTextStyles.textSettings)
+                                    Text(
+                                      "Update you personal profile",
+                                      style: CustomTextStyles.textSettings,
+                                    )
                                   ],
                                 ),
                               ],
@@ -279,10 +353,10 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                   height: 20,
                                   width: 20,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 15,
                                 ),
-                                Column(
+                                const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
@@ -313,10 +387,10 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                   height: 20,
                                   width: 20,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 15,
                                 ),
-                                Column(
+                                const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
@@ -347,10 +421,10 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                   height: 20,
                                   width: 20,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 15,
                                 ),
-                                Column(
+                                const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
@@ -375,7 +449,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                 builder: (context) {
                                   return AlertDialog(
                                     backgroundColor:
-                                        Color.fromRGBO(0, 5, 45, 1),
+                                        const Color.fromRGBO(0, 5, 45, 1),
                                     title: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
@@ -385,7 +459,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                         Image.asset(
                                           "assets/images/checkmark.png",
                                         ),
-                                        Text(
+                                        const Text(
                                           "Alert",
                                           style: TextStyle(
                                             color: Colors.white,
@@ -394,7 +468,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                         ),
                                       ],
                                     ),
-                                    content: Text(
+                                    content: const Text(
                                       "Are you sure you want to signout?",
                                       style: TextStyle(
                                         color: Colors.white,
@@ -408,7 +482,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
-                                        child: Text(
+                                        child: const Text(
                                           "Cancel",
                                           style: TextStyle(
                                             color: Colors.white,
@@ -431,11 +505,12 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                                   .notifier)
                                               .logout();
                                         },
-                                        child: Text("Sign Out",
-                                            style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(0, 5, 45, 1),
-                                            )),
+                                        child: const Text(
+                                          "Sign Out",
+                                          style: TextStyle(
+                                            color: Color.fromRGBO(0, 5, 45, 1),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   );
@@ -450,10 +525,10 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                   height: 20,
                                   width: 20,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 15,
                                 ),
-                                Column(
+                                const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(

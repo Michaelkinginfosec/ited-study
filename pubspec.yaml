@@ -10,14 +10,15 @@ environment:
 dependencies:
   cached_network_image: ^3.4.1
   cupertino_icons: ^1.0.6
+  device_info_plus: ^11.2.0
   dio: ^5.6.0
   dropdown_button2: ^2.3.9
   equatable: ^2.0.5
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
-  flutter_quill: ^10.8.5
-  flutter_quill_extensions: ^10.8.5
+  flutter_quill: ^11.0.0-dev.17
+  flutter_quill_extensions: ^11.0.0-dev.7
   flutter_riverpod: ^2.5.1
   get_it: ^8.0.2
   go_router: ^14.2.3
@@ -25,11 +26,13 @@ dependencies:
   hive_flutter: ^1.1.0
   image_picker: ^1.1.2
   page_transition: ^2.1.0
+  percent_indicator: ^4.2.4
+  permission_handler: ^11.3.1
 
 dev_dependencies:
-  analyzer: ^4.7.0
+  analyzer: ^6.11.0
   build_runner: ^2.0.0
-  flutter_lints: ^3.0.0
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
   hive_generator: ^2.0.1

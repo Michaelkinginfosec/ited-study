@@ -16,7 +16,7 @@ class ExamCbtMode extends StatefulWidget {
 
 class _ExamCbtModeState extends State<ExamCbtMode> {
   List<String> questionLenght = ["25", "30", "45", "60"];
-  List<String> time = ["10m", "20m", "30m", "1hr"];
+  List<String> time = ["10m", "20m", "30m", "60m"];
   List<String> courses = [];
   List<String> topics = [];
   String? selectedLenght;

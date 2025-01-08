@@ -20,9 +20,10 @@ class UserEntity extends HiveObject {
   final bool verified;
   @HiveField(6)
   final String schoolId;
-
   @HiveField(7)
   final String? imageUrl;
+  @HiveField(8)
+  final bool activated;
 
   UserEntity({
     required this.fullName,
@@ -33,6 +34,7 @@ class UserEntity extends HiveObject {
     this.verified = false,
     required this.schoolId,
     this.imageUrl,
+    this.activated = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -45,6 +47,7 @@ class UserEntity extends HiveObject {
       'verified': verified,
       'schoolId': schoolId,
       'imageUrl': imageUrl,
+      'activated': activated,
     };
   }
 
@@ -58,6 +61,7 @@ class UserEntity extends HiveObject {
       verified: map['verified'] as bool? ?? false,
       schoolId: map['schoolId'] as String,
       imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
+      activated: map['activated'] as bool? ?? false,
     );
   }
 

@@ -6,12 +6,12 @@ class CourseRepositoryImpl implements CourseRepository {
   CourseRepositoryImpl(this.courseDatasource);
 
   @override
-  Future<String> getCourses() async {
-    return await courseDatasource.getCourses();
+  Future<String> getCourses(String schoolId, String level) async {
+    return await courseDatasource.getCourses(schoolId, level);
   }
 
   @override
-  Future<void> getTopics() async {
-    return await courseDatasource.getTopics();
+  Future<void> getTopics(String schoolId, String level) async {
+    return await courseDatasource.getTopics(schoolId, level);
   }
 }

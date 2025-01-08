@@ -1,12 +1,15 @@
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ited_study/feature/auth/data/models/users.dart';
 import 'package:ited_study/feature/auth/domain/entities/user_entity.dart';
 import '../../../../../core/errors/errors.dart';
 import '../../../../notes/domain/model/topics.dart';
+import '../../models/update_data.dart';
 
 abstract class UsersRemoteDataSource {
-  Future<void> updateUser(String fullName, String department, String level);
+  Future<void> updateUser(UpdateUserData updateData);
   Future<String> signUp(Users user);
   Future<String> verifyOTP(String otp);
   Future<String> login(String email, String password);
@@ -20,6 +23,9 @@ abstract class UsersRemoteDataSource {
   Future<String> changePassword(String oldPassword, String newPassword);
   Future<List<String>> countries();
   Future<void> createSchool(String schoolName, String country);
+  Future<String> uploadImage(Uint8List? image);
+  Future<String> activateApp(String code, String device, String model,
+      String osVersion, String uniqueId);
 }
 
 class UserRemoteDatasourceImp implements UsersRemoteDataSource {
@@ -242,14 +248,16 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
         },
       );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 201) {
         if (response.data != null && response.data is Map<String, dynamic>) {
           final responseData = response.data as Map<String, dynamic>;
           final userId = responseData['userId'] as String?;
+
           if (userId != null) {
-            await getTopics();
             await storeUserId(userId);
+
             final user = await getUser(userId);
+
             await storeUser(user);
           }
           final token = responseData['accessToken'] as String?;
@@ -265,7 +273,8 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
           throw LoginException('Unexpected response format');
         }
       } else {
-        throw LoginException('Failed with status code: ${response.statusCode}');
+        throw LoginException(
+            'Failed with status code: ${response.statusCode} ');
       }
     } on DioException catch (dioError) {
       if (dioError.response != null) {
@@ -291,7 +300,7 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
   Future<Users> getUser(String userId) async {
     try {
       final response = await dio.get('/users/$userId');
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200) {
         if (response.data != null && response.data is Map<String, dynamic>) {
           final userEntity =
               UserEntity.fromMap(response.data as Map<String, dynamic>);
@@ -386,8 +395,7 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
   }
 
   @override
-  Future<String> updateUser(
-      String? fullName, String? department, String? level) async {
+  Future<String> updateUser(UpdateUserData updateData) async {
     var box = Hive.box('sessionBox');
     var userId = box.get('userId');
     var token = box.get('token');
@@ -408,11 +416,7 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
             'Content-Type': 'application/json',
           },
         ),
-        data: {
-          'fullName': fullName,
-          'department': department,
-          'level': level,
-        },
+        data: updateData.toMap(),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -420,6 +424,10 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
           final responseData = response.data as Map<String, dynamic>;
           final message =
               responseData['message'] as String? ?? 'Updated successfully';
+
+          final user = await getUser(userId);
+
+          await storeUser(user);
           return message;
         } else {
           throw Exception('Unexpected response format');
@@ -563,6 +571,151 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
     var box = await Hive.openBox<Topics>('topics');
     for (var topic in topics) {
       await box.put(topic.courseId, topic);
+    }
+  }
+
+  @override
+  Future<String> uploadImage(Uint8List? imageBytes) async {
+    var box = Hive.box('sessionBox');
+    var userId = box.get('userId');
+    var token = box.get('token');
+
+    if (userId == null) {
+      throw Exception('User not found');
+    }
+    if (token == null) {
+      throw Exception('Unauthorized');
+    }
+    if (imageBytes == null) {
+      throw Exception("Image is empty");
+    }
+
+    FormData formData = FormData.fromMap({
+      'file': MultipartFile.fromBytes(
+        imageBytes,
+        filename: 'course_image.jpg',
+      ),
+    });
+
+    try {
+      final response = await dio.post(
+        '/users/upload-image/',
+        data: formData,
+      );
+
+      if (response.statusCode == 201) {
+        if (response.data is Map<String, dynamic>) {
+          final responseData = response.data as Map<String, dynamic>;
+          final imageUrl = responseData['url'] as String?;
+          if (imageUrl != null) {
+            await dio.patch(
+              '/users/update/$userId',
+              options: Options(
+                headers: {
+                  'Authorization': 'Bearer $token',
+                  'Content-Type': 'application/json',
+                },
+              ),
+              data: {'imageUrl': imageUrl},
+            );
+            final user = await getUser(userId);
+            await storeUser(user);
+            return imageUrl;
+          } else {
+            throw Exception('Image URL is missing in the response');
+          }
+        } else {
+          throw Exception('Unexpected response format: ${response.data}');
+        }
+      } else {
+        throw Exception('Failed to upload image: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        throw Exception(
+            'The request took too long to complete. Please try again later.');
+      } else if (e.response != null) {
+        final message = e.response!.data['message'] ?? 'Unknown error occurred';
+        throw Exception(message);
+      } else {
+        throw Exception('Network error occurred: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Unexpected error occurred: $e');
+    }
+  }
+
+  @override
+  Future<String> activateApp(String code, String device, String model,
+      String osVersion, String uniqueId) async {
+    var box = Hive.box('sessionBox');
+    var userId = box.get('userId');
+    var token = box.get('token');
+
+    if (userId == null) {
+      throw Exception('User not found');
+    }
+    if (token == null) {
+      throw Exception('Unauthorized');
+    }
+
+    try {
+      final response = await dio.post(
+        '/users/activate',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+        ),
+        data: {
+          "code": code,
+          "userId": userId,
+          "device": device,
+          "deviceModel": model,
+          "osVersion": osVersion,
+          "uniqueId": uniqueId,
+        },
+      );
+
+      if (response.statusCode == 201) {
+        if (response.data != null && response.data is Map<String, dynamic>) {
+          final responseData = response.data as Map<String, dynamic>;
+          final message = responseData['message'] as String? ??
+              'App activated successfully';
+
+          final user = await getUser(userId);
+          await storeUser(user);
+          return message;
+        } else {
+          throw Exception('Unexpected response format');
+        }
+      } else {
+        throw Exception('Failed with status code: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        if (e.response!.statusCode == 400) {
+          final errorMessage = e.response!.data['message'] as String?;
+          if (errorMessage == "This device is already activated") {
+            throw Exception('This device is already activated');
+          } else if (errorMessage == "Activation Code Already Used") {
+            throw Exception('Invalid code');
+          } else if (errorMessage == "Invalid Activation Code") {
+            throw Exception(errorMessage);
+          } else {
+            throw Exception(
+                'Failed with status code1: ${e.response!.statusCode}');
+          }
+        } else {
+          throw Exception('Failed with status code: ${e.response!.statusCode}');
+        }
+      } else {
+        throw Exception('Network or server error: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Unexpected error occurred: $e');
     }
   }
 }

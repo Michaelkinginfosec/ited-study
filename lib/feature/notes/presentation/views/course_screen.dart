@@ -20,10 +20,12 @@ class CourseScreen extends ConsumerStatefulWidget {
 
 class _CourseScreenState extends ConsumerState<CourseScreen> {
   List<Courses> courses = [];
+  bool? isActivated;
 
   @override
   void initState() {
     getCourses();
+    getUser();
     super.initState();
   }
 
@@ -32,6 +34,20 @@ class _CourseScreenState extends ConsumerState<CourseScreen> {
     setState(() {
       courses = box.values.toList();
     });
+  }
+
+  void getUser() async {
+    final box = await Hive.openBox('usersBox');
+    final user = box.get('users');
+    if (user != null) {
+      setState(() {
+        isActivated = user.activated ?? false;
+      });
+    } else {
+      setState(() {
+        isActivated = false;
+      });
+    }
   }
 
   @override
@@ -102,60 +118,102 @@ class _CourseScreenState extends ConsumerState<CourseScreen> {
                 scrollDirection: Axis.vertical,
                 itemCount: courses.length,
                 itemBuilder: (context, index) {
+                  bool isCourseAccessable = isActivated == true || index == 0;
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
                       vertical: 10,
                     ),
-                    child: GestureDetector(
-                      onTap: () {
-                        final courseTile = courses[index].courseTitle;
-                        final courseCode = courses[index].courseCode;
-                        final courseId = courses[index].id;
-                        context.push(AppRoutes.coursenote, extra: {
-                          "courseTitle": courseTile,
-                          "courseCode": courseCode,
-                          "courseId": courseId
-                        });
-                      },
-                      child: CustomListTile(
-                        leading: CachedNetworkImage(
-                          imageUrl: courses[index].courseImage,
-                          height: 100,
-                          width: 120,
-                          fit: BoxFit.fill,
-                        ),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Course Title",
-                              style: CustomTextStyles.secondtinyBody,
+                    child: isCourseAccessable
+                        ? GestureDetector(
+                            onTap: () {
+                              final courseTile = courses[index].courseTitle;
+                              final courseCode = courses[index].courseCode;
+                              final courseId = courses[index].id;
+                              context.push(AppRoutes.coursenote, extra: {
+                                "courseTitle": courseTile,
+                                "courseCode": courseCode,
+                                "courseId": courseId
+                              });
+                            },
+                            child: CustomListTile(
+                              leading: CachedNetworkImage(
+                                imageUrl: courses[index].courseImage,
+                                height: 100,
+                                width: 120,
+                                fit: BoxFit.fill,
+                              ),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Course Title",
+                                    style: CustomTextStyles.secondtinyBody,
+                                  ),
+                                  Text(
+                                    courses[index].courseName,
+                                    style: CustomTextStyles.mediumSubtitleText,
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    "Course Code",
+                                    style: CustomTextStyles.secondtinyBody,
+                                  ),
+                                  Text(
+                                    courses[index].courseCode,
+                                    style: CustomTextStyles.mediumSubtitleText,
+                                  ),
+                                ],
+                              ),
+                              trailing: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Icon(CupertinoIcons.bookmark_fill),
+                                  Icon(
+                                    CupertinoIcons.lock_open,
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text(
-                              courses[index].courseName,
-                              style: CustomTextStyles.mediumSubtitleText,
+                          )
+                        : CustomListTile(
+                            leading: CachedNetworkImage(
+                              imageUrl: courses[index].courseImage,
+                              height: 100,
+                              width: 120,
+                              fit: BoxFit.fill,
                             ),
-                            SizedBox(height: 10),
-                            Text(
-                              "Course Code",
-                              style: CustomTextStyles.secondtinyBody,
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Course Title",
+                                  style: CustomTextStyles.secondtinyBody,
+                                ),
+                                Text(
+                                  courses[index].courseName,
+                                  style: CustomTextStyles.mediumSubtitleText,
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  "Course Code",
+                                  style: CustomTextStyles.secondtinyBody,
+                                ),
+                                Text(
+                                  courses[index].courseCode,
+                                  style: CustomTextStyles.mediumSubtitleText,
+                                ),
+                              ],
                             ),
-                            Text(
-                              courses[index].courseCode,
-                              style: CustomTextStyles.mediumSubtitleText,
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Icon(CupertinoIcons.bookmark_fill),
+                                Icon(CupertinoIcons.lock_fill),
+                              ],
                             ),
-                          ],
-                        ),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Icon(CupertinoIcons.bookmark_fill),
-                            Icon(CupertinoIcons.lock_fill),
-                          ],
-                        ),
-                      ),
-                    ),
+                          ),
                   );
                 },
               ),

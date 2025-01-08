@@ -6,8 +6,8 @@ import '../../domain/model/notes.dart';
 import '../../domain/model/topics.dart';
 
 abstract class CourseDatasource {
-  Future<String> getCourses();
-  Future<void> getTopics();
+  Future<String> getCourses(String schoolId, String level);
+  Future<void> getTopics(String schoolId, String level);
   Future<void> note();
 }
 
@@ -16,16 +16,14 @@ class CourseDatasourceImp implements CourseDatasource {
   CourseDatasourceImp(this.dio);
 
   @override
-  Future<String> getCourses() async {
+  Future<String> getCourses(String schoolId, String level) async {
     await test();
     await note();
-    await getTopicsOnly();
-    await getCourseOnly();
+    await getTopicsOnly(schoolId, level);
+    await getCourseOnly(schoolId, level);
     await exam();
     try {
-      final response = await dio.get(
-        '/notes',
-      );
+      final response = await dio.get('/notes/courses/$schoolId?level=$level');
       if (response.statusCode == 200) {
         List<Courses> courses = (response.data as List)
             .map(
@@ -63,9 +61,10 @@ class CourseDatasourceImp implements CourseDatasource {
   }
 
   @override
-  Future<void> getTopics() async {
+  Future<void> getTopics(String schoolId, String level) async {
     try {
-      final response = await dio.get('/notes/course-topics');
+      final response =
+          await dio.get('/notes/course-topics/$schoolId?level=$level');
       if (response.statusCode == 200) {
         if (response.data is List) {
           List<Topics> topics = (response.data as List)
@@ -95,17 +94,15 @@ class CourseDatasourceImp implements CourseDatasource {
 
   Future<void> storeTopics(List<Topics> topics) async {
     var box = Hive.box<Topics>('topic');
-
     await box.clear();
-
     for (var topic in topics) {
       await box.add(topic);
     }
   }
 
-  Future<void> getTopicsOnly() async {
+  Future<void> getTopicsOnly(String schoolId, String level) async {
     try {
-      final response = await dio.get('/notes/topics');
+      final response = await dio.get('/notes/topics/$schoolId?level=$level');
       if (response.statusCode == 200) {
         if (response.data is List) {
           List topics = response.data as List;
@@ -134,9 +131,10 @@ class CourseDatasourceImp implements CourseDatasource {
     }
   }
 
-  Future<void> getCourseOnly() async {
+  Future<void> getCourseOnly(String schoolId, String level) async {
     try {
-      final response = await dio.get('/notes/course-only');
+      final response =
+          await dio.get('/notes/course-only/$schoolId?level=$level');
       if (response.statusCode == 200) {
         if (response.data is List) {
           List courses = response.data as List;
