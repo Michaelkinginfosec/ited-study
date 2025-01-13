@@ -25,7 +25,9 @@ abstract class UsersRemoteDataSource {
   Future<void> createSchool(String schoolName, String country);
   Future<String> uploadImage(Uint8List? image);
   Future<String> activateApp(String code, String device, String model,
-      String osVersion, String uniqueId);
+      String osVersion, String uniqueId, String semester);
+
+  Future<void> getCountries();
 }
 
 class UserRemoteDatasourceImp implements UsersRemoteDataSource {
@@ -105,7 +107,7 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
         },
       );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 201) {
         if (response.data != null && response.data is Map<String, dynamic>) {
           final responseData = response.data as Map<String, dynamic>;
           if (responseData['message'] != null &&
@@ -539,7 +541,7 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
   Future<void> getTopics() async {
     try {
       final response = await dio.get('/notes/course-topics');
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200) {
         if (response.data is List) {
           List<Topics> topics = (response.data as List)
               .map((json) => Topics.fromJson(json as Map<String, dynamic>))
@@ -648,7 +650,7 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
 
   @override
   Future<String> activateApp(String code, String device, String model,
-      String osVersion, String uniqueId) async {
+      String osVersion, String uniqueId, String semester) async {
     var box = Hive.box('sessionBox');
     var userId = box.get('userId');
     var token = box.get('token');
@@ -676,6 +678,7 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
           "deviceModel": model,
           "osVersion": osVersion,
           "uniqueId": uniqueId,
+          "semester": semester,
         },
       );
 
@@ -714,6 +717,68 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
       } else {
         throw Exception('Network or server error: ${e.message}');
       }
+    } catch (e) {
+      throw Exception('Unexpected error occurred: $e');
+    }
+  }
+
+  @override
+  Future<void> getCountries() async {
+    try {
+      final response = await dio.get('/notes/countries');
+
+      if (response.statusCode == 200) {
+        if (response.data != null && response.data is List) {
+          final countryList = List<String>.from(response.data);
+          for (String country in countryList) {
+            await getSchools(country);
+          }
+
+          var box = Hive.box('countries');
+          await box.put('countryList', countryList);
+        } else {
+          throw Exception('Unexpected response format');
+        }
+      } else {
+        throw Exception('Failed with status code: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      if (e.response != null && e.response!.statusCode == 400) {
+        final errorMessage = e.response!.data['message'] as String?;
+        if (errorMessage != null) {
+          throw Exception(errorMessage);
+        }
+      }
+      throw Exception('Failed with status code: ${e.response?.statusCode}');
+    } catch (e) {
+      throw Exception('Unexpected error occurred: $e');
+    }
+  }
+
+  Future<void> getSchools(String country) async {
+    try {
+      final response = await dio.get('/notes/schools');
+
+      if (response.statusCode == 200) {
+        if (response.data != null && response.data is List) {
+          final schoolList = List<String>.from(response.data);
+
+          var box = Hive.box('countries');
+          await box.put(country, schoolList);
+        } else {
+          throw Exception('Unexpected response format');
+        }
+      } else {
+        throw Exception('Failed with status code: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      if (e.response != null && e.response!.statusCode == 400) {
+        final errorMessage = e.response!.data['message'] as String?;
+        if (errorMessage != null) {
+          throw Exception(errorMessage);
+        }
+      }
+      throw Exception('Failed with status code: ${e.response?.statusCode}');
     } catch (e) {
       throw Exception('Unexpected error occurred: $e');
     }

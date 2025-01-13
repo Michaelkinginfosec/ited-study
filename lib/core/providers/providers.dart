@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/feature/auth/data/repositories/user_repository_impl.dart';
+import 'package:ited_study/feature/auth/domain/usecases/get_countries_usecase.dart';
 import 'package:ited_study/feature/auth/domain/usecases/login_usecase.dart';
 import 'package:ited_study/feature/auth/domain/usecases/logout_usecase.dart';
 import 'package:ited_study/feature/auth/domain/usecases/resend_otp_usecase.dart';
@@ -107,6 +108,13 @@ final resendOTPUsecaseProvider = Provider<ResendOTPUsecase>(
 final logoutUsecaseProvider = Provider<LogoutUsecase>(
   (ref) {
     return LogoutUsecase(
+      ref.read(usersRepositoryProvider),
+    );
+  },
+);
+final countryUsecaseProvider = Provider<GetCountriesUsecase>(
+  (ref) {
+    return GetCountriesUsecase(
       ref.read(usersRepositoryProvider),
     );
   },

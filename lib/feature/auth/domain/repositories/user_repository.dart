@@ -18,5 +18,6 @@ abstract class UsersRepository {
   Future<void> createSchool(String schoolName, String country);
   Future<String> uploadImage(Uint8List? image);
   Future<String> activateApp(String code, String device, String model,
-      String osVersion, String uniqueId);
+      String osVersion, String uniqueId, String semester);
+  Future<void> getCountries();
 }

@@ -16,28 +16,19 @@ void main() async {
   Hive.registerAdapter(TopicsAdapter());
   Hive.registerAdapter(NoteAdapter());
   Hive.registerAdapter(NoteContentAdapter());
-  var topics = await Hive.openBox<Topics>('topic');
-  var textTopics = await Hive.openBox('textTopic');
-  var textCourses = await Hive.openBox('textCourse');
-  var notes = await Hive.openBox<Note>('notesBox');
-  var courses = await Hive.openBox<Courses>('courses');
-  var session = await Hive.openBox("sessionBox");
-  var school = await Hive.openBox('school');
-  var user = await Hive.openBox("usersBox");
-  var gp = await Hive.openBox('gp');
-  var question = await Hive.openBox('question');
-  var examQuestion = await Hive.openBox('examQuestion');
-  textTopics.get('textTopic');
-  textCourses.get('textCourse');
-  courses.get('courses');
-  topics.get('topic');
-  gp.get('gp');
-  session.get('sessionBox');
-  user.get('usersBox');
-  school.get('school');
-  notes.get('notes');
-  question.get('question');
-  examQuestion.get('examQuestion');
+  await Hive.openBox<Topics>('topic');
+  await Hive.openBox('textTopic');
+  await Hive.openBox('textCourse');
+  await Hive.openBox<Note>('notesBox');
+  await Hive.openBox<Courses>('courses');
+  await Hive.openBox("sessionBox");
+  await Hive.openBox('school');
+  await Hive.openBox("usersBox");
+  await Hive.openBox('gp');
+  await Hive.openBox('question');
+  await Hive.openBox('examQuestion');
+  await Hive.openBox('countries');
+
   await dotenv.load();
   runApp(
     const ProviderScope(

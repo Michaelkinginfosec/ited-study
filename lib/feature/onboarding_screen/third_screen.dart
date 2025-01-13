@@ -1,9 +1,22 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ited_study/feature/auth/presentation/providers/countries_provider.dart';
 
-class ThirdScreen extends StatelessWidget {
+class ThirdScreen extends ConsumerStatefulWidget {
   const ThirdScreen({super.key});
+
+  @override
+  ConsumerState<ThirdScreen> createState() => _ThirdScreenState();
+}
+
+class _ThirdScreenState extends ConsumerState<ThirdScreen> {
+  @override
+  void initState() {
+    Future.microtask(() {
+      ref.read(countryNotifierProvider.notifier).country();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

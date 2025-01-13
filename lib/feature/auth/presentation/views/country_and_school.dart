@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ited_study/core/constants/boxsize.dart';
 import 'package:ited_study/core/route/route.dart';
 import '../../../../core/constants/text_style.dart.dart';
@@ -16,30 +17,36 @@ class CountryAndSchoolScreen extends ConsumerStatefulWidget {
       CountryAndSchoolScreenState();
 }
 
-String? selectedCountry;
-String? selectedSchool;
-
-const String kenya = "Kenya";
-const String nigeria = "Nigeria";
-
-List<String> countryNames = [kenya, nigeria];
-
-List<String> schoolInNigeria = ["FUTO", "UNIBEN", "UNILAG", "UNIUYO", "AAU"];
-List<String> schoolInKenya = ['kenya1', 'kenya2', 'kenya3'];
-
-List<String> getSchoolsByCountry(String? selectedCountry) {
-  switch (selectedCountry) {
-    case nigeria:
-      return schoolInNigeria;
-    case kenya:
-      return schoolInKenya;
-    default:
-      return [];
-  }
-}
-
 class CountryAndSchoolScreenState
     extends ConsumerState<CountryAndSchoolScreen> {
+  String? selectedCountry;
+  String? selectedSchool;
+  List<String> countries = [];
+  List<String> schools = [];
+
+  void fetchCountry() {
+    var box = Hive.box('countries');
+
+    setState(() {
+      countries = List<String>.from(box.get('countryList', defaultValue: []));
+    });
+  }
+
+  void fetchSchools() {
+    if (selectedCountry == null) [];
+    var box = Hive.box('countries');
+
+    setState(() {
+      schools = box.get(selectedCountry, defaultValue: []) as List<String>;
+    });
+  }
+
+  @override
+  void initState() {
+    fetchCountry();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen<CreateSchoolState>(
@@ -104,7 +111,7 @@ class CountryAndSchoolScreenState
                 filled: true,
               ),
               value: selectedCountry,
-              items: countryNames.map((String countryName) {
+              items: countries.map((String countryName) {
                 return DropdownMenuItem<String>(
                   value: countryName,
                   child: Text(
@@ -118,6 +125,7 @@ class CountryAndSchoolScreenState
                   selectedCountry = newCountry;
                   selectedSchool = null;
                 });
+                fetchSchools();
               },
             ),
             CustomSizeBox.largeBox,
@@ -160,8 +168,7 @@ class CountryAndSchoolScreenState
                 filled: true,
               ),
               value: selectedSchool,
-              items:
-                  getSchoolsByCountry(selectedCountry).map((String schoolName) {
+              items: schools.map((String schoolName) {
                 return DropdownMenuItem<String>(
                   value: schoolName,
                   child: Text(

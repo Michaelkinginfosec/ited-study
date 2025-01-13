@@ -24,6 +24,8 @@ class Users extends Equatable {
   final String? imageUrl;
   @HiveField(8)
   final bool activated;
+  @HiveField(9)
+  final String? semester;
 
   const Users({
     required this.fullName,
@@ -35,6 +37,7 @@ class Users extends Equatable {
     this.imageUrl,
     required this.schoolId,
     this.activated = false,
+    this.semester = '',
   });
 
   Users copyWith({
@@ -47,6 +50,7 @@ class Users extends Equatable {
     String? schoolId,
     String? imageUrl,
     bool? activated,
+    String? semester,
   }) {
     return Users(
       fullName: fullName ?? this.fullName,
@@ -58,6 +62,7 @@ class Users extends Equatable {
       schoolId: schoolId ?? this.schoolId,
       imageUrl: imageUrl ?? this.imageUrl,
       activated: activated ?? this.activated,
+      semester: semester ?? this.semester,
     );
   }
 
@@ -72,6 +77,7 @@ class Users extends Equatable {
       schoolId: schoolId,
       imageUrl: imageUrl,
       activated: activated,
+      semester: semester,
     );
   }
 
@@ -86,6 +92,7 @@ class Users extends Equatable {
       schoolId: entity.schoolId,
       imageUrl: entity.imageUrl,
       activated: entity.activated,
+      semester: entity.semester,
     );
   }
 
@@ -101,6 +108,7 @@ class Users extends Equatable {
       schoolId,
       imageUrl,
       activated,
+      semester,
     ];
   }
 }

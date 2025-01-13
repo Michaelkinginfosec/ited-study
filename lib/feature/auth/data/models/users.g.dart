@@ -26,13 +26,14 @@ class UsersAdapter extends TypeAdapter<Users> {
       imageUrl: fields[7] as String?,
       schoolId: fields[6] as String,
       activated: fields[8] as bool,
+      semester: fields[9] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Users obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.fullName)
       ..writeByte(1)
@@ -50,7 +51,9 @@ class UsersAdapter extends TypeAdapter<Users> {
       ..writeByte(7)
       ..write(obj.imageUrl)
       ..writeByte(8)
-      ..write(obj.activated);
+      ..write(obj.activated)
+      ..writeByte(9)
+      ..write(obj.semester);
   }
 
   @override

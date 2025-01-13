@@ -34,11 +34,11 @@ class UploadUserImageNotifier extends StateNotifier<ActivateAppState> {
   UploadUserImageNotifier(this.uploadUserImageUsecase)
       : super(ActivateAppState());
   Future<void> activateApp(String code, String device, String model,
-      String osVersion, String uniqueId) async {
+      String osVersion, String uniqueId, String semester) async {
     state = state.copyWith(status: ActivateStatus.loading);
     try {
       await uploadUserImageUsecase.activateApp(
-          code, device, model, osVersion, uniqueId);
+          code, device, model, osVersion, uniqueId, semester);
       state = state.copyWith(status: ActivateStatus.success);
     } catch (e) {
       state = state.copyWith(status: ActivateStatus.error, error: e.toString());

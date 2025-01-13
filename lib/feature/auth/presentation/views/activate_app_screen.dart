@@ -18,6 +18,8 @@ class ActivateAppScreen extends ConsumerStatefulWidget {
 class ActivateAppScreenState extends ConsumerState<ActivateAppScreen> {
   final TextEditingController _activationCodeController =
       TextEditingController();
+  List<String> semester = ['First', 'Second'];
+  String? selectedSemester;
 
   Future<Map<String, dynamic>> getDeviceInfo() async {
     final deviceInfoPlugin = DeviceInfoPlugin();
@@ -93,6 +95,67 @@ class ActivateAppScreenState extends ConsumerState<ActivateAppScreen> {
               style: CustomTextStyles.nameTitle,
             ),
             CustomSizeBox.box,
+            CustomSizeBox.smallBox,
+            Text(
+              "Select Semester",
+              style: CustomTextStyles.mediumSubtitle,
+            ),
+            DropdownButtonFormField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: CustomTextStyles.textFieldColor,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: CustomTextStyles.textFieldColor,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: const BorderSide(
+                    color: Color.fromRGBO(0, 5, 45, 1),
+                    width: 1,
+                  ),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: const BorderSide(
+                    color: Color.fromRGBO(0, 5, 45, 1),
+                    width: 1,
+                  ),
+                ),
+                enabled: true,
+                fillColor: CustomTextStyles.textFieldColor,
+                filled: true,
+              ),
+              value: selectedSemester,
+              items: semester.map((String schoolName) {
+                return DropdownMenuItem<String>(
+                  value: schoolName,
+                  child: Text(
+                    schoolName,
+                    style: TextStyle(fontSize: 12),
+                  ),
+                );
+              }).toList(),
+              onChanged: (String? newSemester) async {
+                setState(() {
+                  selectedSemester = newSemester;
+                });
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Please select your school';
+                }
+                return null;
+              },
+            ),
+            CustomSizeBox.extralBig,
             Text(
               "Activation code",
               style: CustomTextStyles.mediumSubtitle,
@@ -136,6 +199,7 @@ class ActivateAppScreenState extends ConsumerState<ActivateAppScreen> {
                         ref
                             .read(activateAppNotifierProvider.notifier)
                             .activateApp(
+                              selectedSemester.toString().toLowerCase(),
                               _activationCodeController.text.trim(),
                               device,
                               model,

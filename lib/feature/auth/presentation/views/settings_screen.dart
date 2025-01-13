@@ -23,6 +23,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
   String userName = "Jone Doe";
   String image = 'assets/images/avatar.jpg';
   String level = '';
+  String semester = '';
   double cgpa = 0.00;
   Uint8List? imageFile;
   String? imageUrl;
@@ -40,10 +41,12 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
     if (user != null) {
       final name = user.fullName;
       final userLevel = user.level;
+      final userSemester = user.semester;
       image = user.imageUrl ?? 'assets/images/avatar.jpg';
       setState(() {
         userName = name;
         level = userLevel;
+        semester = userSemester ?? "";
       });
     } else {
       setState(() {
@@ -271,14 +274,14 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                     style: CustomTextStyles.levelTitle),
                               ],
                             ),
-                            const Column(
+                            Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
-                                  "60%",
+                                  semester,
                                   style: CustomTextStyles.mediumSubtitleText,
                                 ),
-                                Text("course completion",
+                                Text("Semester",
                                     style: CustomTextStyles.levelTitle),
                               ],
                             ),

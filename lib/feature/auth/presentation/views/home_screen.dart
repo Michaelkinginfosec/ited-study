@@ -143,7 +143,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       borderRadius: BorderRadius.circular(25),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: Colors.black.withAlpha(51),
                           spreadRadius: 3,
                           blurRadius: 3,
                           offset: const Offset(0.1, 0.1),
@@ -212,7 +212,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       borderRadius: BorderRadius.circular(25),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: Colors.black.withAlpha(51),
                           spreadRadius: 3,
                           blurRadius: 3,
                           offset: const Offset(0.1, 0.1),
@@ -275,7 +275,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       borderRadius: BorderRadius.circular(25),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: Colors.black.withAlpha(51),
                           spreadRadius: 3,
                           blurRadius: 3,
                           offset: const Offset(0.1, 0.1),
@@ -327,61 +327,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                // Container(
-                //   width: double.infinity,
-                //   height: 80,
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(25),
-                //     boxShadow: [
-                //       BoxShadow(
-                //         color: Colors.black.withOpacity(0.2),
-                //         spreadRadius: 3,
-                //         blurRadius: 3,
-                //         offset: Offset(0.1, 0.1),
-                //       ),
-                //     ],
-                //     color: Color.fromRGBO(134, 150, 11, 1),
-                //   ),
-                //   child: Padding(
-                //     padding: const EdgeInsets.only(left: 15, right: 8),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       children: [
-                //         Column(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             const SizedBox(
-                //               height: 8,
-                //             ),
-                //             Text(
-                //               'Special Courses',
-                //               style: TextStyle(
-                //                 fontSize: 25,
-                //                 fontWeight: FontWeight.bold,
-                //                 color: Color.fromRGBO(255, 255, 255, 1),
-                //               ),
-                //             ),
-                //             const SizedBox(
-                //               height: 5,
-                //             ),
-                //             Text(
-                //               'Get your course from your favourite lecturers',
-                //               style: TextStyle(
-                //                 fontSize: 10,
-                //                 fontWeight: FontWeight.bold,
-                //                 color: Color.fromRGBO(255, 255, 255, 1),
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //         Image.asset(
-                //           "assets/images/elearning.png",
-                //           height: 75,
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -398,7 +343,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           borderRadius: BorderRadius.circular(25),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
+                              color: Colors.black.withAlpha(51),
                               spreadRadius: 3,
                               blurRadius: 3,
                               offset: const Offset(0.1, 0.1),

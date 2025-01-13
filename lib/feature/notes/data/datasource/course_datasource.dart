@@ -70,6 +70,7 @@ class CourseDatasourceImp implements CourseDatasource {
           List<Topics> topics = (response.data as List)
               .map((json) => Topics.fromJson(json as Map<String, dynamic>))
               .toList();
+
           await storeTopics(topics);
         } else {
           throw Exception('Unexpected data format');

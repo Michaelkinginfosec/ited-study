@@ -5,8 +5,8 @@ class ActivateApp {
 
   ActivateApp(this.repository);
   Future<String> activateApp(String code, String device, String model,
-      String osVersion, String uniqueId) async {
+      String osVersion, String uniqueId, String semester) async {
     return await repository.activateApp(
-        code, device, model, osVersion, uniqueId);
+        code, device, model, osVersion, uniqueId, semester);
   }
 }

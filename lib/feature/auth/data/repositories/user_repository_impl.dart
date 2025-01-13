@@ -75,8 +75,13 @@ class UserRepositoryImpl implements UsersRepository {
 
   @override
   Future<String> activateApp(String code, String device, String model,
-      String osVersion, String uniqueId) {
+      String osVersion, String uniqueId, String semester) {
     return remoteDataSource.activateApp(
-        code, device, model, osVersion, uniqueId);
+        code, device, model, osVersion, uniqueId, semester);
+  }
+
+  @override
+  Future<void> getCountries() async {
+    return remoteDataSource.getCountries();
   }
 }
