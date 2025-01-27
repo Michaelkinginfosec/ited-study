@@ -64,7 +64,7 @@ class CourseDatasourceImp implements CourseDatasource {
   Future<void> getTopics(String schoolId, String level) async {
     try {
       final response =
-          await dio.get('/notes/course-topics/$schoolId?level=$level');
+          await dio.get('/notes/course-topic/$schoolId?level=$level');
       if (response.statusCode == 200) {
         if (response.data is List) {
           List<Topics> topics = (response.data as List)

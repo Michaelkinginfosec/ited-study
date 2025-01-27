@@ -49,7 +49,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
         await Future.delayed(const Duration(seconds: 2));
 
         await snackBarController.closed;
-        context.pushReplacement(AppRoutes.login);
+        context.push(AppRoutes.login);
       } else if (next.status == VerifyOTPStatus.failure) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(next.error ?? 'OTP verification failed')),

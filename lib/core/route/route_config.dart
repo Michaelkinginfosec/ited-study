@@ -23,6 +23,7 @@ import 'package:ited_study/feature/pastQuestions/presentation/views/test.dart';
 import 'package:ited_study/feature/onboarding_screen/onboarding_screen.dart';
 import 'package:ited_study/feature/auth/presentation/views/settings_screen.dart';
 import '../../feature/auth/presentation/views/activate_app_screen.dart';
+import '../../feature/auth/presentation/views/home_screen.dart';
 import '../../feature/auth/presentation/views/scholarship_screen.dart';
 import '../../feature/notes/presentation/views/course_screen.dart';
 import '../../feature/pastQuestions/presentation/views/examquestion.dart';
@@ -34,8 +35,8 @@ final box = Hive.box('sessionBox');
 var loggedInUser = box.get('token');
 bool loggedIn = loggedInUser != null ? true : false;
 final router = GoRouter(
-  initialLocation: loggedIn ? AppRoutes.navscreen : AppRoutes.onboarding,
-  // initialLocation: AppRoutes.cbt,
+  initialLocation: loggedIn ? AppRoutes.home : AppRoutes.onboarding,
+  // initialLocation: AppRoutes.navscreen,
   routes: [
     GoRoute(
       name: "/onboarding",
@@ -92,29 +93,53 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-        name: '/aboutus',
-        path: AppRoutes.aboutus,
-        pageBuilder: (context, state) {
-          return CustomTransitionPage(
-            key: state.pageKey,
-            child: AboutUs(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              const begin = Offset(1.0, 0.0);
-              const end = Offset.zero;
-              const curve = Curves.easeIn;
+      name: '/home',
+      path: AppRoutes.home,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: HomeScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeIn;
 
-              var tween =
-                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-              var offsetAnimation = animation.drive(tween);
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
 
-              return SlideTransition(
-                position: offsetAnimation,
-                child: child,
-              );
-            },
-          );
-        }),
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      name: '/aboutus',
+      path: AppRoutes.aboutus,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: AboutUs(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeIn;
+
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        );
+      },
+    ),
     GoRoute(
       name: '/settings',
       path: AppRoutes.settings,

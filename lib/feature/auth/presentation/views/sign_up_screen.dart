@@ -33,6 +33,9 @@ class SignUpScreenState extends ConsumerState<SignUpScreen> {
   final TextEditingController _departmentController = TextEditingController();
   final TextEditingController _levelController = TextEditingController();
 
+  String? selectedLevel;
+  List<String> level = ['100', '200', '300', '400', '500', '600'];
+
   @override
   Widget build(BuildContext context) {
     final signUpState = ref.watch(signUpNotifierProvider);
@@ -151,15 +154,48 @@ class SignUpScreenState extends ConsumerState<SignUpScreen> {
                       style: CustomTextStyles.mediumSubtitle,
                     ),
                     CustomSizeBox.smallBox,
-                    CustomTextField(
-                      obscureText: false,
-                      controller: _levelController,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your level';
-                        }
-                        return null;
+                    DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(3),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: CustomTextStyles.textFieldColor,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: CustomTextStyles.textFieldColor,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: CustomTextStyles.textFieldColor,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: CustomTextStyles.textFieldColor,
+                          ),
+                        ),
+                        enabled: true,
+                        fillColor: CustomTextStyles.textFieldColor,
+                        filled: true,
+                      ),
+                      value: selectedLevel,
+                      items: level.map((String schoolName) {
+                        return DropdownMenuItem<String>(
+                          value: schoolName,
+                          child: Text(schoolName),
+                        );
+                      }).toList(),
+                      onChanged: (String? newLevel) async {
+                        setState(() {
+                          selectedLevel = newLevel;
+                        });
                       },
                     ),
                     CustomSizeBox.mediumBox,
@@ -207,7 +243,7 @@ class SignUpScreenState extends ConsumerState<SignUpScreen> {
                                     fullName: _fullNameController.text,
                                     email: _emailController.text,
                                     department: _departmentController.text,
-                                    level: _levelController.text.trim(),
+                                    level: selectedLevel!,
                                     password: _passwordController.text,
                                     schoolId: schoolId,
                                     imageUrl: '',

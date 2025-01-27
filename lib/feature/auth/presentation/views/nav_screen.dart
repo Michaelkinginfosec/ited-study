@@ -54,27 +54,32 @@ class _NavScreenState extends ConsumerState<NavScreen> {
       backgroundColor: Colors.white,
       body: screens[currentIndex],
       bottomNavigationBar: isActivated == false
-          ? Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 60),
-              child: Container(
-                width: double.infinity,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(139, 168, 170, 142),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Center(
-                  child: Text(
-                    "Activate App",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
+          ? Container(
+              width: double.infinity,
+              height: 40,
+              color: Colors.white,
             )
+          // ? Padding(
+          //     padding: const EdgeInsets.only(left: 20, right: 20, bottom: 60),
+          //     child: Container(
+          //       width: double.infinity,
+          //       height: 40,
+          //       decoration: BoxDecoration(
+          //         color: Color.fromARGB(139, 168, 170, 142),
+          //         borderRadius: BorderRadius.circular(10),
+          //       ),
+          //       child: Center(
+          //         child: Text(
+          //           "Activate App",
+          //           style: TextStyle(
+          //             color: Colors.white,
+          //             fontSize: 20,
+          //             fontWeight: FontWeight.bold,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   )
           : Padding(
               padding: const EdgeInsets.only(
                 bottom: 30,

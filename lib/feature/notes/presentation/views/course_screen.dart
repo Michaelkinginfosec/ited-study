@@ -137,11 +137,14 @@ class _CourseScreenState extends ConsumerState<CourseScreen> {
                               });
                             },
                             child: CustomListTile(
-                              leading: CachedNetworkImage(
-                                imageUrl: courses[index].courseImage,
-                                height: 100,
-                                width: 120,
-                                fit: BoxFit.fill,
+                              leading: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: CachedNetworkImage(
+                                  imageUrl: courses[index].courseImage,
+                                  height: 100,
+                                  width: 120,
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                               title: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -37,7 +37,6 @@ class _CourseNoteScreenState extends State<CourseNoteScreen> {
   }
 
   void loadStoredTopics() async {
-    // Open the Hive box
     final box = Hive.box<Topics>('topic');
     final allTopics = box.values.toList();
 

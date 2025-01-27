@@ -39,7 +39,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
           await snackBarController.closed;
 
           context.pushReplacement(
-            AppRoutes.navscreen,
+            AppRoutes.home,
           );
         } else if (next.status == LoginStatus.error) {
           String errorMessage = next.error?.toString() ?? "Login Failed";

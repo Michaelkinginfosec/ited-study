@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/feature/auth/presentation/providers/countries_provider.dart';
 
+import '../../core/providers/network_provider.dart';
+
 class ThirdScreen extends ConsumerStatefulWidget {
   const ThirdScreen({super.key});
 
@@ -12,10 +14,16 @@ class ThirdScreen extends ConsumerStatefulWidget {
 class _ThirdScreenState extends ConsumerState<ThirdScreen> {
   @override
   void initState() {
-    Future.microtask(() {
-      ref.read(countryNotifierProvider.notifier).country();
-    });
-    super.initState();
+    super.initState(); // Always call this first
+
+    // Check connectivity using ref.read
+    final isConnected = ref.read(connectivityProvider);
+
+    if (isConnected) {
+      Future.microtask(() async {
+        await ref.read(countryNotifierProvider.notifier).country();
+      });
+    }
   }
 
   @override
