@@ -14,15 +14,16 @@ class ThirdScreen extends ConsumerStatefulWidget {
 class _ThirdScreenState extends ConsumerState<ThirdScreen> {
   @override
   void initState() {
-    super.initState(); // Always call this first
+    super.initState();
 
-    // Check connectivity using ref.read
     final isConnected = ref.read(connectivityProvider);
 
     if (isConnected) {
-      Future.microtask(() async {
-        await ref.read(countryNotifierProvider.notifier).country();
-      });
+      Future.microtask(
+        () async {
+          await ref.read(countryNotifierProvider.notifier).country();
+        },
+      );
     }
   }
 

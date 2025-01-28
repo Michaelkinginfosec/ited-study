@@ -515,7 +515,6 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
         if (response.data != null && response.data is List) {
           final responseData = response.data as Map<String, dynamic>;
           final countries = responseData['country'] as List;
-
           return countries.map((country) => country as String).toList();
         } else {
           throw Exception('Unexpected response format');
