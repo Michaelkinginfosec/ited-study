@@ -298,7 +298,7 @@ class _CbtPracticeState extends State<CbtPractice> {
                 clipBehavior: Clip.hardEdge,
                 child: Container(
                   width: double.infinity,
-                  height: 370,
+                  height: 450,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
