@@ -43,19 +43,28 @@ class _CGPAScreenState extends State<CGPAScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              "C.G.P.A Calculator",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleLarge,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "C.G.P.A Calculator",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
             ),
-            const Text(
-              "Calculate and keep record of your grades",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15,
-                color: Color.fromRGBO(181, 178, 178, 1),
-                fontWeight: FontWeight.w600,
-                fontFamily: "Inter",
+            Align(
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                "Calculate and keep record of your grades",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Color.fromRGBO(181, 178, 178, 1),
+                  fontWeight: FontWeight.w600,
+                  fontFamily: "Inter",
+                ),
               ),
             ),
             const SizedBox(
@@ -67,7 +76,7 @@ class _CGPAScreenState extends State<CGPAScreen> {
               style: const TextStyle(
                 fontSize: 50,
                 color: Color.fromRGBO(0, 5, 45, 1),
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w900,
                 fontFamily: "Inter",
               ),
             ),

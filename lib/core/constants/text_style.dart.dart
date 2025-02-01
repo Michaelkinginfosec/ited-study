@@ -60,7 +60,7 @@ class CustomTextStyles {
     color: Color.fromRGBO(252, 252, 255, 1),
   );
   static const TextStyle mediumSubtitleText = TextStyle(
-    fontSize: 20.0,
+    fontSize: 25.0,
     fontWeight: FontWeight.w900,
     fontFamily: 'inter',
     color: Color.fromRGBO(0, 5, 45, 1),

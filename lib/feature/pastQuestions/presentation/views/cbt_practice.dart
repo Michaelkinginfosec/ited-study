@@ -6,7 +6,6 @@ import 'package:ited_study/core/constants/boxsize.dart';
 import 'package:ited_study/feature/pastQuestions/presentation/widgets/number_container.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../../../../core/constants/text_style.dart.dart';
-import '../widgets/explanation_box.dart';
 
 class CbtPractice extends StatefulWidget {
   final String course;

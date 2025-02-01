@@ -154,23 +154,29 @@ class _CalculateCGPAScreenState extends State<CalculateCGPAScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            const Text(
-              "100 Level",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 30,
-                  color: Color.fromRGBO(0, 5, 45, 1),
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Inter"),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                "100 Level",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Color.fromRGBO(0, 5, 45, 1),
+                    fontWeight: FontWeight.w900,
+                    fontFamily: "Inter"),
+              ),
             ),
-            const Text(
-              "Enter your grades to calculate your GP",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15,
-                color: Color.fromRGBO(181, 178, 178, 1),
-                fontWeight: FontWeight.w600,
-                fontFamily: "Inter",
+            Align(
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                "Enter your grades to calculate your GP",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Color.fromRGBO(181, 178, 178, 1),
+                  fontWeight: FontWeight.w600,
+                  fontFamily: "Inter",
+                ),
               ),
             ),
             CustomSizeBox.smallBox,
@@ -204,6 +210,20 @@ class _CalculateCGPAScreenState extends State<CalculateCGPAScreen> {
                             ? color
                             : const Color.fromRGBO(0, 5, 45, 1),
                       ),
+                      child: semester == "first"
+                          ? Center(
+                              child: Text(
+                              "Second Semester",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white),
+                            ))
+                          : Center(
+                              child: Text(
+                                "Second Semester",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
+                            ),
                     ),
                   ),
                   Expanded(
@@ -227,6 +247,20 @@ class _CalculateCGPAScreenState extends State<CalculateCGPAScreen> {
                               ? color
                               : const Color.fromRGBO(0, 5, 45, 1),
                         ),
+                        child: semester == "second "
+                            ? Center(
+                                child: Text(
+                                "Second Semester",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ))
+                            : Center(
+                                child: Text(
+                                  "Second Semester",
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.white),
+                                ),
+                              ),
                       ),
                     ),
                   ),

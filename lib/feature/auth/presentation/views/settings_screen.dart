@@ -107,7 +107,6 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
         );
       }
     } else if (status.isPermanentlyDenied) {
-      // If permission is permanently denied, prompt to open app settings
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Permission denied. Please enable it from settings."),
@@ -169,7 +168,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
         backgroundColor: Colors.white,
         title: const Text(
           'Settings',
-          style: CustomTextStyles.normalTextSetting2,
+          style: CustomTextStyles.mediumSubtitleText,
         ),
       ),
       body: logOutState.status == LogoutStatus.loading ||
@@ -193,8 +192,8 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                           ),
                           Center(
                             child: Container(
-                              width: 130,
-                              height: 150,
+                              width: 150,
+                              height: 148,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
@@ -251,7 +250,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Container(
                       width: double.infinity,
-                      height: 50,
+                      height: 56,
                       decoration: BoxDecoration(
                         color: const Color.fromRGBO(217, 217, 217, 1),
                         borderRadius: BorderRadius.circular(10),
