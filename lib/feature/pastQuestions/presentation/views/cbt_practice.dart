@@ -6,7 +6,6 @@ import 'package:ited_study/core/constants/boxsize.dart';
 import 'package:ited_study/feature/pastQuestions/presentation/widgets/number_container.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../../../../core/constants/text_style.dart.dart';
-import '../widgets/explanation_box.dart';
 
 class CbtPractice extends StatefulWidget {
   final String course;
@@ -298,9 +297,16 @@ class _CbtPracticeState extends State<CbtPractice> {
                 clipBehavior: Clip.hardEdge,
                 child: Container(
                   width: double.infinity,
-                  height: 320,
+                  height: 450,
                   decoration: const BoxDecoration(
                     color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(
@@ -411,34 +417,36 @@ class _CbtPracticeState extends State<CbtPractice> {
                 ),
               ),
               CustomSizeBox.smallBox,
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(
-                      () {
-                        showContainer = !showContainer;
-                      },
-                    );
-                  },
-                  child: const Text(
-                    "Show Explanation",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(0, 5, 45, 1),
-                    ),
-                  ),
-                ),
-              ),
-              CustomSizeBox.mediumBox,
-              if (showContainer == true) ...[
-                const ExplanationBox(
-                  explanation:
-                      " The concept of tenses is related. It can be classified as IMPORTANT AND RESILLENCE",
-                ),
-                CustomSizeBox.smallBox,
-              ],
+              // Align(
+              //   alignment: Alignment.centerRight,
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       setState(
+              //         () {
+              //           showContainer = !showContainer;
+              //         },
+              //       );
+              //     },
+              //     child: const Text(
+              //       "Show Explanation",
+              //       style: TextStyle(
+              //         fontSize: 12,
+              //         fontWeight: FontWeight.bold,
+              //         color: Color.fromRGBO(0, 5, 45, 1),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // CustomSizeBox.mediumBox,
+              // if (showContainer == true) ...[
+              //   const ExplanationBox(
+              //     explanation:
+              //         " The concept of tenses is related. It can be classified as IMPORTANT AND RESILLENCE",
+              //   ),
+              //   CustomSizeBox.smallBox,
+              // ],
+
+              CustomSizeBox.smallBox,
               Row(
                 children: [
                   GestureDetector(
