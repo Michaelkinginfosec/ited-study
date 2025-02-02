@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -32,7 +33,7 @@ class SignUpScreenState extends ConsumerState<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _departmentController = TextEditingController();
   final TextEditingController _levelController = TextEditingController();
-
+  bool isVisible = true;
   String? selectedLevel;
   List<String> level = ['100', '200', '300', '400', '500', '600'];
 
@@ -205,9 +206,28 @@ class SignUpScreenState extends ConsumerState<SignUpScreen> {
                     ),
                     CustomSizeBox.smallBox,
                     CustomTextField(
-                      obscureText: true,
+                      obscureText: isVisible,
                       controller: _passwordController,
                       keyboardType: TextInputType.visiblePassword,
+                      suffix: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isVisible = !isVisible;
+                            });
+                          },
+                          child: isVisible
+                              ? Icon(
+                                  CupertinoIcons.eye,
+                                  size: 20,
+                                )
+                              : Icon(
+                                  CupertinoIcons.eye_slash,
+                                  size: 20,
+                                ),
+                        ),
+                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';

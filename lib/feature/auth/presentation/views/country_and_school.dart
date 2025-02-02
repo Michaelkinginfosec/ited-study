@@ -58,6 +58,7 @@ class CountryAndSchoolScreenState
       },
     );
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
       ),

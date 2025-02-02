@@ -1,15 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ited_study/core/widgets/custom_app_bar.dart';
 import 'package:ited_study/feature/auth/presentation/providers/change_password_provider.dart';
-
 import '../../../../core/constants/boxsize.dart';
 import '../../../../core/constants/text_style.dart.dart';
-
-import '../../../../core/route/route.dart';
 import '../widgets/text_field.dart';
 
 class ChangePasswordScreen extends ConsumerStatefulWidget {
@@ -24,6 +21,8 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
+
+  bool isVisible = true;
   @override
   Widget build(BuildContext context) {
     final changePasswordState = ref.watch(changePasswordNotifierProvider);
@@ -38,7 +37,6 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
               snackBarController =
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
           await snackBarController.closed;
-          context.pushReplacement(AppRoutes.login);
         } else if (next.status == ChangePasswordStatus.error) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -82,9 +80,28 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                       ),
                       CustomSizeBox.smallBox,
                       CustomTextField(
-                        obscureText: true,
+                        obscureText: isVisible,
                         controller: _oldPasswordController,
                         keyboardType: TextInputType.visiblePassword,
+                        suffix: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isVisible = !isVisible;
+                              });
+                            },
+                            child: isVisible
+                                ? Icon(
+                                    CupertinoIcons.eye,
+                                    size: 20,
+                                  )
+                                : Icon(
+                                    CupertinoIcons.eye_slash,
+                                    size: 20,
+                                  ),
+                          ),
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your password';
@@ -103,9 +120,28 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                         height: 5,
                       ),
                       CustomTextField(
-                        obscureText: true,
+                        obscureText: isVisible,
                         controller: _newPasswordController,
                         keyboardType: TextInputType.visiblePassword,
+                        suffix: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isVisible = !isVisible;
+                              });
+                            },
+                            child: isVisible
+                                ? Icon(
+                                    CupertinoIcons.eye,
+                                    size: 20,
+                                  )
+                                : Icon(
+                                    CupertinoIcons.eye_slash,
+                                    size: 20,
+                                  ),
+                          ),
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your password';

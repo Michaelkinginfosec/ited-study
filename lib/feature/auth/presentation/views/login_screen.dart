@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -21,7 +22,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final bool _isObscure = false;
+  bool isVisible = true;
   @override
   Widget build(BuildContext context) {
     final loginState = ref.watch(loginNotifierProvider);
@@ -79,7 +80,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -108,7 +111,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       CustomSizeBox.littleBox,
                       CustomTextField(
-                        obscureText: _isObscure,
+                        obscureText: false,
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
@@ -130,9 +133,28 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                         height: 5,
                       ),
                       CustomTextField(
-                        obscureText: true,
+                        obscureText: isVisible,
                         controller: _passwordController,
                         keyboardType: TextInputType.visiblePassword,
+                        suffix: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isVisible = !isVisible;
+                              });
+                            },
+                            child: isVisible
+                                ? Icon(
+                                    CupertinoIcons.eye,
+                                    size: 20,
+                                  )
+                                : Icon(
+                                    CupertinoIcons.eye_slash,
+                                    size: 20,
+                                  ),
+                          ),
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your password';

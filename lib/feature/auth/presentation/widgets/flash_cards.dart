@@ -9,11 +9,8 @@ class FlashCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 10,
       borderRadius: BorderRadius.circular(20),
       child: Container(
-        width: double.infinity,
-        height: 141,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -22,13 +19,13 @@ class FlashCards extends StatelessWidget {
               color: Colors.white10,
               spreadRadius: 3,
               blurRadius: 3,
-              offset: const Offset(10.0, 10.0),
+              offset: const Offset(2, 2),
             ),
             BoxShadow(
               color: Colors.white10,
               spreadRadius: 3,
               blurRadius: 3,
-              offset: const Offset(-10.0, -10.0),
+              offset: const Offset(-2, -2),
             ),
           ],
         ),

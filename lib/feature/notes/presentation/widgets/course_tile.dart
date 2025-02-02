@@ -18,7 +18,7 @@ class CustomListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 130,
+      height: 135,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
