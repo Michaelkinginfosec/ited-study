@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +8,7 @@ import '../../../../core/providers/network_provider.dart';
 import '../../../../core/route/route.dart';
 import '../../../notes/presentation/providers/course_provider.dart';
 import '../../../notes/presentation/providers/topic_provider.dart';
+import '../widgets/flash_cards.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -17,6 +19,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
+
   String userName = 'John Doe';
   String image = 'assets/images/avatar1.png';
   bool? isActivated;
@@ -24,26 +27,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   String? level;
 
   @override
-  // void initState() {
-  //   super.initState();
-
-  //   Future.microtask(() async {
-  //     await getUser();
-  //     if (schoolId != null && level != null) {
-  //       await ref
-  //           .read(courseNotifierProvider.notifier)
-  //           .getCourses(schoolId!, level!);
-  //       await ref
-  //           .read(topicNotifierProvider.notifier)
-  //           .getTopics(schoolId!, level!);
-  //     }
-  //   });
-  // }
-
   void initState() {
-    super.initState(); // Always call this first
+    super.initState();
 
-    // Check connectivity using ref.read
     final isConnected = ref.read(connectivityProvider);
 
     if (isConnected) {
@@ -124,16 +110,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           onTap: () {
                             context.push(AppRoutes.settings);
                           },
-                          child: Image(
-                            image: image == "" ||
+                          child: CircleAvatar(
+                            backgroundImage: image == "" ||
                                     image.isEmpty ||
                                     image == 'assets/images/avatar1.png'
                                 ? const AssetImage(
                                     'assets/images/avatar1.png',
                                   )
                                 : CachedNetworkImageProvider(image),
-                            height: 30,
-                            width: 30,
                           ),
                         ),
                       ],
@@ -170,7 +154,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       child: Row(
                         children: [
                           SizedBox(
-                            width: 300,
+                            width: 345,
                             height: double.infinity,
                             child: TextFormField(
                               controller: _searchController,
@@ -215,123 +199,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   children: [
-                    Material(
-                      elevation: 10,
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        width: double.infinity,
-                        height: 141,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white10,
-                              spreadRadius: 3,
-                              blurRadius: 3,
-                              offset: const Offset(10.0, 10.0),
-                            ),
-                            BoxShadow(
-                              color: Colors.white10,
-                              spreadRadius: 3,
-                              blurRadius: 3,
-                              offset: const Offset(-10.0, -10.0),
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 5, bottom: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Flash Cards",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w900,
-                                      color: Color.fromRGBO(15, 6, 94, 1),
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () =>
-                                        context.pushNamed(AppRoutes.general),
-                                    child: Text(
-                                      "Take more >",
-                                      style: TextStyle(
-                                        fontSize: 8,
-                                        fontWeight: FontWeight.w700,
-                                        color: Color.fromRGBO(15, 6, 94, 1),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Text(
-                                  "What is the chemical symbol for water?",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w900,
-                                    color: Color.fromRGBO(15, 6, 94, 1),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Container(
-                                width: 300,
-                                height: 17,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Color.fromRGBO(217, 217, 217, 1),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Row(
-                                    children: [
-                                      Text("A)"),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Text("H₂O"),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                width: 300,
-                                height: 17,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Color.fromRGBO(217, 217, 217, 1),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Row(
-                                    children: [
-                                      Text("B)"),
-                                      SizedBox(
-                                        width: 20,
-                                      ),
-                                      Text("CO₂"),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                    CarouselSlider(
+                      options: CarouselOptions(height: 141.0, autoPlay: true),
+                      items: [1, 2, 3, 4, 5].map((i) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: FlashCards(),
+                            );
+                          },
+                        );
+                      }).toList(),
                     ),
                     SizedBox(
                       height: 20,
@@ -606,7 +485,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                             ),
                                           ),
                                           Text(
-                                            'Get a chance to earn a scholarship.',
+                                            'get full app access after activation',
                                             style: TextStyle(
                                               fontSize: 10,
                                               fontWeight: FontWeight.w700,
@@ -626,64 +505,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        // InkWell(
-                        //   onTap: () {
-                        //     context.push(AppRoutes.scholarship);
-                        //   },
-                        //   child: Container(
-                        //     width: double.infinity,
-                        //     height: 55,
-                        //     decoration: BoxDecoration(
-                        //       borderRadius: BorderRadius.circular(10),
-                        //       boxShadow: [
-                        //         BoxShadow(
-                        //           color: Colors.black.withAlpha(51),
-                        //           spreadRadius: 3,
-                        //           blurRadius: 3,
-                        //           offset: const Offset(0.1, 0.1),
-                        //         ),
-                        //       ],
-                        //       color: const Color.fromRGBO(247, 0, 0, 1),
-                        //     ),
-                        //     child: Padding(
-                        //       padding: const EdgeInsets.only(
-                        //           left: 15, right: 8, top: 5, bottom: 5),
-                        //       child: Row(
-                        //         mainAxisAlignment:
-                        //             MainAxisAlignment.spaceBetween,
-                        //         children: [
-                        //           const Column(
-                        //             crossAxisAlignment:
-                        //                 CrossAxisAlignment.start,
-                        //             children: [
-                        //               Text(
-                        //                 'Special Courses',
-                        //                 style: TextStyle(
-                        //                   fontSize: 20,
-                        //                   fontWeight: FontWeight.w900,
-                        //                   color: Color.fromRGBO(
-                        //                       255, 255, 255, 1),
-                        //                 ),
-                        //               ),
-                        //               Text(
-                        //                 'Accesss Special Courses',
-                        //                 style: TextStyle(
-                        //                   fontSize: 10,
-                        //                   fontWeight: FontWeight.w700,
-                        //                   color: Color.fromRGBO(
-                        //                       255, 255, 255, 1),
-                        //                 ),
-                        //               ),
-                        //             ],
-                        //           ),
-                        //           Image.asset(
-                        //             "assets/images/special.png",
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                         Container(
                           width: double.infinity,
                           height: 203,
@@ -717,146 +538,68 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                isActivated == false
-                                    ? GestureDetector(
-                                        onTap: () {
-                                          context.push(AppRoutes.activate);
-                                        },
-                                        child: Container(
-                                          width: double.infinity,
-                                          height: 43,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: Colors.white,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color:
-                                                    Colors.black.withAlpha(51),
-                                                spreadRadius: 1,
-                                                blurRadius: 1,
-                                                offset: Offset(2, 2),
+                                Container(
+                                  width: double.infinity,
+                                  height: 43,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withAlpha(51),
+                                        spreadRadius: 1,
+                                        blurRadius: 1,
+                                        offset: Offset(2, 2),
+                                      ),
+                                      //
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              isActivated == true
+                                                  ? "App Update Available "
+                                                  : "Activate App",
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w900,
+                                                color: Color.fromRGBO(
+                                                    15, 6, 94, 1),
+                                                decoration:
+                                                    TextDecoration.underline,
                                               ),
-                                              //
-                                            ],
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 10,
                                             ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      isActivated == true
-                                                          ? "App Update Available "
-                                                          : "Activate App",
-                                                      style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.w900,
-                                                        color: Color.fromRGBO(
-                                                            15, 6, 94, 1),
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      isActivated == true
-                                                          ? "Check for app update"
-                                                          : "Get full app access after activation",
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: Colors.black,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Image.asset(
-                                                  "assets/images/app_update.png",
-                                                ),
-                                              ],
+                                            Text(
+                                              isActivated == true
+                                                  ? "Check for app update"
+                                                  : "Get full app access after activation",
+                                              style: TextStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.black,
+                                                decoration:
+                                                    TextDecoration.underline,
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      )
-                                    : Container(
-                                        width: double.infinity,
-                                        height: 43,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black.withAlpha(51),
-                                              spreadRadius: 1,
-                                              blurRadius: 1,
-                                              offset: Offset(2, 2),
-                                            ),
-                                            //
                                           ],
                                         ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 10,
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    isActivated == true
-                                                        ? "App Update Available "
-                                                        : "Activate App",
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w900,
-                                                      color: Color.fromRGBO(
-                                                          15, 6, 94, 1),
-                                                      decoration: TextDecoration
-                                                          .underline,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    isActivated == true
-                                                        ? "Check for app update"
-                                                        : "Get full app access after activation",
-                                                    style: TextStyle(
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: Colors.black,
-                                                      decoration: TextDecoration
-                                                          .underline,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Image.asset(
-                                                "assets/images/app_update.png",
-                                              ),
-                                            ],
-                                          ),
+                                        Image.asset(
+                                          "assets/images/app_update.png",
                                         ),
-                                      ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                                 isActivated == true
                                     ? InkWell(
                                         onTap: () {
@@ -877,7 +620,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                 blurRadius: 1,
                                                 offset: Offset(2, 2),
                                               ),
-                                              //
                                             ],
                                           ),
                                           child: Padding(
@@ -907,7 +649,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      "Get full app access after activation",
+                                                      'Get a chance to earn a scholarship.',
                                                       style: TextStyle(
                                                         fontSize: 10,
                                                         fontWeight:
@@ -942,7 +684,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                               blurRadius: 1,
                                               offset: Offset(2, 2),
                                             ),
-                                            //
                                           ],
                                         ),
                                         child: Padding(
@@ -970,7 +711,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    "Get full app access after activation",
+                                                    'Get a chance to earn a scholarship.',
                                                     style: TextStyle(
                                                       fontSize: 10,
                                                       fontWeight:
@@ -1002,7 +743,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                         blurRadius: 1,
                                         offset: Offset(2, 2),
                                       ),
-                                      //
                                     ],
                                   ),
                                   child: Padding(

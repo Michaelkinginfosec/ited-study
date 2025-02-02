@@ -10,7 +10,7 @@ import 'package:ited_study/core/constants/text_style.dart.dart';
 import 'package:ited_study/core/route/route.dart';
 import 'package:ited_study/feature/auth/presentation/providers/logout_provide.dart';
 import 'package:ited_study/feature/auth/presentation/providers/upload_image_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:permission_handler/permission_handler.dart';
 
 class SetttingsScreen extends ConsumerStatefulWidget {
   const SetttingsScreen({super.key});
@@ -67,62 +67,100 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
   }
 
   void pickImage() async {
-    var status = await Permission.photos.request();
+    try {
+      var box = Hive.box('sessionBox');
+      var userId = box.get('userId');
+      var token = box.get('token');
 
-    if (status.isGranted) {
-      try {
-        var box = Hive.box('sessionBox');
-        var userId = box.get('userId');
-        var token = box.get('token');
-
-        if (userId == null) {
-          throw Exception('User not found');
-        }
-        if (token == null) {
-          throw Exception('Unauthorized');
-        }
-
-        final imagePicker = ImagePicker();
-        final pickedFile =
-            await imagePicker.pickImage(source: ImageSource.gallery);
-
-        if (pickedFile != null) {
-          final imageBytes = await pickedFile.readAsBytes();
-          setState(() {
-            imageFile = imageBytes;
-          });
-
-          final url = await ref
-              .read(uploadImageNotifierProvider.notifier)
-              .uploadImage(imageBytes);
-
-          setState(() {
-            imageUrl = url;
-            image = imageUrl!;
-          });
-        }
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error picking image: $e")),
-        );
+      if (userId == null) {
+        throw Exception('User not found');
       }
-    } else if (status.isPermanentlyDenied) {
+      if (token == null) {
+        throw Exception('Unauthorized');
+      }
+
+      final imagePicker = ImagePicker();
+      final pickedFile =
+          await imagePicker.pickImage(source: ImageSource.gallery);
+
+      if (pickedFile != null) {
+        final imageBytes = await pickedFile.readAsBytes();
+        setState(() {
+          imageFile = imageBytes;
+        });
+
+        final url = await ref
+            .read(uploadImageNotifierProvider.notifier)
+            .uploadImage(imageBytes);
+
+        setState(() {
+          imageUrl = url;
+          image = imageUrl!;
+        });
+      }
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Permission denied. Please enable it from settings."),
-          action: SnackBarAction(
-            label: "Settings",
-            onPressed: () {
-              openAppSettings();
-            },
-          ),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Permission denied")),
+        SnackBar(content: Text("Error picking image: $e")),
       );
     }
+
+    // var status = await Permission.photos.request();
+
+    // if (status.isGranted) {
+    //   try {
+    //     var box = Hive.box('sessionBox');
+    //     var userId = box.get('userId');
+    //     var token = box.get('token');
+
+    //     if (userId == null) {
+    //       throw Exception('User not found');
+    //     }
+    //     if (token == null) {
+    //       throw Exception('Unauthorized');
+    //     }
+
+    //     final imagePicker = ImagePicker();
+    //     final pickedFile =
+    //         await imagePicker.pickImage(source: ImageSource.gallery);
+
+    //     if (pickedFile != null) {
+    //       final imageBytes = await pickedFile.readAsBytes();
+    //       setState(() {
+    //         imageFile = imageBytes;
+    //       });
+
+    //       final url = await ref
+    //           .read(uploadImageNotifierProvider.notifier)
+    //           .uploadImage(imageBytes);
+
+    //       setState(() {
+    //         imageUrl = url;
+    //         image = imageUrl!;
+    //       });
+    //     }
+    //   } catch (e) {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(content: Text("Error picking image: $e")),
+    //     );
+    //   }
+    // } else if (status.isPermanentlyDenied) {
+    //   // If permission is permanently denied, prompt to open app settings
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(
+    //       content: Text("Permission denied. Please enable it from settings."),
+    //       action: SnackBarAction(
+    //         label: "Settings",
+    //         onPressed: () {
+    //           openAppSettings();
+    //         },
+    //       ),
+    //     ),
+    //   );
+    // } else {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text("Permission denied")),
+    //   );
+    // }
   }
 
   @override
@@ -168,7 +206,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
         backgroundColor: Colors.white,
         title: const Text(
           'Settings',
-          style: CustomTextStyles.mediumSubtitleText,
+          style: CustomTextStyles.normalTextSetting2,
         ),
       ),
       body: logOutState.status == LogoutStatus.loading ||
@@ -182,18 +220,22 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                   Column(
                     children: [
                       Stack(
+                        clipBehavior: Clip.none,
                         children: [
                           Container(
                             width: double.infinity,
-                            height: 100,
+                            height: 150,
                             decoration: const BoxDecoration(
                               color: Color.fromRGBO(0, 5, 45, 1),
                             ),
                           ),
-                          Center(
+                          Positioned(
+                            bottom:
+                                -50, // Moves the circle 50px down outside the rectangle
+                            left: 120,
                             child: Container(
-                              width: 150,
-                              height: 148,
+                              width: 130,
+                              height: 150,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
@@ -217,8 +259,8 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                             ),
                           ),
                           Positioned(
-                            bottom: 10,
-                            right: -70,
+                            bottom: -20,
+                            right: -50,
                             left: 10,
                             child: GestureDetector(
                               onTap: pickImage,
@@ -240,7 +282,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                       ),
                     ],
                   ),
-                  CustomSizeBox.smallBox,
+                  CustomSizeBox.largeBox,
                   Text(
                     userName,
                     style: CustomTextStyles.nameTitle,
@@ -250,7 +292,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Container(
                       width: double.infinity,
-                      height: 56,
+                      height: 70,
                       decoration: BoxDecoration(
                         color: const Color.fromRGBO(217, 217, 217, 1),
                         borderRadius: BorderRadius.circular(10),
