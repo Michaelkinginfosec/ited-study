@@ -78,7 +78,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         children: [
           Container(
             width: double.infinity,
-            height: 190,
+            height: 200,
             decoration: BoxDecoration(
               color: Color.fromRGBO(15, 6, 94, 1),
               borderRadius: BorderRadius.only(
@@ -181,7 +181,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                           Expanded(
                             child: Image.asset("assets/images/search.png"),
-                          ),
+                          )
                         ],
                       ),
                     )

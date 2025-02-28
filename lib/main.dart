@@ -29,7 +29,7 @@ void main() async {
   await Hive.openBox('examQuestion');
   await Hive.openBox('countries');
 
-  await dotenv.load();
+  await dotenv.load(fileName: ".env");
   runApp(
     const ProviderScope(
       child: MyApp(),
