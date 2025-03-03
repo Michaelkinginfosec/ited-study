@@ -1,0 +1,2 @@
+/Users/michaelking/Desktop/ited-study/android/app/.cxx/RelWithDebInfo/86w716q4/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/michaelking/Desktop/ited-study/android/app/.cxx/RelWithDebInfo/86w716q4/armeabi-v7a/CMakeFiles/rebuild_cache.dir

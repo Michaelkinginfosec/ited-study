@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/feature/auth/data/repositories/user_repository_impl.dart';
 import 'package:ited_study/feature/auth/domain/usecases/get_countries_usecase.dart';
