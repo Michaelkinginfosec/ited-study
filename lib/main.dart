@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ited_study/feature/auth/data/models/users.dart';
@@ -29,7 +28,6 @@ void main() async {
   await Hive.openBox('examQuestion');
   await Hive.openBox('countries');
 
-  await dotenv.load(fileName: ".env");
   runApp(
     const ProviderScope(
       child: MyApp(),

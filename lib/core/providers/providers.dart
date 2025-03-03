@@ -35,12 +35,11 @@ final dioProvider = Provider<Dio>(
   (ref) {
     return Dio(
       BaseOptions(
-        baseUrl: dotenv.env['API_BASE_URL'] ?? '',
+        baseUrl: 'https://ited-admin-server.onrender.com/api/v1',
       ),
     );
   },
 );
-
 final usersRemoteDataSourceProvider = Provider<UsersRemoteDataSource>(
   (ref) {
     return UserRemoteDatasourceImp(
