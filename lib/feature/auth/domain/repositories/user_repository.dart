@@ -20,4 +20,8 @@ abstract class UsersRepository {
   Future<String> activateApp(String code, String device, String model,
       String osVersion, String uniqueId, String semester);
   Future<void> getCountries();
+
+  Future<Users> getStoredUser();
+
+  Future<List<String>> getStoredCountries();
 }

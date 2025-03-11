@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ited_study/core/constants/boxsize.dart';
-import 'package:ited_study/core/constants/text_style.dart.dart';
+import 'package:ited_study/core/config/boxsize.dart';
+import 'package:ited_study/core/config/text_style.dart.dart';
 import 'package:ited_study/core/route/route.dart';
 import 'package:ited_study/core/widgets/custom_app_bar.dart';
 import 'package:ited_study/feature/auth/presentation/providers/resend_otp_provider.dart';

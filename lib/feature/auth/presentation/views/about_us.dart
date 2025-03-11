@@ -1,8 +1,7 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
-import 'package:ited_study/core/constants/boxsize.dart';
-import 'package:ited_study/core/constants/text_style.dart.dart';
+import 'package:ited_study/core/config/boxsize.dart';
+import 'package:ited_study/core/config/text_style.dart.dart';
+import 'package:ited_study/core/utils/url_laucher.dart';
 
 class AboutUs extends StatelessWidget {
   const AboutUs({super.key});
@@ -16,17 +15,20 @@ class AboutUs extends StatelessWidget {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 20),
-            child: Container(
-              width: 150,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(0, 4, 45, 1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  "Contact Us",
-                  style: TextStyle(color: Colors.white),
+            child: GestureDetector(
+              onTap: () => UrlLaucher().openWhatsApp(),
+              child: Container(
+                width: 150,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(0, 4, 45, 1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    "Contact Us",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),

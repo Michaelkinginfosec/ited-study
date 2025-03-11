@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ited_study/core/constants/boxsize.dart';
-import 'package:ited_study/core/constants/text_style.dart.dart';
+import 'package:ited_study/core/config/boxsize.dart';
+import 'package:ited_study/core/config/text_style.dart.dart';
 import '../../../../core/route/route.dart';
 import '../../domain/model/courses.dart';
 import '../widgets/course_tile.dart';
@@ -68,48 +68,51 @@ class _CourseScreenState extends ConsumerState<CourseScreen> {
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
-                  height: 40,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    color: Color.fromRGBO(0, 5, 45, 1),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Courses",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15,
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Container(
+                    height: 40,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      color: Color.fromRGBO(0, 5, 45, 1),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Courses",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                        ),
                       ),
                     ),
                   ),
                 ),
-                Container(
-                  height: 40,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    border: Border.all(
-                      width: 1,
-                      color: Color.fromRGBO(0, 5, 45, 1),
-                    ),
-                    color: Colors.white,
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Completed",
-                      style: TextStyle(
-                        color: Color.fromRGBO(0, 5, 45, 1),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                )
+                // Container(
+                //   height: 40,
+                //   width: 150,
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(40),
+                //     border: Border.all(
+                //       width: 1,
+                //       color: Color.fromRGBO(0, 5, 45, 1),
+                //     ),
+                //     color: Colors.white,
+                //   ),
+                //   child: Center(
+                //     child: Text(
+                //       "Completed",
+                //       style: TextStyle(
+                //         color: Color.fromRGBO(0, 5, 45, 1),
+                //         fontWeight: FontWeight.w700,
+                //         fontSize: 15,
+                //       ),
+                //     ),
+                //   ),
+                // )
               ],
             ),
             CustomSizeBox.mediumBox,

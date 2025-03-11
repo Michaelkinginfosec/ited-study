@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:ited_study/core/widgets/custom_app_bar.dart';
 import 'package:ited_study/feature/auth/presentation/providers/change_password_provider.dart';
 
-import '../../../../core/constants/boxsize.dart';
-import '../../../../core/constants/text_style.dart.dart';
+import '../../../../core/config/boxsize.dart';
+import '../../../../core/config/text_style.dart.dart';
 
 import '../../../../core/route/route.dart';
 import '../widgets/text_field.dart';
@@ -24,6 +24,7 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
+  bool isVisible = false;
   @override
   Widget build(BuildContext context) {
     final changePasswordState = ref.watch(changePasswordNotifierProvider);
@@ -82,7 +83,7 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                       ),
                       CustomSizeBox.smallBox,
                       CustomTextField(
-                        obscureText: true,
+                        obscureText: isVisible,
                         controller: _oldPasswordController,
                         keyboardType: TextInputType.visiblePassword,
                         validator: (value) {
@@ -103,7 +104,7 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                         height: 5,
                       ),
                       CustomTextField(
-                        obscureText: true,
+                        obscureText: isVisible,
                         controller: _newPasswordController,
                         keyboardType: TextInputType.visiblePassword,
                         validator: (value) {
@@ -114,6 +115,47 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                           }
                           return null;
                         },
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isVisible = !isVisible;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 13,
+                              height: 13,
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 1, color: Colors.black),
+                              ),
+                              child: isVisible == true
+                                  ? Center(
+                                      child: Icon(
+                                        Icons.check,
+                                        size: 10,
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "show password",
+                              style: TextStyle(
+                                fontFamily: "Inter",
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       CustomSizeBox.extral,
                       changePasswordState.status == ChangePasswordStatus.loading
@@ -142,7 +184,7 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                                   ),
                                 ),
                                 child: Text(
-                                  "Change Password",
+                                  "Update Password",
                                   style: CustomTextStyles.buttonText,
                                 ),
                               ),

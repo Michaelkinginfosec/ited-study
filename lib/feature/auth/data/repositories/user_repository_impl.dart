@@ -1,17 +1,17 @@
-// lib/feature/auth/data/repositories/auth_repository_impl.dart
-
 import 'dart:typed_data';
 
 import 'package:ited_study/feature/auth/data/models/users.dart';
 import 'package:ited_study/feature/auth/domain/repositories/user_repository.dart';
 
-import '../datasources/remoteDataSource/user_remote_datasource.dart';
+import '../datasources/local/user_local_datasource.dart';
+import '../datasources/remote/user_remote_datasource.dart';
 import '../models/update_data.dart';
 
 class UserRepositoryImpl implements UsersRepository {
   final UsersRemoteDataSource remoteDataSource;
+  final UserLocalDatasource userLocalDatasource;
 
-  UserRepositoryImpl(this.remoteDataSource);
+  UserRepositoryImpl(this.remoteDataSource, this.userLocalDatasource);
 
   @override
   Future<String> signUp(Users user) async {
@@ -83,5 +83,15 @@ class UserRepositoryImpl implements UsersRepository {
   @override
   Future<void> getCountries() async {
     return remoteDataSource.getCountries();
+  }
+
+  @override
+  Future<Users> getStoredUser() async {
+    return userLocalDatasource.getStoredUser();
+  }
+
+  @override
+  Future<List<String>> getStoredCountries() async {
+    throw UnimplementedError();
   }
 }

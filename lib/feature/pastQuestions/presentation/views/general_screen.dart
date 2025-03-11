@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ited_study/core/constants/boxsize.dart';
+import 'package:ited_study/core/config/boxsize.dart';
 import 'package:ited_study/core/route/route.dart';
 import 'package:ited_study/feature/pastQuestions/presentation/widgets/past_question_container.dart';
 
-import '../../../../core/constants/text_style.dart.dart';
+import '../../../../core/config/text_style.dart.dart';
 
 class GeneralScreen extends StatelessWidget {
   const GeneralScreen({super.key});

@@ -11,10 +11,12 @@ import 'package:ited_study/feature/notes/data/repository/course_repository_impl.
 import 'package:ited_study/feature/notes/domain/repository/course_repository.dart';
 import 'package:ited_study/feature/notes/domain/usecase/course_usecase.dart';
 import 'package:ited_study/feature/notes/domain/usecase/topic_usecase.dart';
-import '../../feature/auth/data/datasources/remoteDataSource/user_remote_datasource.dart';
+import '../../feature/auth/data/datasources/local/user_local_datasource.dart';
+import '../../feature/auth/data/datasources/remote/user_remote_datasource.dart';
 import '../../feature/auth/domain/repositories/user_repository.dart';
 import '../../feature/auth/domain/usecases/change_password_usecase.dart';
 import '../../feature/auth/domain/usecases/create_school_usecase.dart';
+import '../../feature/auth/domain/usecases/get_stored_user_usecase.dart';
 import '../../feature/auth/domain/usecases/sign_up_usecase.dart';
 import '../../feature/auth/domain/usecases/update_user_usecase.dart';
 import '../../feature/auth/domain/usecases/activate_app_usecase.dart';
@@ -26,6 +28,7 @@ final usersRepositoryProvider = Provider<UsersRepository>(
   (ref) {
     return UserRepositoryImpl(
       ref.read(usersRemoteDataSourceProvider),
+      ref.read(userLocalDataSourceProvider),
     );
   },
 );
@@ -44,6 +47,11 @@ final usersRemoteDataSourceProvider = Provider<UsersRemoteDataSource>(
     return UserRemoteDatasourceImp(
       ref.read(dioProvider),
     );
+  },
+);
+final userLocalDataSourceProvider = Provider<UserLocalDatasource>(
+  (ref) {
+    return UserLocalDatasource();
   },
 );
 
@@ -66,6 +74,13 @@ final courseDatasourceProvider = Provider<CourseDatasource>(
 final signUpUseCaseProvider = Provider<SignUpUseCase>(
   (ref) {
     return SignUpUseCase(
+      ref.read(usersRepositoryProvider),
+    );
+  },
+);
+final getStoredUserUsecaseProvidr = Provider<GetStoredUserUsecase>(
+  (ref) {
+    return GetStoredUserUsecase(
       ref.read(usersRepositoryProvider),
     );
   },

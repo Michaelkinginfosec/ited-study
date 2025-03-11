@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ited_study/core/constants/text_style.dart.dart';
+import 'package:ited_study/core/config/text_style.dart.dart';
 
 class OTPField extends StatelessWidget {
   final TextEditingController controller;

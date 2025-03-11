@@ -8,35 +8,24 @@ class FlashCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      elevation: 10,
-      borderRadius: BorderRadius.circular(20),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Container(
-        width: double.infinity,
-        height: 141,
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.white10,
-              spreadRadius: 3,
-              blurRadius: 3,
-              offset: const Offset(10.0, 10.0),
-            ),
-            BoxShadow(
-              color: Colors.white10,
-              spreadRadius: 3,
-              blurRadius: 3,
-              offset: const Offset(-10.0, -10.0),
-            ),
-          ],
+          border: Border.all(
+            color: Colors.black,
+            width: 1,
+          ),
         ),
         child: Padding(
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,7 +57,7 @@ class FlashCards extends StatelessWidget {
                   "What is the chemical symbol for water?",
                   style: TextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w900,
+                    fontWeight: FontWeight.w700,
                     color: Color.fromRGBO(15, 6, 94, 1),
                   ),
                 ),
@@ -85,14 +74,30 @@ class FlashCards extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
-                  child: Row(
-                    children: [
-                      Text("A)"),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text("H₂O"),
-                    ],
+                  child: Center(
+                    child: Row(
+                      children: [
+                        Text(
+                          "A)",
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: Color.fromRGBO(15, 6, 94, 1),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          "H₂O",
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: Color.fromRGBO(15, 6, 94, 1),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -110,11 +115,25 @@ class FlashCards extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 10),
                   child: Row(
                     children: [
-                      Text("B)"),
+                      Text(
+                        "B)",
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          color: Color.fromRGBO(15, 6, 94, 1),
+                        ),
+                      ),
                       SizedBox(
                         width: 20,
                       ),
-                      Text("CO₂"),
+                      Text(
+                        "CO₂",
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          color: Color.fromRGBO(15, 6, 94, 1),
+                        ),
+                      ),
                     ],
                   ),
                 ),

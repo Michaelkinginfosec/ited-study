@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/boxsize.dart';
-import '../../../../core/constants/text_style.dart.dart';
+import '../../../../core/config/boxsize.dart';
+import '../../../../core/config/text_style.dart.dart';
 
 import '../widgets/text_field.dart';
 
@@ -21,7 +21,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Column(

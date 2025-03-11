@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ited_study/core/constants/text_style.dart.dart';
+import 'package:ited_study/core/config/text_style.dart.dart';
 import 'package:ited_study/core/widgets/custom_app_bar.dart';
 import 'package:ited_study/feature/auth/data/models/users.dart';
 import 'package:ited_study/feature/auth/presentation/widgets/text_field.dart';
 
-import '../../../../core/constants/boxsize.dart';
+import '../../../../core/config/boxsize.dart';
 import '../../../../core/route/route.dart';
 import '../providers/sign_up_provider.dart';
 
@@ -32,6 +32,7 @@ class SignUpScreenState extends ConsumerState<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _departmentController = TextEditingController();
   final TextEditingController _levelController = TextEditingController();
+  bool isVisible = false;
 
   String? selectedLevel;
   List<String> level = ['100', '200', '300', '400', '500', '600'];
@@ -205,7 +206,20 @@ class SignUpScreenState extends ConsumerState<SignUpScreen> {
                     ),
                     CustomSizeBox.smallBox,
                     CustomTextField(
-                      obscureText: true,
+                      suffix: Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isVisible = !isVisible;
+                            });
+                          },
+                          child: isVisible
+                              ? Icon(Icons.visibility_off)
+                              : Icon(Icons.visibility),
+                        ),
+                      ),
+                      obscureText: isVisible ? false : true,
                       controller: _passwordController,
                       keyboardType: TextInputType.visiblePassword,
                       validator: (value) {

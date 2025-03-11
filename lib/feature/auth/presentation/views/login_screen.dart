@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ited_study/core/constants/boxsize.dart';
-import 'package:ited_study/core/constants/text_style.dart.dart';
+import 'package:ited_study/core/config/boxsize.dart';
+import 'package:ited_study/core/config/text_style.dart.dart';
 import 'package:ited_study/core/route/route.dart';
 import 'package:ited_study/feature/auth/presentation/providers/login_provider.dart';
 import 'package:ited_study/feature/auth/presentation/widgets/text_field.dart';
@@ -21,6 +21,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool isVisible = false;
   final bool _isObscure = false;
   @override
   Widget build(BuildContext context) {
@@ -92,7 +93,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                 CustomSizeBox.extralBig,
                 Text(
                   "Log  In",
-                  style: CustomTextStyles.largeBoldTitle,
+                  style: CustomTextStyles.bold,
                 ),
                 Text(
                   "Enter your details to log in",
@@ -132,7 +133,20 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                         height: 5,
                       ),
                       CustomTextField(
-                        obscureText: true,
+                        suffix: Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isVisible = !isVisible;
+                              });
+                            },
+                            child: isVisible
+                                ? Icon(Icons.visibility_off)
+                                : Icon(Icons.visibility),
+                          ),
+                        ),
+                        obscureText: isVisible ? false : true,
                         controller: _passwordController,
                         keyboardType: TextInputType.visiblePassword,
                         validator: (value) {

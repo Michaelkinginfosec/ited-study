@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/core/widgets/custom_app_bar.dart';
 import 'package:ited_study/feature/auth/presentation/providers/activate_app_provider.dart';
-import '../../../../core/constants/boxsize.dart';
-import '../../../../core/constants/text_style.dart.dart';
+import '../../../../core/config/boxsize.dart';
+import '../../../../core/config/text_style.dart.dart';
 import '../widgets/text_field.dart';
 
 class ActivateAppScreen extends ConsumerStatefulWidget {
@@ -100,18 +101,26 @@ class ActivateAppScreenState extends ConsumerState<ActivateAppScreen> {
               "Select Semester",
               style: CustomTextStyles.mediumSubtitle,
             ),
-            DropdownButtonFormField(
+            DropdownButtonFormField2(
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: Colors.black,
+                  ),
+                ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(
+                    width: 1,
                     color: CustomTextStyles.textFieldColor,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
+                    width: 1,
                     color: CustomTextStyles.textFieldColor,
                   ),
                 ),
@@ -139,7 +148,7 @@ class ActivateAppScreenState extends ConsumerState<ActivateAppScreen> {
                   value: schoolName,
                   child: Text(
                     schoolName,
-                    style: TextStyle(fontSize: 12),
+                    style: TextStyle(fontSize: 14),
                   ),
                 );
               }).toList(),
@@ -174,7 +183,9 @@ class ActivateAppScreenState extends ConsumerState<ActivateAppScreen> {
                 return null;
               },
             ),
-            CustomSizeBox.littleBox,
+            SizedBox(
+              height: 20,
+            ),
             activateState.status == ActivateStatus.loading
                 ? Center(
                     child: CircularProgressIndicator.adaptive(),
@@ -214,6 +225,137 @@ class ActivateAppScreenState extends ConsumerState<ActivateAppScreen> {
                       ),
                     ),
                   ),
+            SizedBox(
+              height: 20,
+            ),
+            Spacer(),
+            Text(
+              "To get your activation pin pay through bank transfer",
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "Pay Through Bank Transfer",
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  "Amount:",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  width: 110,
+                ),
+                Text(
+                  "2000",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  "Bank Name: ",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  width: 80,
+                ),
+                Text(
+                  "Opay",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  "Account Number: ",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  width: 40,
+                ),
+                Text(
+                  "8156604439",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  "Account Name: ",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(
+                  width: 55,
+                ),
+                Text(
+                  "Daniel Kalu",
+                  style: TextStyle(
+                    fontFamily: "Inter",
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "After making the payment chat\n+2348156604439 on whatsapp stating your Name and Level.",
+              style: TextStyle(
+                fontFamily: "Inter",
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+              ),
+            ),
+            Spacer(
+              flex: 10,
+            ),
           ],
         ),
       ),

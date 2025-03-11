@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/feature/auth/presentation/providers/update_user_provider.dart';
 
-import '../../../../core/constants/boxsize.dart';
-import '../../../../core/constants/text_style.dart.dart';
+import '../../../../core/config/boxsize.dart';
+import '../../../../core/config/text_style.dart.dart';
 
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/models/update_data.dart';

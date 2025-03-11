@@ -2,7 +2,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:ited_study/core/constants/text_style.dart.dart';
+import 'package:ited_study/core/config/text_style.dart.dart';
 
 class CustomTextField extends StatelessWidget {
   final bool obscureText;
@@ -11,6 +11,7 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final FocusNode? focusNode;
   final TextInputType keyboardType;
+  final Widget? suffix;
 
   final String? Function(String?)? onChanged;
   const CustomTextField({
@@ -22,6 +23,7 @@ class CustomTextField extends StatelessWidget {
     this.focusNode,
     required this.keyboardType,
     this.onChanged,
+    this.suffix,
   });
 
   @override
@@ -36,6 +38,7 @@ class CustomTextField extends StatelessWidget {
       textInputAction: TextInputAction.next,
       onChanged: onChanged,
       decoration: InputDecoration(
+        suffix: suffix,
         contentPadding: EdgeInsets.all(3),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

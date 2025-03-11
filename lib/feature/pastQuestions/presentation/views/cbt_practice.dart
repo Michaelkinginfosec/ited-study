@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ited_study/core/constants/boxsize.dart';
+import 'package:ited_study/core/config/boxsize.dart';
 import 'package:ited_study/feature/pastQuestions/presentation/widgets/number_container.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import '../../../../core/constants/text_style.dart.dart';
+import '../../../../core/config/text_style.dart.dart';
 
 class CbtPractice extends StatefulWidget {
   final String course;

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ited_study/core/constants/boxsize.dart';
+import 'package:ited_study/core/config/boxsize.dart';
 import 'package:ited_study/core/route/route.dart';
-import '../../../../core/constants/text_style.dart.dart';
+import '../../../../core/config/text_style.dart.dart';
 import '../providers/create_school_provider.dart';
 
 class CountryAndSchoolScreen extends ConsumerStatefulWidget {
@@ -64,7 +64,6 @@ class CountryAndSchoolScreenState
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               "Select your  Country and School",
@@ -78,7 +77,7 @@ class CountryAndSchoolScreenState
             CustomSizeBox.smallBox,
             DropdownButtonFormField(
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(
@@ -134,6 +133,7 @@ class CountryAndSchoolScreenState
             ),
             CustomSizeBox.smallBox,
             DropdownButtonFormField(
+              dropdownColor: Colors.white,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(horizontal: 5),
                 enabledBorder: OutlineInputBorder(
@@ -188,28 +188,31 @@ class CountryAndSchoolScreenState
                 return null;
               },
             ),
-            CustomSizeBox.mediumBox,
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  if (selectedSchool == null || selectedCountry == null) {
-                    context.push(AppRoutes.login);
-                  } else {
-                    ref
-                        .read(createSchoolNotifierProvider.notifier)
-                        .createSchool(selectedSchool!, selectedCountry!);
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: CustomTextStyles.loginsignupButtonColor,
-                  minimumSize: Size(228, 41),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 50),
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (selectedSchool == null || selectedCountry == null) {
+                      context.push(AppRoutes.login);
+                    } else {
+                      ref
+                          .read(createSchoolNotifierProvider.notifier)
+                          .createSchool(selectedSchool!, selectedCountry!);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: CustomTextStyles.loginsignupButtonColor,
+                    minimumSize: Size(228, 41),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
-                ),
-                child: Text(
-                  "Next",
-                  style: CustomTextStyles.buttonText,
+                  child: Text(
+                    "Next",
+                    style: CustomTextStyles.buttonText,
+                  ),
                 ),
               ),
             ),

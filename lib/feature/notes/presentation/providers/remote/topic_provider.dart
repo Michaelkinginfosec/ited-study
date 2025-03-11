@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/providers/providers.dart';
-import '../../domain/usecase/topic_usecase.dart';
+import '../../../../../core/providers/providers.dart';
+import '../../../domain/usecase/topic_usecase.dart';
 
 enum TopicStatus { loading, success, initial, error }
 
