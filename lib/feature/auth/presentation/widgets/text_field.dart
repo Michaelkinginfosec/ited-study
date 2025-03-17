@@ -2,7 +2,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:ited_study/core/config/text_style.dart.dart';
+import 'package:ited_study/core/config/style/text_style.dart.dart';
 
 class CustomTextField extends StatelessWidget {
   final bool obscureText;

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/providers/network_provider.dart';
-import '../../../../core/route/route.dart';
+import '../../../../core/config/routes/route.dart';
 import '../providers/local/get_stored_user_provider.dart';
 
 import '../widgets/flash_cards.dart';
@@ -16,8 +16,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  final TextEditingController _searchController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -99,44 +97,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                             Container(
                               width: double.infinity,
-                              height: 30,
+                              height: 40,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 345,
-                                    height: double.infinity,
-                                    child: TextFormField(
-                                      controller: _searchController,
-                                      keyboardType: TextInputType.text,
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        enabled: true,
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        hintText: "Search",
-                                        hintStyle: TextStyle(
-                                          color: Color.fromRGBO(15, 6, 94, 1),
-                                        ),
-                                      ),
+                              child: Center(
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "University of Benin",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 18,
+                                      fontFamily: 'Karla',
+                                      color: Color.fromRGBO(0, 5, 45, 1),
                                     ),
                                   ),
-                                  Expanded(
-                                    child:
-                                        Image.asset("assets/images/search.png"),
-                                  )
-                                ],
+                                ),
                               ),
                             )
                           ],
@@ -146,28 +124,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     SizedBox(
                       height: 20,
                     ),
-
                     SizedBox(
                       height: 140,
                       child: FlashCards(),
                     ),
-
-                    // SizedBox(
-                    //   height: 140,
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    //     child: SizedBox(
-                    //       width: double.infinity,
-                    //       child: ListView.builder(
-                    //         scrollDirection: Axis.horizontal,
-                    //         itemCount: 1,
-                    //         itemBuilder: (context, index) {
-                    //           return FlashCards();
-                    //         },
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Padding(
@@ -1027,8 +987,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ],
                 )
               : storedUserState.status == StoredUserStatus.error
-                  ? Text('Error: ${storedUserState.error}')
-                  : Container(),
+                  ? Center(
+                      child: Text('Error: ${storedUserState.error}'),
+                    )
+                  : Center(
+                      child: Container(),
+                    ),
     );
   }
 }

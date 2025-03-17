@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ited_study/core/config/boxsize.dart';
-import 'package:ited_study/core/config/text_style.dart.dart';
-import 'package:ited_study/core/route/route.dart';
+import 'package:ited_study/core/config/style/boxsize.dart';
+import 'package:ited_study/core/config/routes/route.dart';
 import 'package:ited_study/feature/auth/presentation/providers/logout_provide.dart';
 import 'package:ited_study/feature/auth/presentation/providers/upload_image_provider.dart';
 import '../../../../core/providers/network_provider.dart';
@@ -52,7 +51,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
       logoutNotifierProvider,
       (previous, next) {
         if (next.status == LogoutStatus.success) {
-          context.pushReplacement(AppRoutes.onboarding);
+          context.go(AppRoutes.onboarding);
         } else if (next.status == LogoutStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -108,7 +107,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),
-                                    elevation: 2,
+                                    elevation: 5,
                                     child: Container(
                                       height: 60,
                                       decoration: BoxDecoration(
@@ -127,12 +126,25 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                                   MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 Text(
-                                                    storedUserState.user!.level,
-                                                    style: CustomTextStyles
-                                                        .mediumSubtitleText),
-                                                const Text("LEVEL",
-                                                    style: CustomTextStyles
-                                                        .levelTitle),
+                                                  storedUserState.user!.level,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w800,
+                                                    fontSize: 23,
+                                                    fontFamily: 'Karla',
+                                                    color: Color.fromRGBO(
+                                                        0, 5, 45, 1),
+                                                  ),
+                                                ),
+                                                const Text(
+                                                  "LEVEL",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 12,
+                                                    fontFamily: 'Karla',
+                                                    color: Color.fromRGBO(
+                                                        0, 5, 45, 1),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                             Column(
@@ -145,13 +157,25 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                                           "null"
                                                       ? storedUserState
                                                           .user!.semester!
-                                                      : "First",
-                                                  style: CustomTextStyles
-                                                      .mediumSubtitleText,
+                                                      : "UNIBEN",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w800,
+                                                    fontSize: 23,
+                                                    fontFamily: 'Karla',
+                                                    color: Color.fromRGBO(
+                                                        0, 5, 45, 1),
+                                                  ),
                                                 ),
-                                                Text("Semester",
-                                                    style: CustomTextStyles
-                                                        .levelTitle),
+                                                Text(
+                                                  "SCHOOL",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 12,
+                                                    fontFamily: 'Karla',
+                                                    color: Color.fromRGBO(
+                                                        0, 5, 45, 1),
+                                                  ),
+                                                )
                                               ],
                                             ),
                                             Column(
@@ -160,12 +184,24 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                               children: [
                                                 Text(
                                                   cgpa.toStringAsFixed(2),
-                                                  style: CustomTextStyles
-                                                      .mediumSubtitleText,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w800,
+                                                    fontSize: 23,
+                                                    fontFamily: 'Karla',
+                                                    color: Color.fromRGBO(
+                                                        0, 5, 45, 1),
+                                                  ),
                                                 ),
-                                                const Text("C.G.P.A",
-                                                    style: CustomTextStyles
-                                                        .levelTitle),
+                                                const Text(
+                                                  "C.G.P.A",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 12,
+                                                    fontFamily: 'Karla',
+                                                    color: Color.fromRGBO(
+                                                        0, 5, 45, 1),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ],
@@ -178,13 +214,14 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                   left:
                                       MediaQuery.of(context).size.width * 0.5 -
                                           70,
-                                  bottom: 90,
+                                  bottom: 80,
                                   child: Text(
                                     storedUserState.user!.fullName,
-                                    style: const TextStyle(
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 23,
+                                      fontFamily: 'Karla',
                                       color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                 ),
@@ -194,7 +231,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                         ],
                       ),
                       const SizedBox(
-                        height: 10,
+                        height: 30,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -206,7 +243,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                           elevation: 5,
                           child: Container(
                             width: double.infinity,
-                            height: 430,
+                            height: 490,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -238,14 +275,24 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Edit Profile",
-                                                style: CustomTextStyles
-                                                    .settingsText,
+                                                "Edit My Bio",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 20,
+                                                  fontFamily: 'Karla',
+                                                  color: Color.fromRGBO(
+                                                      0, 5, 45, 1),
+                                                ),
                                               ),
                                               Text(
                                                 "Update you personal profile",
-                                                style: CustomTextStyles
-                                                    .textSettings,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 15,
+                                                  fontFamily: 'Karla',
+                                                  color: Color.fromRGBO(
+                                                      0, 5, 45, 1),
+                                                ),
                                               )
                                             ],
                                           ),
@@ -277,13 +324,23 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                             children: [
                                               Text(
                                                 "Password Reset",
-                                                style: CustomTextStyles
-                                                    .normalTextSetting,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 20,
+                                                  fontFamily: 'Karla',
+                                                  color: Color.fromRGBO(
+                                                      0, 5, 45, 1),
+                                                ),
                                               ),
                                               Text(
                                                 "Change your password",
-                                                style: CustomTextStyles
-                                                    .textSettings,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 15,
+                                                  fontFamily: 'Karla',
+                                                  color: Color.fromRGBO(
+                                                      0, 5, 45, 1),
+                                                ),
                                               )
                                             ],
                                           ),
@@ -315,13 +372,23 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                             children: [
                                               Text(
                                                 "App Activation",
-                                                style: CustomTextStyles
-                                                    .normalTextSetting,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 20,
+                                                  fontFamily: 'Karla',
+                                                  color: Color.fromRGBO(
+                                                      0, 5, 45, 1),
+                                                ),
                                               ),
                                               Text(
                                                 "Get activated to unlock full access",
-                                                style: CustomTextStyles
-                                                    .textSettings,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 15,
+                                                  fontFamily: 'Karla',
+                                                  color: Color.fromRGBO(
+                                                      0, 5, 45, 1),
+                                                ),
                                               )
                                             ],
                                           ),
@@ -353,13 +420,23 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                             children: [
                                               Text(
                                                 "About Us",
-                                                style: CustomTextStyles
-                                                    .normalTextSetting,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 20,
+                                                  fontFamily: 'Karla',
+                                                  color: Color.fromRGBO(
+                                                      0, 5, 45, 1),
+                                                ),
                                               ),
                                               Text(
                                                 "Mission, Vision, Terms and Conditions",
-                                                style: CustomTextStyles
-                                                    .textSettings,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 15,
+                                                  fontFamily: 'Karla',
+                                                  color: Color.fromRGBO(
+                                                      0, 5, 45, 1),
+                                                ),
                                               )
                                             ],
                                           ),
@@ -470,13 +547,23 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                             children: [
                                               Text(
                                                 "Log Out",
-                                                style: CustomTextStyles
-                                                    .normalTextSetting,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 20,
+                                                  fontFamily: 'Karla',
+                                                  color: Color.fromRGBO(
+                                                      0, 5, 45, 1),
+                                                ),
                                               ),
                                               Text(
                                                 "Sign Out of your account",
-                                                style: CustomTextStyles
-                                                    .textSettings,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 15,
+                                                  fontFamily: 'Karla',
+                                                  color: Color.fromRGBO(
+                                                      0, 5, 45, 1),
+                                                ),
                                               ),
                                             ],
                                           ),

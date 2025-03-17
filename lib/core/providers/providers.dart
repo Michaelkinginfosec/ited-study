@@ -5,6 +5,7 @@ import 'package:ited_study/feature/auth/domain/usecases/get_countries_usecase.da
 import 'package:ited_study/feature/auth/domain/usecases/login_usecase.dart';
 import 'package:ited_study/feature/auth/domain/usecases/logout_usecase.dart';
 import 'package:ited_study/feature/auth/domain/usecases/resend_otp_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/reset_password_usecase.dart';
 import 'package:ited_study/feature/auth/domain/usecases/verify_otp_usecase.dart';
 import 'package:ited_study/feature/notes/data/datasource/course_datasource.dart';
 import 'package:ited_study/feature/notes/data/repository/course_repository_impl.dart';
@@ -17,6 +18,7 @@ import '../../feature/auth/domain/repositories/user_repository.dart';
 import '../../feature/auth/domain/usecases/change_password_usecase.dart';
 import '../../feature/auth/domain/usecases/create_school_usecase.dart';
 import '../../feature/auth/domain/usecases/get_stored_user_usecase.dart';
+import '../../feature/auth/domain/usecases/resend_verification_code_usecase.dart';
 import '../../feature/auth/domain/usecases/sign_up_usecase.dart';
 import '../../feature/auth/domain/usecases/update_user_usecase.dart';
 import '../../feature/auth/domain/usecases/activate_app_usecase.dart';
@@ -118,6 +120,20 @@ final resendOTPUsecaseProvider = Provider<ResendOTPUsecase>(
   },
 );
 
+final resendVerificationUsecaseProvider = Provider<SendVerificationCodeUsecase>(
+  (ref) {
+    return SendVerificationCodeUsecase(
+      ref.read(usersRepositoryProvider),
+    );
+  },
+);
+final resetPasswordUsecaseProvider = Provider<ResetPasswordUsecase>(
+  (ref) {
+    return ResetPasswordUsecase(
+      ref.read(usersRepositoryProvider),
+    );
+  },
+);
 final logoutUsecaseProvider = Provider<LogoutUsecase>(
   (ref) {
     return LogoutUsecase(

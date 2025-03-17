@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import '../../../../core/config/boxsize.dart';
-import '../../../../core/config/text_style.dart.dart';
+import '../../../../core/config/style/boxsize.dart';
+import '../../../../core/config/style/text_style.dart.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../widgets/text_field.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/route/route.dart';
+import '../../../../core/config/routes/route.dart';
 
 class FlashCards extends StatelessWidget {
   const FlashCards({super.key});

@@ -1,15 +1,15 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ited_study/core/route/route.dart';
+import 'package:ited_study/core/config/routes/route.dart';
 import 'package:ited_study/feature/onboarding_screen/first_screen.dart';
 import 'package:ited_study/feature/onboarding_screen/second_screen.dart';
 import 'package:ited_study/feature/onboarding_screen/third_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
   @override
-  _OnboardingScreenState createState() => _OnboardingScreenState();
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {

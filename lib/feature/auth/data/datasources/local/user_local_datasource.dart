@@ -3,7 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../models/users.dart';
 
 class UserLocalDatasource {
-  Future<Users> getStoredUser() {
+  Future<Users> getStoredUser() async {
     final box = Hive.box("usersBox");
     final user = box.get("users", defaultValue: null);
     return user;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ited_study/core/config/boxsize.dart';
-import 'package:ited_study/core/config/text_style.dart.dart';
+import 'package:ited_study/core/config/style/boxsize.dart';
+import 'package:ited_study/core/config/style/text_style.dart.dart';
 import 'package:ited_study/core/utils/url_laucher.dart';
 
 class AboutUs extends StatelessWidget {

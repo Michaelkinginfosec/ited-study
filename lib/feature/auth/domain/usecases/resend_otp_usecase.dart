@@ -5,7 +5,7 @@ class ResendOTPUsecase {
 
   ResendOTPUsecase(this.usersRepository);
 
-  Future<String> call(String email) async {
-    return await usersRepository.resendVerificationCode(email);
+  Future<String?> call(String email) async {
+    return await usersRepository.sendResetOTP(email);
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ited_study/core/config/boxsize.dart';
-import 'package:ited_study/core/config/text_style.dart.dart';
+import 'package:ited_study/core/config/style/boxsize.dart';
+import 'package:ited_study/core/config/style/text_style.dart.dart';
 
-import '../../../../core/route/route.dart';
+import '../../../../core/config/routes/route.dart';
 
 class PastExamQuestionScreen extends StatefulWidget {
   final String selectedYear;

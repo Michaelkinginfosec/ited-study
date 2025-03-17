@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ited_study/feature/auth/data/models/users.dart';
 import 'package:ited_study/feature/notes/domain/model/courses.dart';
-import 'core/route/route_config.dart';
+import 'core/config/routes/route_config.dart';
 import 'feature/notes/domain/model/notes.dart';
 import 'feature/notes/domain/model/topics.dart';
 

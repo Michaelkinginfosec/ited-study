@@ -6,10 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:ited_study/core/widgets/custom_app_bar.dart';
 import 'package:ited_study/feature/auth/presentation/providers/change_password_provider.dart';
 
-import '../../../../core/config/boxsize.dart';
-import '../../../../core/config/text_style.dart.dart';
+import '../../../../core/config/style/boxsize.dart';
+import '../../../../core/config/style/text_style.dart.dart';
 
-import '../../../../core/route/route.dart';
+import '../../../../core/config/routes/route.dart';
 import '../widgets/text_field.dart';
 
 class ChangePasswordScreen extends ConsumerStatefulWidget {

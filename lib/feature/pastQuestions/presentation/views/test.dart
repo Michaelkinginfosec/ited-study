@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ited_study/core/config/boxsize.dart';
-import 'package:ited_study/core/route/route.dart';
+import 'package:ited_study/core/config/style/boxsize.dart';
+import 'package:ited_study/core/config/routes/route.dart';
 import '../../../notes/domain/model/courses.dart';
 import '../../../notes/domain/model/topics.dart';
 import '../widgets/dropdownformfield.dart';

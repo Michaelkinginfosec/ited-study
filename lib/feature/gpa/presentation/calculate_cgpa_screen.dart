@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ited_study/core/config/boxsize.dart';
-import '../../../core/config/text_style.dart.dart';
+import 'package:ited_study/core/config/style/boxsize.dart';
+import '../../../core/config/style/text_style.dart.dart';
 
 class CalculateCGPAScreen extends StatefulWidget {
   const CalculateCGPAScreen({super.key});

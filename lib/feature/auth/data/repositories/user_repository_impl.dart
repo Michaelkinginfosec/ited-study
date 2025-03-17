@@ -86,6 +86,17 @@ class UserRepositoryImpl implements UsersRepository {
   }
 
   @override
+  Future<String?> sendResetOTP(String email) async {
+    return remoteDataSource.sendResetOTP(email);
+  }
+
+  @override
+  Future<String?> resetPassword(String otp, String newPassword) async {
+    return remoteDataSource.resetPassword(otp, newPassword);
+  }
+  //Local Database
+
+  @override
   Future<Users> getStoredUser() async {
     return userLocalDatasource.getStoredUser();
   }

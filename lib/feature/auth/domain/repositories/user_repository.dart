@@ -20,6 +20,10 @@ abstract class UsersRepository {
   Future<String> activateApp(String code, String device, String model,
       String osVersion, String uniqueId, String semester);
   Future<void> getCountries();
+  Future<String?> sendResetOTP(String email);
+  Future<String?> resetPassword(String otp, String newPassword);
+
+  //Local Database
 
   Future<Users> getStoredUser();
 

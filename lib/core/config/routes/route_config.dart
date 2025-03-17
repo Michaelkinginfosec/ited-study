@@ -22,13 +22,14 @@ import 'package:ited_study/feature/pastQuestions/presentation/views/exam_cbt_mod
 import 'package:ited_study/feature/pastQuestions/presentation/views/test.dart';
 import 'package:ited_study/feature/onboarding_screen/onboarding_screen.dart';
 import 'package:ited_study/feature/auth/presentation/views/settings_screen.dart';
-import '../../feature/auth/presentation/views/activate_app_screen.dart';
-import '../../feature/auth/presentation/views/home_screen.dart';
-import '../../feature/auth/presentation/views/scholarship_screen.dart';
-import '../../feature/notes/presentation/views/course_screen.dart';
-import '../../feature/pastQuestions/presentation/views/examquestion.dart';
-import '../../feature/pastQuestions/presentation/views/general_screen.dart';
-import '../../feature/pastQuestions/presentation/views/testquestion.dart';
+
+import '../../../feature/auth/presentation/views/activate_app_screen.dart';
+import '../../../feature/auth/presentation/views/home_screen.dart';
+import '../../../feature/auth/presentation/views/scholarship_screen.dart';
+import '../../../feature/notes/presentation/views/course_screen.dart';
+import '../../../feature/pastQuestions/presentation/views/examquestion.dart';
+import '../../../feature/pastQuestions/presentation/views/general_screen.dart';
+import '../../../feature/pastQuestions/presentation/views/testquestion.dart';
 import 'route.dart';
 
 final box = Hive.box('sessionBox');

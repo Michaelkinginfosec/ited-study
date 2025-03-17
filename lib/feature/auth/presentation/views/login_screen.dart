@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ited_study/core/config/boxsize.dart';
-import 'package:ited_study/core/config/text_style.dart.dart';
-import 'package:ited_study/core/route/route.dart';
+import 'package:ited_study/core/config/style/boxsize.dart';
+import 'package:ited_study/core/config/style/text_style.dart.dart';
+import 'package:ited_study/core/config/routes/route.dart';
 import 'package:ited_study/feature/auth/presentation/providers/login_provider.dart';
 import 'package:ited_study/feature/auth/presentation/widgets/text_field.dart';
 import '../providers/resend_otp_provider.dart';
@@ -22,7 +22,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isVisible = false;
-  final bool _isObscure = false;
+  bool isObscure = false;
   @override
   Widget build(BuildContext context) {
     final loginState = ref.watch(loginNotifierProvider);
@@ -111,7 +111,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       CustomSizeBox.littleBox,
                       CustomTextField(
-                        obscureText: _isObscure,
+                        obscureText: isObscure,
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {

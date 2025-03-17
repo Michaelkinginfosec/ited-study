@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ited_study/core/config/boxsize.dart';
-import 'package:ited_study/core/route/route.dart';
-import '../../../../core/config/text_style.dart.dart';
+import 'package:ited_study/core/config/style/boxsize.dart';
+import 'package:ited_study/core/config/routes/route.dart';
+import '../../../../core/config/style/text_style.dart.dart';
 import '../providers/create_school_provider.dart';
 
 class CountryAndSchoolScreen extends ConsumerStatefulWidget {

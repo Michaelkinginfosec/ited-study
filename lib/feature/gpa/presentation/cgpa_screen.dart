@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ited_study/core/route/route.dart';
+import 'package:ited_study/core/config/routes/route.dart';
 
 class CGPAScreen extends StatefulWidget {
   const CGPAScreen({super.key});

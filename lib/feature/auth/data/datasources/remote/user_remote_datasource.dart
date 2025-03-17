@@ -26,8 +26,10 @@ abstract class UsersRemoteDataSource {
   Future<String> uploadImage(Uint8List? image);
   Future<String> activateApp(String code, String device, String model,
       String osVersion, String uniqueId, String semester);
+  Future<String?> resetPassword(String otp, String newPassword);
 
   Future<void> getCountries();
+  Future<String?> sendResetOTP(String email);
 }
 
 class UserRemoteDatasourceImp implements UsersRemoteDataSource {
@@ -779,6 +781,73 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
         }
       }
       throw Exception('Failed with status code: ${e.response?.statusCode}');
+    } catch (e) {
+      throw Exception('Unexpected error occurred: $e');
+    }
+  }
+
+  @override
+  Future<String?> sendResetOTP(String email) async {
+    try {
+      final response =
+          await dio.post("/users/send-reset-link", data: {"email": email});
+      if (response.statusCode == 201) {
+        if (response.data != null && response.data is Map<String, dynamic>) {
+          final responseData = response.data as Map<String, dynamic>;
+          final message = responseData['message'] as String? ??
+              'If the email exist you will receive an reset OTP';
+          return message;
+        } else {
+          throw Exception('Unexpected response format');
+        }
+      } else {
+        throw Exception('Failed with status code: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        if (e.response!.statusCode == 400) {
+          throw Exception('Email is required');
+        } else {
+          throw Exception('Failed with status code: ${e.response!.statusCode}');
+        }
+      } else {
+        throw Exception('Network or server error: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Unexpected error occurred: $e');
+    }
+  }
+
+  @override
+  Future<String?> resetPassword(String otp, String password) async {
+    try {
+      final response = await dio.patch("/users/reset-password",
+          data: {"otp": otp, "newPassword": password});
+      if (response.statusCode == 200) {
+        if (response.data != null && response.data is Map<String, dynamic>) {
+          final responseData = response.data as Map<String, dynamic>;
+          final message = responseData['message'] as String? ??
+              'Password successfully reset';
+          return message;
+        } else {
+          throw Exception('Unexpected response format');
+        }
+      } else {
+        throw Exception('Failed with status code: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        if (e.response!.statusCode == 400) {
+          throw Exception('OTP is Required');
+        } else if (e.response!.statusCode == 401) {
+          throw Exception('Invalid or EXpired Code');
+        } else {
+          throw Exception(
+              'Failed with status code: ${e.response!.statusCode} and ${e.response!.statusMessage}');
+        }
+      } else {
+        throw Exception('Network or server error: ${e.message}');
+      }
     } catch (e) {
       throw Exception('Unexpected error occurred: $e');
     }
