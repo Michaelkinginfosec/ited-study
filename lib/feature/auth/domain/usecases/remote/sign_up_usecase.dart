@@ -2,7 +2,7 @@
 
 import 'package:ited_study/feature/auth/data/models/users.dart';
 
-import '../repositories/user_repository.dart';
+import '../../repositories/user_repository.dart';
 
 class SignUpUseCase {
   final UsersRepository repository;

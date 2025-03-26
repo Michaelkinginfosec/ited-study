@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/core/providers/providers.dart';
-import 'package:ited_study/feature/auth/domain/usecases/login_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/login_usecase.dart';
 
 enum LoginStatus { initial, loading, success, error }
 

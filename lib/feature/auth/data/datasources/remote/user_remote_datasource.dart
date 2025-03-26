@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ited_study/feature/auth/data/datasources/local/user_local_datasource.dart';
 import 'package:ited_study/feature/auth/data/models/users.dart';
 import 'package:ited_study/feature/auth/domain/entities/user_entity.dart';
 import '../../../../../core/errors/errors.dart';
@@ -34,8 +35,9 @@ abstract class UsersRemoteDataSource {
 
 class UserRemoteDatasourceImp implements UsersRemoteDataSource {
   final Dio dio;
+  final UserLocalDatasource _userLocalDatasource;
 
-  UserRemoteDatasourceImp(this.dio);
+  UserRemoteDatasourceImp(this.dio, this._userLocalDatasource);
 
   @override
   Future<String> signUp(Users user) async {
@@ -732,12 +734,10 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
       if (response.statusCode == 200) {
         if (response.data != null && response.data is List) {
           final countryList = List<String>.from(response.data);
+          await _userLocalDatasource.storeCountries(countryList);
           for (String country in countryList) {
             await getSchools(country);
           }
-
-          var box = Hive.box('countries');
-          await box.put('countryList', countryList);
         } else {
           throw Exception('Unexpected response format');
         }
@@ -765,8 +765,7 @@ class UserRemoteDatasourceImp implements UsersRemoteDataSource {
         if (response.data != null && response.data is List) {
           final schoolList = List<String>.from(response.data);
 
-          var box = Hive.box('countries');
-          await box.put(country, schoolList);
+          await _userLocalDatasource.storeSchools(country, schoolList);
         } else {
           throw Exception('Unexpected response format');
         }

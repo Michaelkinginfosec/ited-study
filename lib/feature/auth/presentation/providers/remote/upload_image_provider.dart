@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/providers/providers.dart';
-import '../../domain/usecases/upload_image_usecase.dart';
+import '../../../../../core/providers/providers.dart';
+import '../../../domain/usecases/remote/upload_image_usecase.dart';
 
 enum UploadImageStatus { initial, loading, success, error }
 

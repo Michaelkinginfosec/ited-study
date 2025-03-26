@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/core/providers/providers.dart';
-import 'package:ited_study/feature/auth/domain/usecases/reset_password_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/reset_password_usecase.dart';
 
 enum ResetPasswordStatus { initial, loading, success, failure }
 

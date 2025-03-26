@@ -4,8 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ited_study/core/config/style/boxsize.dart';
 import 'package:ited_study/core/config/routes/route.dart';
+import 'package:ited_study/core/providers/network_provider.dart';
+
+import 'package:ited_study/feature/auth/presentation/providers/remote/countries_provider.dart';
 import '../../../../core/config/style/text_style.dart.dart';
-import '../providers/create_school_provider.dart';
+import '../providers/remote/create_school_provider.dart';
 
 class CountryAndSchoolScreen extends ConsumerStatefulWidget {
   const CountryAndSchoolScreen({super.key});
@@ -40,13 +43,48 @@ class CountryAndSchoolScreenState
   }
 
   @override
-  void initState() {
-    fetchCountry();
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fetchFromApi();
+    });
+  }
+
+  Future<void> fetchFromApi() async {
+    final isConnected = ref.read(connectivityProvider);
+
+    if (isConnected) {
+      // Show loading dialog
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text("Fetching available schools..."),
+                const SizedBox(height: 10),
+                const CircularProgressIndicator(),
+              ],
+            ),
+          );
+        },
+      );
+
+      await ref.read(countryNotifierProvider.notifier).country();
+
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
+
+      fetchCountry();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final createSchoolStatus = ref.watch(createSchoolNotifierProvider);
     ref.listen<CreateSchoolState>(
       createSchoolNotifierProvider,
       (previous, next) {
@@ -189,33 +227,39 @@ class CountryAndSchoolScreenState
               },
             ),
             Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 50),
-              child: Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (selectedSchool == null || selectedCountry == null) {
-                      context.push(AppRoutes.login);
-                    } else {
-                      ref
-                          .read(createSchoolNotifierProvider.notifier)
-                          .createSchool(selectedSchool!, selectedCountry!);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: CustomTextStyles.loginsignupButtonColor,
-                    minimumSize: Size(228, 41),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+            createSchoolStatus.status == CreateSchooStatus.loading
+                ? Center(child: CircularProgressIndicator.adaptive())
+                : Padding(
+                    padding: const EdgeInsets.only(bottom: 50),
+                    child: Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (selectedSchool == null ||
+                              selectedCountry == null) {
+                            context.push(AppRoutes.login);
+                          } else {
+                            ref
+                                .read(createSchoolNotifierProvider.notifier)
+                                .createSchool(
+                                    selectedSchool!, selectedCountry!);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              CustomTextStyles.loginsignupButtonColor,
+                          minimumSize: Size(228, 41),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text(
+                          "Next",
+                          style: CustomTextStyles.buttonText,
+                        ),
+                      ),
                     ),
                   ),
-                  child: Text(
-                    "Next",
-                    style: CustomTextStyles.buttonText,
-                  ),
-                ),
-              ),
-            ),
+            Spacer(),
           ],
         ),
       ),

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 part 'user_entity.g.dart';
 
@@ -20,12 +20,11 @@ class UserEntity extends HiveObject {
   final bool verified;
   @HiveField(6)
   final String schoolId;
+
   @HiveField(7)
-  final String? imageUrl;
-  @HiveField(8)
   final bool activated;
 
-  @HiveField(9)
+  @HiveField(8)
   final String? semester;
 
   UserEntity({
@@ -36,7 +35,6 @@ class UserEntity extends HiveObject {
     required this.password,
     this.verified = false,
     required this.schoolId,
-    this.imageUrl,
     this.activated = false,
     this.semester = '',
   });
@@ -50,7 +48,6 @@ class UserEntity extends HiveObject {
       'password': password,
       'verified': verified,
       'schoolId': schoolId,
-      'imageUrl': imageUrl,
       'activated': activated,
       'semester': semester
     };
@@ -65,7 +62,6 @@ class UserEntity extends HiveObject {
       password: map['password'] as String,
       verified: map['verified'] as bool? ?? false,
       schoolId: map['schoolId'] as String,
-      imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
       activated: map['activated'] as bool? ?? false,
       semester: map['semester'] as String? ?? '',
     );

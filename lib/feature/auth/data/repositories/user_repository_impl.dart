@@ -103,6 +103,11 @@ class UserRepositoryImpl implements UsersRepository {
 
   @override
   Future<List<String>> getStoredCountries() async {
-    throw UnimplementedError();
+    return userLocalDatasource.getStoredCountries();
+  }
+
+  @override
+  Future<List<String>> getStoredSchools(String country) async {
+    return userLocalDatasource.getStoredSchools(country);
   }
 }

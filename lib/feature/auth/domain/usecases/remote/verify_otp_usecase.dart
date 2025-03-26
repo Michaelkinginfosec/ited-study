@@ -1,4 +1,4 @@
-import '../repositories/user_repository.dart';
+import '../../repositories/user_repository.dart';
 
 class VerifyOTPUsecase {
   final UsersRepository usersRepository;

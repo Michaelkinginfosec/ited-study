@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ited_study/core/config/style/boxsize.dart';
 import 'package:ited_study/core/config/routes/route.dart';
-import 'package:ited_study/feature/auth/presentation/providers/logout_provide.dart';
-import 'package:ited_study/feature/auth/presentation/providers/upload_image_provider.dart';
+import 'package:ited_study/feature/auth/presentation/providers/remote/logout_provide.dart';
+import 'package:ited_study/feature/auth/presentation/providers/remote/upload_image_provider.dart';
 import '../../../../core/providers/network_provider.dart';
 import '../providers/local/get_stored_user_provider.dart';
 

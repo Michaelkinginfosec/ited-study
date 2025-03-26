@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import '../repositories/user_repository.dart';
+import '../../repositories/user_repository.dart';
 
 class UploadImageUsecase {
   final UsersRepository repository;

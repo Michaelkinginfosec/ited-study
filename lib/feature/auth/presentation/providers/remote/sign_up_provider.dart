@@ -2,9 +2,9 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/feature/auth/data/models/users.dart';
-import 'package:ited_study/feature/auth/domain/usecases/sign_up_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/sign_up_usecase.dart';
 
-import '../../../../core/providers/providers.dart';
+import '../../../../../core/providers/providers.dart';
 
 enum SignUpStatus { initial, loading, success, failure }
 

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/core/providers/providers.dart';
-import 'package:ited_study/feature/auth/domain/usecases/create_school_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/create_school_usecase.dart';
 
 enum CreateSchooStatus { initial, loading, success, error }
 

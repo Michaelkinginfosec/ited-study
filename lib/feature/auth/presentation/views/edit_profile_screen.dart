@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ited_study/feature/auth/presentation/providers/update_user_provider.dart';
+import 'package:ited_study/feature/auth/presentation/providers/remote/update_user_provider.dart';
 
 import '../../../../core/config/style/boxsize.dart';
 import '../../../../core/config/style/text_style.dart.dart';

@@ -1,4 +1,4 @@
-import '../repositories/user_repository.dart';
+import '../../repositories/user_repository.dart';
 
 class ActivateApp {
   final UsersRepository repository;

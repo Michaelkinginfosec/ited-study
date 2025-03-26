@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/core/providers/providers.dart';
 import 'package:ited_study/feature/auth/data/models/users.dart';
-import 'package:ited_study/feature/auth/domain/usecases/get_stored_user_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/get_stored_user_usecase.dart';
 
 enum StoredUserStatus { loading, success, initial, error }
 

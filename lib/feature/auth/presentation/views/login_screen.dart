@@ -6,9 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:ited_study/core/config/style/boxsize.dart';
 import 'package:ited_study/core/config/style/text_style.dart.dart';
 import 'package:ited_study/core/config/routes/route.dart';
-import 'package:ited_study/feature/auth/presentation/providers/login_provider.dart';
+import 'package:ited_study/feature/auth/presentation/providers/remote/login_provider.dart';
 import 'package:ited_study/feature/auth/presentation/widgets/text_field.dart';
-import '../providers/resend_otp_provider.dart';
+import '../providers/remote/resend_otp_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -40,7 +40,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
           await snackBarController.closed;
 
           context.pushReplacement(
-            AppRoutes.home,
+            AppRoutes.navscreen,
           );
         } else if (next.status == LoginStatus.error) {
           String errorMessage = next.error?.toString() ?? "Login Failed";

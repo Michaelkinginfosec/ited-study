@@ -68,7 +68,7 @@ class _NotesScreenState extends State<NotesScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text('View Notes'),
+        title: const Text('Notes'),
       ),
       body: _controller == null
           ? const Center(

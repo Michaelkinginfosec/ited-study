@@ -1,10 +1,5 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../core/providers/network_provider.dart';
-import '../auth/presentation/providers/countries_provider.dart';
 
 class SecondScreen extends ConsumerStatefulWidget {
   const SecondScreen({super.key});
@@ -14,19 +9,6 @@ class SecondScreen extends ConsumerStatefulWidget {
 }
 
 class _SecondScreenState extends ConsumerState<SecondScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    final isConnected = ref.read(connectivityProvider);
-
-    if (isConnected) {
-      Future.microtask(() async {
-        await ref.read(countryNotifierProvider.notifier).country();
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

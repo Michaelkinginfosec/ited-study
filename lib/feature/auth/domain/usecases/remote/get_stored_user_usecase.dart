@@ -1,6 +1,6 @@
 import 'package:ited_study/feature/auth/data/models/users.dart';
 
-import '../repositories/user_repository.dart';
+import '../../repositories/user_repository.dart';
 
 class GetStoredUserUsecase {
   final UsersRepository usersRepository;

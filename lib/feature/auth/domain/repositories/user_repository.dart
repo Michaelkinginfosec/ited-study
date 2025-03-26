@@ -28,4 +28,5 @@ abstract class UsersRepository {
   Future<Users> getStoredUser();
 
   Future<List<String>> getStoredCountries();
+  Future<List<String>> getStoredSchools(String country);
 }

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ited_study/feature/auth/domain/usecases/verify_otp_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/verify_otp_usecase.dart';
 
-import '../../../../core/providers/providers.dart';
+import '../../../../../core/providers/providers.dart';
 
 enum VerifyOTPStatus { initail, loading, success, failure }
 

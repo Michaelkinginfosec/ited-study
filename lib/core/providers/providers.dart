@@ -1,12 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/feature/auth/data/repositories/user_repository_impl.dart';
-import 'package:ited_study/feature/auth/domain/usecases/get_countries_usecase.dart';
-import 'package:ited_study/feature/auth/domain/usecases/login_usecase.dart';
-import 'package:ited_study/feature/auth/domain/usecases/logout_usecase.dart';
-import 'package:ited_study/feature/auth/domain/usecases/resend_otp_usecase.dart';
-import 'package:ited_study/feature/auth/domain/usecases/reset_password_usecase.dart';
-import 'package:ited_study/feature/auth/domain/usecases/verify_otp_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/local/get_stored_countries_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/local/get_stored_school_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/get_countries_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/login_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/logout_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/resend_otp_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/reset_password_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/verify_otp_usecase.dart';
 import 'package:ited_study/feature/notes/data/datasource/course_datasource.dart';
 import 'package:ited_study/feature/notes/data/repository/course_repository_impl.dart';
 import 'package:ited_study/feature/notes/domain/repository/course_repository.dart';
@@ -15,14 +17,14 @@ import 'package:ited_study/feature/notes/domain/usecase/topic_usecase.dart';
 import '../../feature/auth/data/datasources/local/user_local_datasource.dart';
 import '../../feature/auth/data/datasources/remote/user_remote_datasource.dart';
 import '../../feature/auth/domain/repositories/user_repository.dart';
-import '../../feature/auth/domain/usecases/change_password_usecase.dart';
-import '../../feature/auth/domain/usecases/create_school_usecase.dart';
-import '../../feature/auth/domain/usecases/get_stored_user_usecase.dart';
-import '../../feature/auth/domain/usecases/resend_verification_code_usecase.dart';
-import '../../feature/auth/domain/usecases/sign_up_usecase.dart';
-import '../../feature/auth/domain/usecases/update_user_usecase.dart';
-import '../../feature/auth/domain/usecases/activate_app_usecase.dart';
-import '../../feature/auth/domain/usecases/upload_image_usecase.dart';
+import '../../feature/auth/domain/usecases/remote/change_password_usecase.dart';
+import '../../feature/auth/domain/usecases/remote/create_school_usecase.dart';
+import '../../feature/auth/domain/usecases/remote/get_stored_user_usecase.dart';
+import '../../feature/auth/domain/usecases/remote/resend_verification_code_usecase.dart';
+import '../../feature/auth/domain/usecases/remote/sign_up_usecase.dart';
+import '../../feature/auth/domain/usecases/remote/update_user_usecase.dart';
+import '../../feature/auth/domain/usecases/remote/activate_app_usecase.dart';
+import '../../feature/auth/domain/usecases/remote/upload_image_usecase.dart';
 
 final navigationIndexProvider = StateProvider<int>((ref) => 0);
 
@@ -44,10 +46,17 @@ final dioProvider = Provider<Dio>(
     );
   },
 );
+
+final userLocalDatasourceProvider = Provider<UserLocalDatasource>(
+  (ref) {
+    return UserLocalDatasource();
+  },
+);
 final usersRemoteDataSourceProvider = Provider<UsersRemoteDataSource>(
   (ref) {
     return UserRemoteDatasourceImp(
       ref.read(dioProvider),
+      ref.read(userLocalDataSourceProvider),
     );
   },
 );
@@ -83,6 +92,21 @@ final signUpUseCaseProvider = Provider<SignUpUseCase>(
 final getStoredUserUsecaseProvidr = Provider<GetStoredUserUsecase>(
   (ref) {
     return GetStoredUserUsecase(
+      ref.read(usersRepositoryProvider),
+    );
+  },
+);
+
+final getStoredSchoolUsecaseProvider = Provider<GetStoredSchoolUsecase>(
+  (ref) {
+    return GetStoredSchoolUsecase(
+      ref.read(usersRepositoryProvider),
+    );
+  },
+);
+final getStoredCountryUsecaseProvider = Provider<GetStoredCountriesUsecase>(
+  (ref) {
+    return GetStoredCountriesUsecase(
       ref.read(usersRepositoryProvider),
     );
   },

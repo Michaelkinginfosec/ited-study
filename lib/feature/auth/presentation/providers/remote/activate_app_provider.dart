@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/providers/providers.dart';
-import '../../domain/usecases/activate_app_usecase.dart';
+import '../../../../../core/providers/providers.dart';
+import '../../../domain/usecases/remote/activate_app_usecase.dart';
 
 enum ActivateStatus { initial, loading, success, error }
 

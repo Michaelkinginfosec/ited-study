@@ -14,4 +14,12 @@ class UrlLaucher {
   void openWhatsApp() {
     launchSocialMedia(AppUrl.whatsapp);
   }
+
+  void openFacebook() {
+    launchSocialMedia(AppUrl.facebook);
+  }
+
+  void openInstagram() {
+    launchSocialMedia(AppUrl.instagram);
+  }
 }

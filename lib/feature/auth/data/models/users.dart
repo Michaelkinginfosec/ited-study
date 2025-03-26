@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../domain/entities/user_entity.dart';
 
 part 'users.g.dart';
@@ -21,10 +21,8 @@ class Users extends Equatable {
   @HiveField(6)
   final String schoolId;
   @HiveField(7)
-  final String? imageUrl;
-  @HiveField(8)
   final bool activated;
-  @HiveField(9)
+  @HiveField(8)
   final String? semester;
 
   const Users({
@@ -34,7 +32,6 @@ class Users extends Equatable {
     required this.level,
     required this.password,
     this.verified = false,
-    this.imageUrl,
     required this.schoolId,
     this.activated = false,
     this.semester = '',
@@ -48,7 +45,6 @@ class Users extends Equatable {
     String? password,
     bool? verified,
     String? schoolId,
-    String? imageUrl,
     bool? activated,
     String? semester,
   }) {
@@ -60,7 +56,6 @@ class Users extends Equatable {
       password: password ?? this.password,
       verified: verified ?? this.verified,
       schoolId: schoolId ?? this.schoolId,
-      imageUrl: imageUrl ?? this.imageUrl,
       activated: activated ?? this.activated,
       semester: semester ?? this.semester,
     );
@@ -75,7 +70,6 @@ class Users extends Equatable {
       password: password,
       verified: verified,
       schoolId: schoolId,
-      imageUrl: imageUrl,
       activated: activated,
       semester: semester,
     );
@@ -90,7 +84,6 @@ class Users extends Equatable {
       password: entity.password,
       verified: entity.verified,
       schoolId: entity.schoolId,
-      imageUrl: entity.imageUrl,
       activated: entity.activated,
       semester: entity.semester,
     );
@@ -106,7 +99,6 @@ class Users extends Equatable {
       password,
       verified,
       schoolId,
-      imageUrl,
       activated,
       semester,
     ];

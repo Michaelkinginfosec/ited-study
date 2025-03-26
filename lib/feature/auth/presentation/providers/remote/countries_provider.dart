@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/core/providers/providers.dart';
-import 'package:ited_study/feature/auth/domain/usecases/get_countries_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/get_countries_usecase.dart';
 
 enum CountryStatus { initail, loading, success, failure }
 

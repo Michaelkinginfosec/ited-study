@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/core/providers/providers.dart';
-import 'package:ited_study/feature/auth/domain/usecases/update_user_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/update_user_usecase.dart';
 
-import '../../data/models/update_data.dart';
+import '../../../data/models/update_data.dart';
 
 enum UpdateuserStatus { initial, success, error, loading }
 

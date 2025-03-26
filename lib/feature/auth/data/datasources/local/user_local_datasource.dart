@@ -9,6 +9,16 @@ class UserLocalDatasource {
     return user;
   }
 
+  Future<void> storeCountries(List<String> countryList) async {
+    var box = Hive.box('countries');
+    await box.put('countryList', countryList);
+  }
+
+  Future<void> storeSchools(String country, List<String> schoolList) async {
+    var box = Hive.box('countries');
+    await box.put(country, schoolList);
+  }
+
   Future<List<String>> getStoredCountries() async {
     var box = Hive.box('countries');
     return List<String>.from(
@@ -19,9 +29,13 @@ class UserLocalDatasource {
     );
   }
 
-  Future<List<String>> getStoredSchool(String? country) async {
-    if (country == null) return [];
-    var box = await Hive.openBox('countries');
-    return List<String>.from(box.get(country, defaultValue: []));
+  Future<List<String>> getStoredSchools(String country) async {
+    var box = Hive.box('countries');
+    return List<String>.from(box.get(country) ?? []);
   }
+
+  // Future<List<String>> getStoredCountries() async {
+//     var box = Hive.box('countries');
+//     return List<String>.from(box.get('countryList') ?? []);
+//   }
 }

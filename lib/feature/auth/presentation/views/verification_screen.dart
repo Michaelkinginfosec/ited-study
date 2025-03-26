@@ -7,8 +7,8 @@ import 'package:ited_study/core/config/style/boxsize.dart';
 import 'package:ited_study/core/config/style/text_style.dart.dart';
 import 'package:ited_study/core/config/routes/route.dart';
 import 'package:ited_study/core/widgets/custom_app_bar.dart';
-import 'package:ited_study/feature/auth/presentation/providers/resend_otp_provider.dart';
-import 'package:ited_study/feature/auth/presentation/providers/verify_otp_provider.dart';
+import 'package:ited_study/feature/auth/presentation/providers/remote/resend_otp_provider.dart';
+import 'package:ited_study/feature/auth/presentation/providers/remote/verify_otp_provider.dart';
 import 'package:ited_study/feature/auth/presentation/widgets/otp_field.dart';
 
 class VerificationScreen extends ConsumerStatefulWidget {

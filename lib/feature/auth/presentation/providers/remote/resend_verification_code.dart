@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/core/providers/providers.dart';
 
-import '../../domain/usecases/resend_verification_code_usecase.dart';
+import '../../../domain/usecases/remote/resend_verification_code_usecase.dart';
 
 enum ResendVerificationCodeStatus { initial, loading, success, failure }
 

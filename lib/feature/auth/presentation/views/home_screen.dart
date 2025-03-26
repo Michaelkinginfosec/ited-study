@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ited_study/core/utils/url_laucher.dart';
+import 'package:ited_study/feature/notes/presentation/providers/remote/course_provider.dart';
+import 'package:ited_study/feature/notes/presentation/providers/remote/topic_provider.dart';
 
 import '../../../../core/providers/network_provider.dart';
 import '../../../../core/config/routes/route.dart';
@@ -16,16 +20,43 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  String? level;
+  String? schoolId;
+
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      final isConnected = ref.watch(connectivityProvider);
+
+    Future.delayed(Duration.zero, () async {
+      await getUser();
+
+      final isConnected = ref.read(connectivityProvider);
 
       if (isConnected) {
         ref.read(storedUserNotifierProvider.notifier).getStored();
+
+        if (schoolId != null && level != null) {
+          ref.read(topicNotifierProvider.notifier).getTopics(schoolId!, level!);
+          ref
+              .read(courseNotifierProvider.notifier)
+              .getCourses(schoolId!, level!);
+        }
       }
     });
+  }
+
+  Future<void> getUser() async {
+    final box = await Hive.openBox('usersBox');
+    final schoolBox = await Hive.openBox("school");
+    final school = schoolBox.get("schoolId");
+    final user = box.get('users');
+
+    if (user != null && school != null) {
+      setState(() {
+        level = user.level;
+        schoolId = school; // Corrected assignment
+      });
+    }
   }
 
   @override
@@ -423,10 +454,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                 child: Text(
                                                   "Got it!",
                                                   style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.blueAccent),
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.blueAccent,
+                                                  ),
                                                 ),
                                               ),
                                             ],
@@ -955,8 +986,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                   ),
                                                   Row(
                                                     children: [
-                                                      Image.asset(
-                                                        "assets/images/instagram.png",
+                                                      GestureDetector(
+                                                        onTap: UrlLaucher()
+                                                            .openInstagram,
+                                                        child: Image.asset(
+                                                          "assets/images/instagram.png",
+                                                        ),
                                                       ),
                                                       Image.asset(
                                                         "assets/images/facebook.png",

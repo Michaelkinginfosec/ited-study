@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ited_study/feature/auth/domain/usecases/change_password_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/change_password_usecase.dart';
 
-import '../../../../core/providers/providers.dart';
+import '../../../../../core/providers/providers.dart';
 
 enum ChangePasswordStatus { initial, success, loading, error }
 

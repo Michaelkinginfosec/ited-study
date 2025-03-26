@@ -12,7 +12,7 @@ import 'package:ited_study/feature/auth/presentation/widgets/text_field.dart';
 
 import '../../../../core/config/style/boxsize.dart';
 import '../../../../core/config/routes/route.dart';
-import '../providers/sign_up_provider.dart';
+import '../providers/remote/sign_up_provider.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   final String school;
@@ -260,7 +260,6 @@ class SignUpScreenState extends ConsumerState<SignUpScreen> {
                                     level: selectedLevel!,
                                     password: _passwordController.text,
                                     schoolId: schoolId,
-                                    imageUrl: '',
                                     activated: false,
                                   );
                                   ref

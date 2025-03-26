@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ited_study/feature/auth/presentation/providers/reset_password_provider.dart';
+import 'package:ited_study/feature/auth/presentation/providers/remote/reset_password_provider.dart';
 
 import '../../../../core/config/style/boxsize.dart';
 import '../../../../core/config/style/text_style.dart.dart';
 
-import '../providers/resend_otp_provider.dart';
+import '../providers/remote/resend_otp_provider.dart';
 import '../widgets/text_field.dart';
 
 class ForgotPasswordScreen extends ConsumerStatefulWidget {

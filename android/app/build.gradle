@@ -36,8 +36,8 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21  // Ensure Java 21 is used
-        targetCompatibility = JavaVersion.VERSION_21  // Ensure Java 21 is used
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     defaultConfig {
@@ -63,7 +63,7 @@ signingConfigs {
     }
 
     kotlinOptions {
-        jvmTarget = "21"  // Ensure Kotlin uses Java 21
+        jvmTarget = "17" 
     }
 }
 

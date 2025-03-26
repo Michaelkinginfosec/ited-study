@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/core/providers/providers.dart';
 
-import '../../domain/usecases/logout_usecase.dart';
+import '../../../domain/usecases/remote/logout_usecase.dart';
 
 enum LogoutStatus { initail, loading, success, failure }
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ited_study/core/widgets/custom_app_bar.dart';
-import 'package:ited_study/feature/auth/presentation/providers/change_password_provider.dart';
+import 'package:ited_study/feature/auth/presentation/providers/remote/change_password_provider.dart';
 
 import '../../../../core/config/style/boxsize.dart';
 import '../../../../core/config/style/text_style.dart.dart';

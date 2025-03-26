@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ited_study/core/providers/providers.dart';
-import 'package:ited_study/feature/auth/domain/usecases/resend_otp_usecase.dart';
+import 'package:ited_study/feature/auth/domain/usecases/remote/resend_otp_usecase.dart';
 
 enum ResendOTPStatus { initial, loading, success, failure }
 
