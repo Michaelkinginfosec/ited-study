@@ -22,4 +22,8 @@ class UrlLaucher {
   void openInstagram() {
     launchSocialMedia(AppUrl.instagram);
   }
+
+  void openTelegram() {
+    launchSocialMedia(AppUrl.telegram);
+  }
 }

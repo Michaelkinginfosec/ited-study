@@ -1,0 +1,2 @@
+/Users/michaelking/Desktop/ited-study/android/app/.cxx/Debug/253f1h63/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/michaelking/Desktop/ited-study/android/app/.cxx/Debug/253f1h63/armeabi-v7a/CMakeFiles/rebuild_cache.dir

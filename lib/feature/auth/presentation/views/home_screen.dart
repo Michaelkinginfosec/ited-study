@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -22,6 +24,9 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   String? level;
   String? schoolId;
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+  late Timer _timer;
 
   @override
   void initState() {
@@ -43,6 +48,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         }
       }
     });
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (_currentPage < 6) {
+        // 6 because you have 7 screens (index 0-6)
+        _currentPage++;
+        _pageController.animateToPage(
+          _currentPage,
+          duration: const Duration(milliseconds: 800), // Shorter than 1 second
+          curve: Curves.easeInOut,
+        );
+      } else {
+        _currentPage = 0;
+        _pageController.jumpToPage(_currentPage);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    _pageController.dispose();
+    super.dispose();
   }
 
   Future<void> getUser() async {
@@ -54,7 +81,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     if (user != null && school != null) {
       setState(() {
         level = user.level;
-        schoolId = school; // Corrected assignment
+        schoolId = school;
       });
     }
   }
@@ -136,13 +163,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               child: Center(
                                 child: Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "University of Benin",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 18,
-                                      fontFamily: 'Karla',
-                                      color: Color.fromRGBO(0, 5, 45, 1),
+                                  child: Center(
+                                    child: Text(
+                                      storedUserState.user!.semester == null
+                                          ? "${storedUserState.user!.semester} SEMESTER"
+                                          : "FIRST SEMESTER",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 18,
+                                        fontFamily: 'Karla',
+                                        color: Color.fromRGBO(0, 5, 45, 1),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -157,7 +188,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     SizedBox(
                       height: 140,
-                      child: FlashCards(),
+                      child: PageView(
+                          controller: _pageController,
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            FlashCards(),
+                            FlashCards(),
+                            FlashCards(),
+                            FlashCards(),
+                            FlashCards(),
+                            FlashCards(),
+                            FlashCards(),
+                          ]),
                     ),
                     Expanded(
                       child: SingleChildScrollView(
@@ -993,15 +1035,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                           "assets/images/instagram.png",
                                                         ),
                                                       ),
-                                                      Image.asset(
-                                                        "assets/images/facebook.png",
+                                                      GestureDetector(
+                                                        onTap: UrlLaucher()
+                                                            .openFacebook,
+                                                        child: Image.asset(
+                                                          "assets/images/facebook.png",
+                                                        ),
                                                       ),
-                                                      Image.asset(
-                                                        "assets/images/telegram.png",
+                                                      GestureDetector(
+                                                        onTap: UrlLaucher()
+                                                            .openTelegram,
+                                                        child: Image.asset(
+                                                          "assets/images/telegram.png",
+                                                        ),
                                                       ),
-                                                      Image.asset(
-                                                        "assets/images/tiktok.png",
-                                                      ),
+                                                      // Image.asset(
+                                                      //   "assets/images/tiktok.png",
+                                                      // ),
                                                     ],
                                                   ),
                                                 ],

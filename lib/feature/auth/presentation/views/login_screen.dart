@@ -39,7 +39,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
 
           await snackBarController.closed;
 
-          context.pushReplacement(
+          context.go(
             AppRoutes.navscreen,
           );
         } else if (next.status == LoginStatus.error) {

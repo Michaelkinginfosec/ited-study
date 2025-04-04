@@ -157,7 +157,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                                           "null"
                                                       ? storedUserState
                                                           .user!.semester!
-                                                      : "UNIBEN",
+                                                      : "FIRST",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w800,
                                                     fontSize: 23,
@@ -167,7 +167,7 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  "SCHOOL",
+                                                  "SEMESTER",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w700,
                                                     fontSize: 12,
@@ -211,12 +211,12 @@ class _SetttingsScreenState extends ConsumerState<SetttingsScreen> {
                                   ),
                                 ),
                                 Positioned(
-                                  left:
-                                      MediaQuery.of(context).size.width * 0.5 -
-                                          70,
                                   bottom: 80,
+                                  left: 0,
+                                  right: 0,
                                   child: Text(
                                     storedUserState.user!.fullName,
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       fontSize: 23,
