@@ -82,7 +82,7 @@ class _NotesScreenState extends State<NotesScreen> {
                     child: QuillEditor(
                       controller: _controller!,
                       scrollController: ScrollController(),
-                      focusNode: FocusNode(),
+                      focusNode: FocusNode(canRequestFocus: false),
                       config: QuillEditorConfig(
                         scrollable: true,
                         autoFocus: false,
