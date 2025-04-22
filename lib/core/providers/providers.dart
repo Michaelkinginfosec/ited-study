@@ -41,7 +41,7 @@ final dioProvider = Provider<Dio>(
   (ref) {
     return Dio(
       BaseOptions(
-        baseUrl: 'https://ited-admin-server.onrender.com/api/v1',
+        baseUrl: 'https://server-pcwq.onrender.com/api/v1',
       ),
     );
   },

@@ -51,11 +51,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (_currentPage < 6) {
-        // 6 because you have 7 screens (index 0-6)
         _currentPage++;
         _pageController.animateToPage(
           _currentPage,
-          duration: const Duration(milliseconds: 800), // Shorter than 1 second
+          duration: const Duration(milliseconds: 800),
           curve: Curves.easeInOut,
         );
       } else {

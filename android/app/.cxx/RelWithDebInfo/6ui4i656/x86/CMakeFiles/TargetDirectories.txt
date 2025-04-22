@@ -1,0 +1,2 @@
+/Users/michaelking/Desktop/ited-study/android/app/.cxx/RelWithDebInfo/6ui4i656/x86/CMakeFiles/edit_cache.dir
+/Users/michaelking/Desktop/ited-study/android/app/.cxx/RelWithDebInfo/6ui4i656/x86/CMakeFiles/rebuild_cache.dir
