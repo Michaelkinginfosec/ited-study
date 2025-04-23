@@ -16,7 +16,7 @@ class AboutUs extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(right: 20),
             child: GestureDetector(
-              onTap: () => UrlLaucher().openWhatsApp(),
+              onTap: () => UrlLaucher().openWhatsApp(context),
               child: Container(
                 width: 150,
                 height: 40,

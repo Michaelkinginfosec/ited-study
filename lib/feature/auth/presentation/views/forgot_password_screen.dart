@@ -70,129 +70,132 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Column(
-          children: [
-            CustomSizeBox.extralBig,
-            Text(
-              "Reset Password",
-              style: CustomTextStyles.largeBoldTitle,
-            ),
-            Text(
-              "Enter your to receive a reset password token",
-              style: CustomTextStyles.mediumSubtitle,
-            ),
-            CustomSizeBox.extralBig,
-            Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Email",
-                    style: CustomTextStyles.mediumSubtitle,
-                  ),
-                  CustomSizeBox.littleBox,
-                  CustomTextField(
-                    obscureText: false,
-                    controller: _resetEmailController,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                          .hasMatch(value)) {
-                        return 'Please enter a valid email';
-                      }
-                      return null;
-                    },
-                  ),
-                  CustomSizeBox.mediumBox,
-                  sendOTP.status == ResendOTPStatus.loading
-                      ? Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        )
-                      : Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              ref
-                                  .read(resendOTPNotifierProvider.notifier)
-                                  .resendOTPCode(
-                                    _resetEmailController.text.trim(),
-                                  );
-                              _resetEmailController.clear();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  CustomTextStyles.loginsignupButtonColor,
-                              minimumSize: Size(228, 41),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Column(
+            children: [
+              CustomSizeBox.extralBig,
+              Text(
+                "Reset Password",
+                style: CustomTextStyles.largeBoldTitle,
+              ),
+              Text(
+                "Enter your to receive a reset password token",
+                style: CustomTextStyles.mediumSubtitle,
+              ),
+              CustomSizeBox.extralBig,
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Email",
+                      style: CustomTextStyles.mediumSubtitle,
+                    ),
+                    CustomSizeBox.littleBox,
+                    CustomTextField(
+                      obscureText: false,
+                      controller: _resetEmailController,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                            .hasMatch(value)) {
+                          return 'Please enter a valid email';
+                        }
+                        return null;
+                      },
+                    ),
+                    CustomSizeBox.mediumBox,
+                    sendOTP.status == ResendOTPStatus.loading
+                        ? Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          )
+                        : Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                ref
+                                    .read(resendOTPNotifierProvider.notifier)
+                                    .resendOTPCode(
+                                      _resetEmailController.text.trim(),
+                                    );
+                                _resetEmailController.clear();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    CustomTextStyles.loginsignupButtonColor,
+                                minimumSize: Size(228, 41),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: Text(
+                                "Send Email",
+                                style: CustomTextStyles.buttonText,
                               ),
                             ),
-                            child: Text(
-                              "Send Email",
-                              style: CustomTextStyles.buttonText,
-                            ),
                           ),
-                        ),
-                  CustomSizeBox.largeBox,
-                  Text(
-                    "Input OTP",
-                    style: CustomTextStyles.mediumSubtitle,
-                  ),
-                  CustomSizeBox.littleBox,
-                  CustomTextField(
-                    obscureText: false,
-                    controller: _resetOTPController,
-                    keyboardType: TextInputType.name,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'enter Reset OTP';
-                      }
-                      return null;
-                    },
-                  ),
-                  CustomSizeBox.mediumBox,
-                  Text(
-                    "Password",
-                    style: CustomTextStyles.mediumSubtitle,
-                  ),
-                  CustomSizeBox.littleBox,
-                  CustomTextField(
-                    suffix: Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isVisible = !isVisible;
-                          });
-                        },
-                        child: isVisible
-                            ? Icon(Icons.visibility_off)
-                            : Icon(Icons.visibility),
-                      ),
+                    CustomSizeBox.largeBox,
+                    Text(
+                      "Input OTP",
+                      style: CustomTextStyles.mediumSubtitle,
                     ),
-                    obscureText: isVisible,
-                    controller: _newPasswordController,
-                    keyboardType: TextInputType.visiblePassword,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Enter new password';
-                      }
-                      return null;
-                    },
-                  ),
-                  CustomSizeBox.mediumBox,
-                  resetPassword.status == ResetPasswordStatus.loading
-                      ? Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        )
-                      : Center(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
+                    CustomSizeBox.littleBox,
+                    CustomTextField(
+                      obscureText: false,
+                      controller: _resetOTPController,
+                      keyboardType: TextInputType.name,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'enter Reset OTP';
+                        }
+                        return null;
+                      },
+                    ),
+                    CustomSizeBox.mediumBox,
+                    Text(
+                      "Password",
+                      style: CustomTextStyles.mediumSubtitle,
+                    ),
+                    CustomSizeBox.littleBox,
+                    CustomTextField(
+                      suffix: Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isVisible = !isVisible;
+                            });
+                          },
+                          child: isVisible
+                              ? Icon(Icons.visibility_off)
+                              : Icon(Icons.visibility),
+                        ),
+                      ),
+                      obscureText: isVisible,
+                      controller: _newPasswordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Enter new password';
+                        }
+                        return null;
+                      },
+                    ),
+                    CustomSizeBox.mediumBox,
+                    resetPassword.status == ResetPasswordStatus.loading
+                        ? Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          )
+                        : Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                // if (_formKey.currentState!.validate()) {
+
+                                // }
                                 ref
                                     .read(
                                         resetPasswordNotifierProvider.notifier)
@@ -200,26 +203,26 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                                       _resetOTPController.text.trim(),
                                       _newPasswordController.text.trim(),
                                     );
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  CustomTextStyles.loginsignupButtonColor,
-                              minimumSize: Size(228, 41),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    CustomTextStyles.loginsignupButtonColor,
+                                minimumSize: Size(228, 41),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: Text(
+                                "Reset Password",
+                                style: CustomTextStyles.buttonText,
                               ),
                             ),
-                            child: Text(
-                              "Reset Password",
-                              style: CustomTextStyles.buttonText,
-                            ),
                           ),
-                        ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

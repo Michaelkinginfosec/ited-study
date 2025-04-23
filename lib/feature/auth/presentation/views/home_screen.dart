@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ited_study/core/utils/url_laucher.dart';
 import 'package:ited_study/feature/notes/presentation/providers/remote/course_provider.dart';
 import 'package:ited_study/feature/notes/presentation/providers/remote/topic_provider.dart';
 
@@ -47,20 +46,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               .getCourses(schoolId!, level!);
         }
       }
-    });
-
-    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      if (_currentPage < 6) {
-        _currentPage++;
-        _pageController.animateToPage(
-          _currentPage,
-          duration: const Duration(milliseconds: 800),
-          curve: Curves.easeInOut,
-        );
-      } else {
-        _currentPage = 0;
-        _pageController.jumpToPage(_currentPage);
-      }
+      _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+        if (_currentPage < 6) {
+          _currentPage++;
+          _pageController.animateToPage(
+            _currentPage,
+            duration: const Duration(milliseconds: 800),
+            curve: Curves.easeInOut,
+          );
+        } else {
+          _currentPage = 0;
+          _pageController.jumpToPage(_currentPage);
+        }
+      });
     });
   }
 
@@ -191,13 +189,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           controller: _pageController,
                           scrollDirection: Axis.horizontal,
                           children: [
-                            FlashCards(),
-                            FlashCards(),
-                            FlashCards(),
-                            FlashCards(),
-                            FlashCards(),
-                            FlashCards(),
-                            FlashCards(),
+                            for (int i = 0; i < 5; i++) FlashCards(),
                           ]),
                     ),
                     Expanded(
@@ -373,7 +365,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                               ),
                                             ),
                                             Text(
-                                              'calculate your CGPA with ease',
+                                              'Calculate your CGPA with ease',
                                               style: TextStyle(
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.w700,
@@ -546,7 +538,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  'get full app access after activation',
+                                                  'Get full app access after activation',
                                                   style: TextStyle(
                                                     fontSize: 10,
                                                     fontWeight: FontWeight.w700,
@@ -970,90 +962,87 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                               ),
                                             ),
                                           ),
-                                          Container(
-                                            width: double.infinity,
-                                            height: 43,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: Colors.white,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black
-                                                      .withAlpha(51),
-                                                  spreadRadius: 1,
-                                                  blurRadius: 1,
-                                                  offset: Offset(2, 2),
-                                                ),
-                                              ],
-                                            ),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 10,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        "Task/Refund",
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          fontFamily: "Inter",
-                                                          color: Color.fromRGBO(
-                                                              15, 6, 94, 1),
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        "Message us on Our sociam Media Platform",
-                                                        style: TextStyle(
-                                                          fontSize: 10,
-                                                          fontFamily: "Inter",
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      GestureDetector(
-                                                        onTap: UrlLaucher()
-                                                            .openInstagram,
-                                                        child: Image.asset(
-                                                          "assets/images/instagram.png",
-                                                        ),
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: UrlLaucher()
-                                                            .openFacebook,
-                                                        child: Image.asset(
-                                                          "assets/images/facebook.png",
-                                                        ),
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: UrlLaucher()
-                                                            .openTelegram,
-                                                        child: Image.asset(
-                                                          "assets/images/telegram.png",
-                                                        ),
-                                                      ),
-                                                      // Image.asset(
-                                                      //   "assets/images/tiktok.png",
-                                                      // ),
-                                                    ],
+                                          GestureDetector(
+                                            onTap: () {
+                                              context.push(AppRoutes.social);
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              height: 43,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Colors.white,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black
+                                                        .withAlpha(51),
+                                                    spreadRadius: 1,
+                                                    blurRadius: 1,
+                                                    offset: Offset(2, 2),
                                                   ),
                                                 ],
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 10,
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "Our Socials",
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            fontFamily: "Inter",
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    15,
+                                                                    6,
+                                                                    94,
+                                                                    1),
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          "Follow us on Our social Media Platform",
+                                                          style: TextStyle(
+                                                            fontSize: 10,
+                                                            fontFamily: "Inter",
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Image.asset(
+                                                          "assets/images/instagram.png",
+                                                        ),
+                                                        Image.asset(
+                                                          "assets/images/facebook.png",
+                                                        ),
+                                                        Image.asset(
+                                                          "assets/images/telegram.png",
+                                                        ),
+                                                        // Image.asset(
+                                                        //   "assets/images/tiktok.png",
+                                                        // ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           )

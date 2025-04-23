@@ -47,6 +47,8 @@ android {
         versionName = flutterVersionName
     }
 
+
+
 signingConfigs {
         release {
             keyAlias = keystoreProperties['keyAlias']
@@ -58,10 +60,8 @@ signingConfigs {
     buildTypes {
     release {
         signingConfig signingConfigs.release
-
-    
-        minifyEnabled true
-        shrinkResources true
+        minifyEnabled false
+        shrinkResources false
         proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
 }
@@ -73,4 +73,7 @@ signingConfigs {
 
 flutter {
     source = "../.."
+}
+dependencies { // Add this block here
+    implementation 'com.google.android.play:core-ktx:1.8.1'  // Or the latest version
 }

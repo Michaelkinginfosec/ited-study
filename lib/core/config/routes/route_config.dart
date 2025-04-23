@@ -9,6 +9,7 @@ import 'package:ited_study/feature/auth/presentation/views/edit_profile_screen.d
 import 'package:ited_study/feature/auth/presentation/views/forgot_password_screen.dart';
 import 'package:ited_study/feature/auth/presentation/views/login_screen.dart';
 import 'package:ited_study/feature/auth/presentation/views/sign_up_screen.dart';
+import 'package:ited_study/feature/auth/presentation/views/social_screen.dart';
 import 'package:ited_study/feature/auth/presentation/views/verification_screen.dart';
 import 'package:ited_study/feature/gpa/presentation/calculate_cgpa_screen.dart';
 import 'package:ited_study/feature/gpa/presentation/cgpa_screen.dart';
@@ -76,6 +77,30 @@ final router = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: NavScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.easeIn;
+
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            var offsetAnimation = animation.drive(tween);
+
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      name: '/social',
+      path: AppRoutes.social,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: SocialScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(1.0, 0.0);
             const end = Offset.zero;

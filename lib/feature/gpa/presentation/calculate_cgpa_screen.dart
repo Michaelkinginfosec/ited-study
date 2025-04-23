@@ -204,6 +204,16 @@ class _CalculateCGPAScreenState extends State<CalculateCGPAScreen> {
                             ? color
                             : const Color.fromRGBO(0, 5, 45, 1),
                       ),
+                      child: Center(
+                        child: Text(
+                          "First Semester",
+                          style: TextStyle(
+                            color: semester == 'first'
+                                ? const Color.fromRGBO(0, 5, 45, 1)
+                                : color,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   Expanded(
@@ -226,6 +236,16 @@ class _CalculateCGPAScreenState extends State<CalculateCGPAScreen> {
                           color: semester == 'second'
                               ? color
                               : const Color.fromRGBO(0, 5, 45, 1),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Second Semester",
+                            style: TextStyle(
+                              color: semester == 'second'
+                                  ? const Color.fromRGBO(0, 5, 45, 1)
+                                  : color,
+                            ),
+                          ),
                         ),
                       ),
                     ),

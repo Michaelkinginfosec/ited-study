@@ -27,4 +27,5 @@ class AppRoutes {
   static const String examquestionscreen = '/examquestionscreen';
   static const String cbt = '/cbt';
   static const String cbtpractice = '/cbtpractice';
+  static const String social = '/social';
 }

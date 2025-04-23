@@ -1,29 +1,32 @@
+import 'package:flutter/material.dart';
 import 'package:ited_study/core/constants/constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UrlLaucher {
-  Future<void> launchSocialMedia(String url) async {
-    final Uri socialMediaUrl = Uri.parse(url);
-    if (await canLaunchUrl(socialMediaUrl)) {
-      await launchUrl(socialMediaUrl, mode: LaunchMode.externalApplication);
-    } else {
-      throw 'Could not launch $url';
+  Future<void> launchSocialMedia(BuildContext context, String url) async {
+    try {
+      final success = await launchUrl(Uri.parse(url));
+      if (!success) {
+        _showError(context, 'No app found to open this link');
+      }
+    } catch (e) {
+      _showError(context, 'Error: ${e.toString()}');
     }
   }
 
-  void openWhatsApp() {
-    launchSocialMedia(AppUrl.whatsapp);
+  void _showError(BuildContext context, String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
-  void openFacebook() {
-    launchSocialMedia(AppUrl.facebook);
-  }
-
-  void openInstagram() {
-    launchSocialMedia(AppUrl.instagram);
-  }
-
-  void openTelegram() {
-    launchSocialMedia(AppUrl.telegram);
-  }
+  Future<void> openFacebook(BuildContext context) async =>
+      launchSocialMedia(context, AppUrl.facebook);
+  Future<void> openInstagram(BuildContext context) async =>
+      launchSocialMedia(context, AppUrl.instagram);
+  Future<void> openWhatsApp(BuildContext context) async =>
+      launchSocialMedia(context, AppUrl.whatsapp);
+  Future<void> openTelegram(BuildContext context) async =>
+      launchSocialMedia(context, AppUrl.telegram);
+  Future<void> openTiktok(BuildContext context) async =>
+      launchSocialMedia(context, AppUrl.tiktok);
 }
