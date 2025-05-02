@@ -1,4 +1,4 @@
-package com.michaelkingsec.ited
+package com.michaelkingsec.itedstudy
 
 import io.flutter.embedding.android.FlutterActivity
 

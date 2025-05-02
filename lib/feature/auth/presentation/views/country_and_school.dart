@@ -20,6 +20,7 @@ class CountryAndSchoolScreen extends ConsumerStatefulWidget {
 
 class CountryAndSchoolScreenState
     extends ConsumerState<CountryAndSchoolScreen> {
+  final _formKey = GlobalKey<FormState>();
   String? selectedCountry;
   String? selectedSchool;
   List<String> countries = [];
@@ -100,167 +101,167 @@ class CountryAndSchoolScreenState
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Select your  Country and School",
-              style: CustomTextStyles.mediumSubtitleText,
-            ),
-            CustomSizeBox.largeBox,
-            Text(
-              "Country",
-              style: CustomTextStyles.nameTitle,
-            ),
-            CustomSizeBox.smallBox,
-            DropdownButtonFormField(
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                    color: CustomTextStyles.textFieldColor,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: CustomTextStyles.textFieldColor,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  borderSide: const BorderSide(
-                    color: Color.fromRGBO(0, 5, 45, 1),
-                    width: 1,
-                  ),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  borderSide: const BorderSide(
-                    color: Color.fromRGBO(0, 5, 45, 1),
-                    width: 1,
-                  ),
-                ),
-                enabled: true,
-                fillColor: CustomTextStyles.textFieldColor,
-                filled: true,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Select your  Country and School",
+                style: CustomTextStyles.mediumSubtitleText,
               ),
-              value: selectedCountry,
-              items: countries.map((String countryName) {
-                return DropdownMenuItem<String>(
-                  value: countryName,
-                  child: Text(
-                    countryName,
-                    style: TextStyle(fontSize: 12),
-                  ),
-                );
-              }).toList(),
-              onChanged: (String? newCountry) async {
-                setState(() {
-                  selectedCountry = newCountry;
-                  selectedSchool = null;
-                });
-                fetchSchools();
-              },
-            ),
-            CustomSizeBox.largeBox,
-            Text(
-              "University",
-              style: CustomTextStyles.nameTitle,
-            ),
-            CustomSizeBox.smallBox,
-            DropdownButtonFormField(
-              dropdownColor: Colors.white,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 5),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                    color: CustomTextStyles.textFieldColor,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: CustomTextStyles.textFieldColor,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  borderSide: const BorderSide(
-                    color: Color.fromRGBO(0, 5, 45, 1),
-                    width: 1,
-                  ),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  borderSide: const BorderSide(
-                    color: Color.fromRGBO(0, 5, 45, 1),
-                    width: 1,
-                  ),
-                ),
-                enabled: true,
-                fillColor: CustomTextStyles.textFieldColor,
-                filled: true,
+              CustomSizeBox.largeBox,
+              Text(
+                "Country",
+                style: CustomTextStyles.nameTitle,
               ),
-              value: selectedSchool,
-              items: schools.map((String schoolName) {
-                return DropdownMenuItem<String>(
-                  value: schoolName,
-                  child: Text(
-                    schoolName,
-                    style: TextStyle(fontSize: 12),
+              CustomSizeBox.smallBox,
+              DropdownButtonFormField(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(
+                      color: CustomTextStyles.textFieldColor,
+                    ),
                   ),
-                );
-              }).toList(),
-              onChanged: (String? newSchool) async {
-                setState(() {
-                  selectedSchool = newSchool;
-                });
-              },
-              validator: (value) {
-                if (value == null) {
-                  return 'Please select your school';
-                }
-                return null;
-              },
-            ),
-            Spacer(),
-            createSchoolStatus.status == CreateSchooStatus.loading
-                ? Center(child: CircularProgressIndicator.adaptive())
-                : Padding(
-                    padding: const EdgeInsets.only(bottom: 50),
-                    child: Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (selectedSchool == null ||
-                              selectedCountry == null) {
-                            context.push(AppRoutes.login);
-                          } else {
-                            ref
-                                .read(createSchoolNotifierProvider.notifier)
-                                .createSchool(
-                                    selectedSchool!, selectedCountry!);
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              CustomTextStyles.loginsignupButtonColor,
-                          minimumSize: Size(228, 41),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: CustomTextStyles.textFieldColor,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: const BorderSide(
+                      color: Color.fromRGBO(0, 5, 45, 1),
+                      width: 1,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: const BorderSide(
+                      color: Color.fromRGBO(0, 5, 45, 1),
+                      width: 1,
+                    ),
+                  ),
+                  enabled: true,
+                  fillColor: CustomTextStyles.textFieldColor,
+                  filled: true,
+                ),
+                value: selectedCountry,
+                items: countries.map((String countryName) {
+                  return DropdownMenuItem<String>(
+                    value: countryName,
+                    child: Text(
+                      countryName,
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (String? newCountry) async {
+                  setState(() {
+                    selectedCountry = newCountry;
+                    selectedSchool = null;
+                  });
+                  fetchSchools();
+                },
+              ),
+              CustomSizeBox.largeBox,
+              Text(
+                "University",
+                style: CustomTextStyles.nameTitle,
+              ),
+              CustomSizeBox.smallBox,
+              DropdownButtonFormField(
+                dropdownColor: Colors.white,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(
+                      color: CustomTextStyles.textFieldColor,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: CustomTextStyles.textFieldColor,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: const BorderSide(
+                      color: Color.fromRGBO(0, 5, 45, 1),
+                      width: 1,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: const BorderSide(
+                      color: Color.fromRGBO(0, 5, 45, 1),
+                      width: 1,
+                    ),
+                  ),
+                  enabled: true,
+                  fillColor: CustomTextStyles.textFieldColor,
+                  filled: true,
+                ),
+                value: selectedSchool,
+                items: schools.map((String schoolName) {
+                  return DropdownMenuItem<String>(
+                    value: schoolName,
+                    child: Text(
+                      schoolName,
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  );
+                }).toList(),
+                onChanged: (String? newSchool) async {
+                  setState(() {
+                    selectedSchool = newSchool;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select your school';
+                  }
+                  return null;
+                },
+              ),
+              Spacer(),
+              createSchoolStatus.status == CreateSchooStatus.loading
+                  ? Center(child: CircularProgressIndicator.adaptive())
+                  : Padding(
+                      padding: const EdgeInsets.only(bottom: 50),
+                      child: Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              ref
+                                  .read(createSchoolNotifierProvider.notifier)
+                                  .createSchool(
+                                      selectedSchool!, selectedCountry!);
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                CustomTextStyles.loginsignupButtonColor,
+                            minimumSize: Size(228, 41),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          "Next",
-                          style: CustomTextStyles.buttonText,
+                          child: Text(
+                            "Next",
+                            style: CustomTextStyles.buttonText,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-            Spacer(),
-          ],
+              Spacer(),
+            ],
+          ),
         ),
       ),
     );

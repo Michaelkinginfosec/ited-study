@@ -4,7 +4,15 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/config/routes/route.dart';
 
 class FlashCards extends StatelessWidget {
-  const FlashCards({super.key});
+  final String question;
+  final String optionA;
+  final String optionB;
+  const FlashCards({
+    super.key,
+    required this.question,
+    required this.optionA,
+    required this.optionB,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +62,7 @@ class FlashCards extends StatelessWidget {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Text(
-                  "What is the chemical symbol for water?",
+                  question,
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -89,7 +97,7 @@ class FlashCards extends StatelessWidget {
                           width: 15,
                         ),
                         Text(
-                          "H₂O",
+                          optionA,
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
@@ -127,7 +135,7 @@ class FlashCards extends StatelessWidget {
                         width: 20,
                       ),
                       Text(
-                        "CO₂",
+                        optionB,
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w700,

@@ -24,6 +24,7 @@ class CourseDatasourceImp implements CourseDatasource {
     await exam();
     try {
       final response = await dio.get('/notes/courses/$schoolId?level=$level');
+
       if (response.statusCode == 200) {
         List<Courses> courses = (response.data as List)
             .map(
@@ -136,6 +137,7 @@ class CourseDatasourceImp implements CourseDatasource {
     try {
       final response =
           await dio.get('/notes/course-only/$schoolId?level=$level');
+
       if (response.statusCode == 200) {
         if (response.data is List) {
           List courses = response.data as List;

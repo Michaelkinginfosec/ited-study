@@ -7,6 +7,10 @@ import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ited_study/core/config/style/boxsize.dart';
 import 'package:ited_study/core/config/style/text_style.dart.dart';
+import 'package:ited_study/core/providers/network_provider.dart';
+import 'package:ited_study/feature/auth/presentation/providers/local/get_stored_user_provider.dart';
+import 'package:ited_study/feature/notes/presentation/providers/remote/course_provider.dart';
+import 'package:ited_study/feature/notes/presentation/providers/remote/topic_provider.dart';
 import '../../../../core/config/routes/route.dart';
 import '../../domain/model/courses.dart';
 import '../widgets/course_tile.dart';
@@ -19,24 +23,40 @@ class CourseScreen extends ConsumerStatefulWidget {
 }
 
 class _CourseScreenState extends ConsumerState<CourseScreen> {
+  String? level;
+  String? schoolId;
   List<Courses> courses = [];
   bool? isActivated;
 
   @override
   void initState() {
-    getCourses();
-    getUser();
     super.initState();
+    Future.delayed(Duration.zero, () async {
+      await getCourses();
+      await getUser();
+      final isConnected = ref.read(connectivityProvider);
+
+      if (isConnected) {
+        ref.read(storedUserNotifierProvider.notifier).getStored();
+
+        if (schoolId != null && level != null) {
+          ref.read(topicNotifierProvider.notifier).getTopics(schoolId!, level!);
+          ref
+              .read(courseNotifierProvider.notifier)
+              .getCourses(schoolId!, level!);
+        }
+      }
+    });
   }
 
-  void getCourses() async {
+  Future<void> getCourses() async {
     final box = await Hive.openBox<Courses>('courses');
     setState(() {
       courses = box.values.toList();
     });
   }
 
-  void getUser() async {
+  Future<void> getUser() async {
     final box = await Hive.openBox('usersBox');
     final user = box.get('users');
     if (user != null) {
@@ -56,12 +76,12 @@ class _CourseScreenState extends ConsumerState<CourseScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Icon(Icons.search),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 20),
+        //     child: Icon(Icons.search),
+        //   ),
+        // ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

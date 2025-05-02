@@ -27,6 +27,7 @@ void main() async {
   await Hive.openBox('question');
   await Hive.openBox('examQuestion');
   await Hive.openBox('countries');
+  await Hive.openBox('app_settings');
   runApp(
     const ProviderScope(
       child: MyApp(),

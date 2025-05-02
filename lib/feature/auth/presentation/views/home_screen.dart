@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ited_study/core/utils/first_launch.dart';
+import 'package:ited_study/core/utils/question.dart';
 import 'package:ited_study/feature/notes/presentation/providers/remote/course_provider.dart';
 import 'package:ited_study/feature/notes/presentation/providers/remote/topic_provider.dart';
 
@@ -26,27 +28,50 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   late Timer _timer;
+  bool isFirstLaunchLoading = false;
 
   @override
   void initState() {
     super.initState();
+    getUser();
 
     Future.delayed(Duration.zero, () async {
-      await getUser();
+      final isFirstTime = await checkFirstLaunch();
+      if (isFirstTime) {
+        setState(() => isFirstLaunchLoading = true);
+      }
 
       final isConnected = ref.read(connectivityProvider);
 
       if (isConnected) {
-        ref.read(storedUserNotifierProvider.notifier).getStored();
+        await ref.read(storedUserNotifierProvider.notifier).getStored();
 
         if (schoolId != null && level != null) {
-          ref.read(topicNotifierProvider.notifier).getTopics(schoolId!, level!);
-          ref
-              .read(courseNotifierProvider.notifier)
-              .getCourses(schoolId!, level!);
+          if (isFirstTime) {
+            await Future.wait([
+              ref
+                  .read(topicNotifierProvider.notifier)
+                  .getTopics(schoolId!, level!),
+              ref
+                  .read(courseNotifierProvider.notifier)
+                  .getCourses(schoolId!, level!),
+            ]);
+          } else {
+            ref
+                .read(topicNotifierProvider.notifier)
+                .getTopics(schoolId!, level!);
+            ref
+                .read(courseNotifierProvider.notifier)
+                .getCourses(schoolId!, level!);
+          }
         }
       }
-      _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+
+      if (isFirstTime) {
+        setState(() => isFirstLaunchLoading = false);
+      }
+
+      _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
         if (_currentPage < 6) {
           _currentPage++;
           _pageController.animateToPage(
@@ -69,7 +94,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.dispose();
   }
 
-  Future<void> getUser() async {
+  void getUser() async {
     final box = await Hive.openBox('usersBox');
     final schoolBox = await Hive.openBox("school");
     final school = schoolBox.get("schoolId");
@@ -85,6 +110,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (isFirstLaunchLoading) {
+      return const Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator.adaptive(),
+              SizedBox(height: 20),
+              Text(
+                'Loading resources...\nPlease wait while we prepare your content.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     final storedUserState = ref.watch(storedUserNotifierProvider);
 
     return Scaffold(
@@ -189,7 +233,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           controller: _pageController,
                           scrollDirection: Axis.horizontal,
                           children: [
-                            for (int i = 0; i < 5; i++) FlashCards(),
+                            for (int i = 0; i < questions.length; i++)
+                              FlashCards(
+                                question: questions[i]['question']!,
+                                optionA: questions[i]['optionA']!,
+                                optionB: questions[i]['optionB']!,
+                              ),
                           ]),
                     ),
                     Expanded(
