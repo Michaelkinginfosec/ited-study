@@ -1,4 +1,3 @@
-
 # 📚 Ited E-Study App
 
 **Ited E-Study** is a mobile learning platform designed for college students to access academic resources — including lecture notes, past questions, and a built-in GPA calculator.
@@ -26,8 +25,10 @@ This project was built to simulate a full-stack educational solution with user-f
 **Authentication:** JWT
 
 ---
+
 ## 📸 Screenshot
-![Onboarding Screen](https://imgur.com/a/RqQ6yeS)
+
+![Onboarding Screen](assets/screenshots/onboarding.png)
 
 ---
 
@@ -51,5 +52,3 @@ flutter run
 ⚠️ Backend Note
 The backend was built with NestJS and uses Cloudinary for media storage.
 API documentation is currently not included in this version.
-
-
