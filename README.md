@@ -48,3 +48,10 @@ git clone https://github.com/yourusername/ited-e-study.git
 cd ited-e-study
 flutter pub get
 flutter run
+```
+
+⚠️ Backend Note
+The backend was built with NestJS and uses Cloudinary for media storage.
+API documentation is currently not included in this version.
+
+
