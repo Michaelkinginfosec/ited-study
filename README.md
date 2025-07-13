@@ -26,12 +26,8 @@ This project was built to simulate a full-stack educational solution with user-f
 **Authentication:** JWT
 
 ---
-<img width="1080" height="2280" alt="Screenshot_1740788732" src="https://github.com/user-attachments/assets/027d687c-de54-4fa2-b077-335a6302e000" /><img width="1080" height="2400" alt="Screenshot_1745767967" src="https://github.com/user-attachments/assets/cb7704f8-3c3d-481b-b639-3ae003c6a096" />
-<img width="1080" height="2280" alt="Screenshot_1740788936" src="https://github.com/user-attachments/assets/1dd51e80-09a7-4edf-a018-c7b0e162312b" /><img width="1080" height="2400" alt="Screenshot_1743761011" src="https://github.com/user-attachments/assets/8dca2d54-ceef-4ff3-a2a0-3153eb9a555c" />
-
-<img width="1080" height="2400" alt="Screenshot_1743761015" src="https://github.com/user-attachments/assets/9dd31829-54e7-4a7e-b4cc-a8985ce87586" />
-
-
+## 📸 Screenshot
+![Onboarding Screen](https://imgur.com/a/RqQ6yeS)
 
 ---
 
