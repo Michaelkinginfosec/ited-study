@@ -1,7 +1,7 @@
 
 # 📚 Ited E-Study App
 
-**Ited E-Study** is a mobile learning platform designed for college students to access academic resources — including lecture notes, past questions, PDFs, and a built-in GPA calculator.
+**Ited E-Study** is a mobile learning platform designed for college students to access academic resources — including lecture notes, past questions, and a built-in GPA calculator.
 
 This project was built to simulate a full-stack educational solution with user-friendly design and real-world backend integration.
 
@@ -9,7 +9,7 @@ This project was built to simulate a full-stack educational solution with user-f
 
 ## 🚀 Features
 
-- 📄 Browse and download lecture notes, past questions, and academic materials
+- 📄 Browse lecture notes, past questions, and academic materials
 - 📊 Calculate GPA using the in-app calculator
 - 📂 Upload & view documents stored on the cloud
 - 🔐 Secure login and signup
@@ -20,7 +20,7 @@ This project was built to simulate a full-stack educational solution with user-f
 ## 🛠️ Tech Stack
 
 **Frontend:** Flutter, Riverpod  
-**Backend:** NestJS (Node.js), PostgreSQL  
+**Backend:** NestJS (Node.js), Mongodb  
 **Storage:** Cloudinary for file uploads  
 **State Management:** Riverpod  
 **Authentication:** JWT
@@ -31,8 +31,6 @@ This project was built to simulate a full-stack educational solution with user-f
 <img width="1080" height="2280" alt="Screenshot_1740788936" src="https://github.com/user-attachments/assets/758a04ff-6ccb-4eed-a304-480d80043f54" />
 <img width="1080" height="2400" alt="Screenshot_1743761011" src="https://github.com/user-attachments/assets/df8d386e-83a7-46d7-9ef6-147098c7903d" />
 <img width="1080" height="2400" alt="Screenshot_1743761015" src="https://github.com/user-attachments/assets/cf2a7884-1c65-4ac1-b435-e32df3da11dd" />
-
-
 ---
 
 ## 🧪 Installation (Flutter Frontend)
