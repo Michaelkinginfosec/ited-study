@@ -30,7 +30,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.michaelkingsec.itedstudy"
+    namespace = "com.itededucation.estudy"
     compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
@@ -40,9 +40,9 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.michaelkingsec.itedstudy"
+        applicationId "com.itededucation.estudy"
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 35
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
     }
